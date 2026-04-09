@@ -15,7 +15,7 @@ A runtime diagnostic tool based on Python 3.14 remote debugging protocol (PEP 76
 {: .fs-6 .fw-300 }
 
 [Quick Start](#quick-start){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[View on GitHub](https://github.com/wwulfric/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
+[View on GitHub](https://github.com/peeka-project/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
@@ -199,7 +199,7 @@ Implements safe conditional filtering based on simpleeval library:
 
 ## License
 
-Peeka is open source under [Apache License 2.0](https://github.com/wwulfric/peeka/blob/main/LICENSE).
+Peeka is open source under [Apache License 2.0](https://github.com/peeka-project/peeka/blob/main/LICENSE).
 
 ---
 

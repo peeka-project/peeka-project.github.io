@@ -68,7 +68,7 @@ uv sync --dev
 
 ```bash
 # 克隆仓库
-git clone https://github.com/wwulfric/peeka.git
+git clone https://github.com/peeka-project/peeka.git
 cd peeka
 
 # 安装（基础版本）
@@ -275,4 +275,4 @@ Error: Unable to find Mach task port for process-id
 如果您在安装过程中遇到问题：
 
 1. 查看 [故障排除]({% link troubleshooting.md %})
-2. 在 [GitHub Issues](https://github.com/wwulfric/peeka/issues) 提问
+2. 在 [GitHub Issues](https://github.com/peeka-project/peeka/issues) 提问

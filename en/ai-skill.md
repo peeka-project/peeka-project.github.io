@@ -90,7 +90,7 @@ mkdir -p .agents/skills/peeka-diagnostics
 
 # Download the skill file from the Peeka repository
 curl -o .agents/skills/peeka-diagnostics/SKILL.md \
-  https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
+  https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
 ```
 
 Resulting directory structure:
@@ -113,7 +113,7 @@ If your AI tool supports a global skills directory (e.g., `~/.config/opencode/sk
 ```bash
 mkdir -p ~/.config/opencode/skills/peeka-diagnostics
 curl -o ~/.config/opencode/skills/peeka-diagnostics/SKILL.md \
-  https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
+  https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
 ```
 
 ---
@@ -203,7 +203,7 @@ When Peeka releases a new version, update the skill file:
 
 ```bash
 curl -o .agents/skills/peeka-diagnostics/SKILL.md \
-  https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
+  https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
 ```
 
 ### Custom Extensions
@@ -232,5 +232,5 @@ The skill file is plain Markdown — extend it to fit your project:
 
 ### Where can I find the skill file?
 
-- **GitHub repository**: [peeka/.agents/skills/peeka-diagnostics/SKILL.md](https://github.com/wwulfric/peeka/tree/master/.agents/skills/peeka-diagnostics)
-- **Raw download URL**: `https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md`
+- **GitHub repository**: [peeka/.agents/skills/peeka-diagnostics/SKILL.md](https://github.com/peeka-project/peeka/tree/master/.agents/skills/peeka-diagnostics)
+- **Raw download URL**: `https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md`

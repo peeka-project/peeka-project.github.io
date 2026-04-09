@@ -1,7 +1,7 @@
 title: Peeka
 description: "Peeka - Python Runtime Diagnostic Tool with Non-Invasive Function Observation based on PEP 768"
-baseurl: "/peeka"
-url: "https://wwulfric.github.io"
+baseurl: "/peeka-docs"
+url: "https://peeka-project.github.io"
 theme: just-the-docs
 color_scheme: light
 
@@ -33,10 +33,10 @@ aux_links:
   "Español":
     - "/peeka/es/"
   "GitHub":
-    - "https://github.com/wwulfric/peeka"
+    - "https://github.com/peeka-project/peeka"
 
 social:
-  github: wwulfric/peeka
+  github: peeka-project/peeka
 
 kramdown:
   syntax_highlighter: rouge

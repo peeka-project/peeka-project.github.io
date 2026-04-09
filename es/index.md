@@ -15,7 +15,7 @@ Es una herramienta de diagnóstico en tiempo de ejecución basada en PEP 768 (el
 {: .fs-6 .fw-300 }
 
 [Inicio rápido](#inicio-rápido){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[Ver en GitHub](https://github.com/wwulfric/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
+[Ver en GitHub](https://github.com/peeka-project/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
@@ -197,7 +197,7 @@ Implementamos filtrado condicional seguro basado en la biblioteca simpleeval:
 
 ## Licencia
 
-Peeka es código abierto bajo la [Licencia Apache 2.0](https://github.com/wwulfric/peeka/blob/main/LICENSE).
+Peeka es código abierto bajo la [Licencia Apache 2.0](https://github.com/peeka-project/peeka/blob/main/LICENSE).
 
 ---
 

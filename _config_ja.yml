@@ -1,7 +1,7 @@
 title: Peeka
 description: "Peeka - PEP 768 ベースの非侵入型関数オブザベーションによる Python ランタイム診断ツール"
-baseurl: "/peeka"
-url: "https://wwulfric.github.io"
+baseurl: "/peeka-docs"
+url: "https://peeka-project.github.io"
 theme: just-the-docs
 color_scheme: light
 
@@ -35,10 +35,10 @@ aux_links:
   "English":
     - "/peeka/en/"
   "GitHub":
-    - "https://github.com/wwulfric/peeka"
+    - "https://github.com/peeka-project/peeka"
 
 social:
-  github: wwulfric/peeka
+  github: peeka-project/peeka
 
 kramdown:
   syntax_highlighter: rouge

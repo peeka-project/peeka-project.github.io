@@ -103,7 +103,7 @@ To enable GitHub Pages for this repository:
 
 1. Go to repository Settings → Pages
 2. Source: GitHub Actions
-3. The site will be available at `https://wwulfric.github.io/peeka`
+3. The site will be available at `https://peeka-project.github.io/peeka-docs`
 
 ## Adding New Pages
 

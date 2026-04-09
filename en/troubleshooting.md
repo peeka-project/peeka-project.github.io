@@ -596,7 +596,7 @@ If none of the above solutions resolve your issue:
    ```
 
 2. **GitHub Issues**:
-   [https://github.com/wwulfric/peeka/issues](https://github.com/wwulfric/peeka/issues)
+   [https://github.com/peeka-project/peeka/issues](https://github.com/peeka-project/peeka/issues)
 
 3. **Provide information**:
    - Operating system and version

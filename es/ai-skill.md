@@ -89,7 +89,7 @@ mkdir -p .agents/skills/peeka-diagnostics
 
 # Copiar el archivo de habilidad desde el repositorio de Peeka
 curl -o .agents/skills/peeka-diagnostics/SKILL.md \
-  https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
+  https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
 ```
 
 Estructura de directorios después de la instalación:
@@ -112,7 +112,7 @@ Si tu herramienta de IA admite un directorio global de habilidades (como `~/.con
 ```bash
 mkdir -p ~/.config/opencode/skills/peeka-diagnostics
 curl -o ~/.config/opencode/skills/peeka-diagnostics/SKILL.md \
-  https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
+  https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
 ```
 
 ---
@@ -202,7 +202,7 @@ Cuando Peeka lance una nueva versión, actualiza el archivo de habilidad:
 
 ```bash
 curl -o .agents/skills/peeka-diagnostics/SKILL.md \
-  https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
+  https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
 ```
 
 ### Extensión Personalizada
@@ -231,5 +231,5 @@ El archivo de habilidad es Markdown puro, puedes extenderlo según las necesidad
 
 ### ¿Dónde puedo encontrar el archivo de habilidad?
 
-- **Repositorio GitHub**: [peeka/.agents/skills/peeka-diagnostics/SKILL.md](https://github.com/wwulfric/peeka/tree/master/.agents/skills/peeka-diagnostics)
-- **Dirección de descarga directa**: `https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md`
+- **Repositorio GitHub**: [peeka/.agents/skills/peeka-diagnostics/SKILL.md](https://github.com/peeka-project/peeka/tree/master/.agents/skills/peeka-diagnostics)
+- **Dirección de descarga directa**: `https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md`

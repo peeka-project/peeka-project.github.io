@@ -1,8 +1,8 @@
 # GitHub Pages Configuration for Peeka
 title: Peeka
 description: Python 运行时诊断工具 - 基于 PEP 768 的非侵入式函数观测
-baseurl: "/peeka"
-url: "https://wwulfric.github.io"
+baseurl: "/peeka-docs"
+url: "https://peeka-project.github.io"
 theme: just-the-docs
 color_scheme: light
 
@@ -38,14 +38,14 @@ aux_links:
   "Español":
     - "/peeka/es/"
   "GitHub":
-    - "https://github.com/wwulfric/peeka"
+    - "https://github.com/peeka-project/peeka"
 
 # Google Analytics (optional)
 # ga_tracking: UA-XXXXXXXXX-X
 
 # Social links (optional)
 social:
-  github: wwulfric/peeka
+  github: peeka-project/peeka
 
 # Code highlighting
 kramdown:

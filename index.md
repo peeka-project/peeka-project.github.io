@@ -15,7 +15,7 @@ permalink: /
 {: .fs-6 .fw-300 }
 
 [快速开始](#快速开始){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[在 GitHub 上查看](https://github.com/wwulfric/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
+[在 GitHub 上查看](https://github.com/peeka-project/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
@@ -199,7 +199,7 @@ peeka
 
 ## 开源协议
 
-Peeka 基于 [Apache License 2.0](https://github.com/wwulfric/peeka/blob/main/LICENSE) 开源。
+Peeka 基于 [Apache License 2.0](https://github.com/peeka-project/peeka/blob/main/LICENSE) 开源。
 
 ---
 

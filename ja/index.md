@@ -15,7 +15,7 @@ PEP 768 (Python 3.14 リモートデバッグプロトコル) ベースのラン
 {: .fs-6 .fw-300 }
 
 [クイックスタート](#quick-start){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
-[GitHub で表示](https://github.com/wwulfric/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
+[GitHub で表示](https://github.com/peeka-project/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
 
 ---
 
@@ -197,7 +197,7 @@ simpleeval ライブラリベースで安全な条件付きフィルタリング
 
 ## ライセンス
 
-Peeka は [Apache License 2.0](https://github.com/wwulfric/peeka/blob/main/LICENSE) の下でオープンソースです。
+Peeka は [Apache License 2.0](https://github.com/peeka-project/peeka/blob/main/LICENSE) の下でオープンソースです。
 
 ---
 

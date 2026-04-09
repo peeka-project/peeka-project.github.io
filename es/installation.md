@@ -68,7 +68,7 @@ uv sync --dev
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/wwulfric/peeka.git
+git clone https://github.com/peeka-project/peeka.git
 cd peeka
 
 # Instalar (versión básica)
@@ -275,4 +275,4 @@ Después de completar la instalación, puedes:
 Si encuentras problemas durante la instalación:
 
 1. Consulta [Resolución de Problemas]({% link es/troubleshooting.md %})
-2. Pregunta en [GitHub Issues](https://github.com/wwulfric/peeka/issues)
+2. Pregunta en [GitHub Issues](https://github.com/peeka-project/peeka/issues)

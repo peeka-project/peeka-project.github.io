@@ -89,7 +89,7 @@ mkdir -p .agents/skills/peeka-diagnostics
 
 # 从 Peeka 仓库复制技能文件
 curl -o .agents/skills/peeka-diagnostics/SKILL.md \
-  https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
+  https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
 ```
 
 安装后的目录结构：
@@ -112,7 +112,7 @@ your-project/
 ```bash
 mkdir -p ~/.config/opencode/skills/peeka-diagnostics
 curl -o ~/.config/opencode/skills/peeka-diagnostics/SKILL.md \
-  https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
+  https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
 ```
 
 ---
@@ -202,7 +202,7 @@ AI 会自动：
 
 ```bash
 curl -o .agents/skills/peeka-diagnostics/SKILL.md \
-  https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
+  https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md
 ```
 
 ### 自定义扩展
@@ -231,5 +231,5 @@ curl -o .agents/skills/peeka-diagnostics/SKILL.md \
 
 ### 技能文件在哪里可以找到？
 
-- **GitHub 仓库**: [peeka/.agents/skills/peeka-diagnostics/SKILL.md](https://github.com/wwulfric/peeka/tree/master/.agents/skills/peeka-diagnostics)
-- **Raw 下载地址**: `https://raw.githubusercontent.com/wwulfric/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md`
+- **GitHub 仓库**: [peeka/.agents/skills/peeka-diagnostics/SKILL.md](https://github.com/peeka-project/peeka/tree/master/.agents/skills/peeka-diagnostics)
+- **Raw 下载地址**: `https://raw.githubusercontent.com/peeka-project/peeka/master/.agents/skills/peeka-diagnostics/SKILL.md`

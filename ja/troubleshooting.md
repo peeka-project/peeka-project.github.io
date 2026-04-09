@@ -595,7 +595,7 @@ python -c "import peeka; print(peeka.__version__)"
    ```
 
 2. **GitHub Issues**:
-   [https://github.com/wwulfric/peeka/issues](https://github.com/wwulfric/peeka/issues)
+   [https://github.com/peeka-project/peeka/issues](https://github.com/peeka-project/peeka/issues)
 
 3. **情報を提供**:
    - OS とバージョン

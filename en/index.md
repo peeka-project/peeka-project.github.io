@@ -14,6 +14,9 @@ permalink: /
 A runtime diagnostic tool based on Python 3.14 remote debugging protocol (PEP 768), providing non-invasive function observation capabilities.
 {: .fs-6 .fw-300 }
 
+This documentation covers Peeka v{{ site.peeka_version }}.
+{: .text-grey-dk-000 }
+
 [Quick Start](#quick-start){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [View on GitHub](https://github.com/peeka-project/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
 

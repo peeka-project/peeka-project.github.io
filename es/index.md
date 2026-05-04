@@ -14,6 +14,9 @@ permalink: /
 Es una herramienta de diagnóstico en tiempo de ejecución basada en PEP 768 (el protocolo de depuración remota de Python 3.14), que proporciona observación de funciones no intrusiva.
 {: .fs-6 .fw-300 }
 
+Esta documentación corresponde a Peeka v{{ site.peeka_version }}.
+{: .text-grey-dk-000 }
+
 [Inicio rápido](#inicio-rápido){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [Ver en GitHub](https://github.com/peeka-project/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
 

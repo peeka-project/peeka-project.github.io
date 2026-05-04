@@ -14,6 +14,9 @@ permalink: /
 基于 Python 3.14 远程调试协议（PEP 768）的运行时诊断工具，提供非侵入式函数观测能力。
 {: .fs-6 .fw-300 }
 
+当前文档对应 Peeka v{{ site.peeka_version }}。
+{: .text-grey-dk-000 }
+
 [快速开始](#快速开始){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [在 GitHub 上查看](https://github.com/peeka-project/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
 

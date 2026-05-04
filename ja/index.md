@@ -14,6 +14,9 @@ permalink: /
 PEP 768 (Python 3.14 リモートデバッグプロトコル) ベースのランタイム診断ツールで、非侵入型の関数オブザベーション機能を提供します。
 {: .fs-6 .fw-300 }
 
+このドキュメントは Peeka v{{ site.peeka_version }} に対応しています。
+{: .text-grey-dk-000 }
+
 [クイックスタート](#quick-start){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 [GitHub で表示](https://github.com/peeka-project/peeka){: .btn .fs-5 .mb-4 .mb-md-0 }
 

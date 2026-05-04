@@ -1,5 +1,6 @@
 title: Peeka
 description: "Peeka - Python Runtime Diagnostic Tool with Non-Invasive Function Observation based on PEP 768"
+peeka_version: "0.1.10"
 baseurl: "/en"
 url: "https://peeka-project.github.io"
 theme: just-the-docs

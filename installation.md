@@ -172,6 +172,7 @@ services:
 
 ```bash
 peeka-cli --version
+# peeka-cli {{ site.peeka_version }}
 ```
 
 ### 运行测试

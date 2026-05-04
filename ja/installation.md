@@ -173,6 +173,7 @@ services:
 
 ```bash
 peeka-cli --version
+# peeka-cli {{ site.peeka_version }}
 ```
 
 ### テスト実行

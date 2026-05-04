@@ -20,7 +20,7 @@ Es una herramienta de diagnóstico en tiempo de ejecución basada en PEP 768 (el
 ---
 
 {: .note }
-> 🌐 **Idioma / Language**: Esta documentación también está disponible en [中文 (Chino)](/) y [English (Inglés)](/en/).
+> 🌐 **Idioma / Language**: Esta documentación también está disponible en [中文 (Chino)](/), [English (Inglés)](/en/) y [日本語 (Japonés)](/ja/).
 
 ---
 

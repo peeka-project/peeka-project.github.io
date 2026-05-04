@@ -20,9 +20,9 @@ A runtime diagnostic tool based on Python 3.14 remote debugging protocol (PEP 76
 ---
 
 {: .note }
-> 🌐 **Language / 语言**: This documentation is also available in [Chinese (中文)](/).
+> 🌐 **Language / 语言**: This documentation is also available in [Chinese (中文)](/), [Español](/es/), and [日本語](/ja/).
 >
-> 本文档也提供[中文版本](/)。
+> 本文档也提供[中文](/)、[西班牙语](/es/)和[日语](/ja/)版本。
 
 ---
 

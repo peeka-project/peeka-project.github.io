@@ -20,9 +20,9 @@ permalink: /
 ---
 
 {: .note }
-> 🌐 **Language / 语言**: This documentation is also available in [English](/en/).
+> 🌐 **Language / 语言**: This documentation is also available in [English](/en/), [Español](/es/), and [日本語](/ja/).
 >
-> 本文档也提供[英文版本](/en/)。
+> 本文档也提供[英文](/en/)、[西班牙语](/es/)和[日语](/ja/)版本。
 
 ---
 

@@ -2,7 +2,7 @@
 layout: default
 title: reset
 parent: Referencia de Comandos
-nav_order: 13
+nav_order: 10
 ---
 
 # reset - Restablecer inyección

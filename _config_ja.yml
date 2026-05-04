@@ -34,6 +34,8 @@ aux_links:
     - "/"
   "English":
     - "/en/"
+  "Español":
+    - "/es/"
   "GitHub":
     - "https://github.com/peeka-project/peeka"
 

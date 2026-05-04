@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   // =========================================================================
-  // Right-side sticky TOC — generated from page headings
+  // Right-side sticky TOC - generated from page headings
   // =========================================================================
   var mainContent = document.getElementById("main-content");
   if (!mainContent) return;
@@ -56,9 +56,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
   var title = document.createElement("p");
   title.className = "side-toc-title";
-  // Detect language from html lang or page content
-  var isEnglish = window.location.pathname.indexOf("/en/") !== -1;
-  title.textContent = isEnglish ? "On This Page" : "本页目录";
+  var path = window.location.pathname;
+  if (path.indexOf("/en/") !== -1) {
+    title.textContent = "On This Page";
+  } else if (path.indexOf("/es/") !== -1) {
+    title.textContent = "En Esta Pagina";
+  } else if (path.indexOf("/ja/") !== -1) {
+    title.textContent = "このページ";
+  } else {
+    title.textContent = "本页目录";
+  }
   toc.appendChild(title);
 
   var ul = document.createElement("ul");
@@ -78,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
   toc.appendChild(ul);
   document.body.appendChild(toc);
 
-  // Scroll spy — highlight the current section
+  // Scroll spy - highlight the current section
   var tocLinks = toc.querySelectorAll("a");
   var headingElements = [];
   for (var k = 0; k < tocItems.length; k++) {

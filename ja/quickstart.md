@@ -274,7 +274,7 @@ peeka
 | `?` | ヘルプを表示 |
 | `q` | 終了 |
 
-TUI の詳細については [TUI 使用ガイド]({% link ja/tui.md %}) を参照してください。
+TUI の詳細については [TUI 使用ガイド]({% link tui.md %}) を参照してください。
 
 ---
 
@@ -383,7 +383,7 @@ peeka-cli trace "app.api.slow_func" --depth 5
 
 ## 次のステップ
 
-- [コマンドリファレンス]({% link ja/commands/index.md %}) - すべてのコマンドの詳細な使い方を理解
-- [サンプルチュートリアル]({% link ja/examples.md %}) - より多くの実際のアプリケーションシナリオ
-- [アーキテクチャ設計]({% link ja/architecture.md %}) - Peeka の設計原理を理解
-- [トラブルシューティング]({% link ja/troubleshooting.md %}) - 問題が発生した場合の解決策
+- [コマンドリファレンス]({% link commands/index.md %}) - すべてのコマンドの詳細な使い方を理解
+- [サンプルチュートリアル]({% link examples.md %}) - より多くの実際のアプリケーションシナリオ
+- [アーキテクチャ設計]({% link architecture.md %}) - Peeka の設計原理を理解
+- [トラブルシューティング]({% link troubleshooting.md %}) - 問題が発生した場合の解決策

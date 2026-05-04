@@ -500,6 +500,6 @@ python -m peeka.analyze --baseline baseline.jsonl --current current.jsonl
 
 ## より多くのリソース
 
-- [コマンドリファレンス]({% link ja/commands/index.md %}) - 詳細なコマンドドキュメント
-- [アーキテクチャ設計]({% link ja/architecture.md %}) - 実装原理を理解
-- [トラブルシューティング]({% link ja/troubleshooting.md %}) - よくある問題の解決
+- [コマンドリファレンス]({% link commands/index.md %}) - 詳細なコマンドドキュメント
+- [アーキテクチャ設計]({% link architecture.md %}) - 実装原理を理解
+- [トラブルシューティング]({% link troubleshooting.md %}) - よくある問題の解決

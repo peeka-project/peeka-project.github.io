@@ -1,13 +1,13 @@
 title: Peeka
 description: "Peeka - Python Runtime Diagnostic Tool with Non-Invasive Function Observation based on PEP 768"
-baseurl: "/peeka-docs"
+baseurl: "/en"
 url: "https://peeka-project.github.io"
 theme: just-the-docs
 color_scheme: light
 
 destination: "_site_en"
 
-logo: "/assets/images/logo.png"
+logo: "https://peeka-project.github.io/assets/images/logo.png"
 
 search_enabled: true
 search:
@@ -27,11 +27,11 @@ back_to_top_text: "Back to top"
 
 aux_links:
   "中文":
-    - "/peeka/"
+    - "/"
   "日本語":
-    - "/peeka/ja/"
+    - "/ja/"
   "Español":
-    - "/peeka/es/"
+    - "/es/"
   "GitHub":
     - "https://github.com/peeka-project/peeka"
 

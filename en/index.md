@@ -20,9 +20,9 @@ A runtime diagnostic tool based on Python 3.14 remote debugging protocol (PEP 76
 ---
 
 {: .note }
-> 🌐 **Language / 语言**: This documentation is also available in [Chinese (中文)](/peeka/).
+> 🌐 **Language / 语言**: This documentation is also available in [Chinese (中文)](/).
 >
-> 本文档也提供[中文版本](/peeka/)。
+> 本文档也提供[中文版本](/)。
 
 ---
 

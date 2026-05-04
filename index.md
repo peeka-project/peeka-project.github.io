@@ -20,9 +20,9 @@ permalink: /
 ---
 
 {: .note }
-> 🌐 **Language / 语言**: This documentation is also available in [English](/peeka/en/).
+> 🌐 **Language / 语言**: This documentation is also available in [English](/en/).
 >
-> 本文档也提供[英文版本](/peeka/en/)。
+> 本文档也提供[英文版本](/en/)。
 
 ---
 

@@ -1,11 +1,11 @@
-# Peeka GitHub Pages
+# Peeka Project Website
 
-This directory contains the GitHub Pages site for the Peeka project.
+This repository contains the GitHub Pages site for the Peeka project.
 
 ## Structure
 
 ```
-gh-pages/
+peeka-project.github.io/
 ├── _config.yml          # Jekyll configuration
 ├── index.md             # Landing page (Chinese)
 ├── installation.md      # Installation guide (Chinese)
@@ -33,24 +33,14 @@ gh-pages/
 
 ## Languages
 
-The site supports bilingual documentation:
+The site supports multilingual documentation:
 
-- **Chinese (中文)**: Root directory - Complete documentation
-- **English**: `/en/` directory - Basic structure with home page and commands overview
+- **Chinese (中文)**: Root directory
+- **English**: `/en/`
+- **Spanish (Español)**: `/es/`
+- **Japanese (日本語)**: `/ja/`
 
 Users can switch languages using the language selector in the top navigation bar.
-
-### Translation Status
-
-**Chinese**: ✅ Complete
-- All main pages
-- Complete command documentation (watch, trace, stack, monitor, logger, memory, inspect, search, reset)
-
-**English**: ⏳ In Progress
-- ✅ Home page
-- ✅ Commands overview
-- ⏳ Individual command documentation (planned)
-- ⏳ Other guides (installation, quickstart, etc.)
 
 ## Theme
 
@@ -72,21 +62,24 @@ This site uses the [Just the Docs](https://just-the-docs.github.io/just-the-docs
 ### Setup
 
 ```bash
-cd gh-pages
+cd peeka-project.github.io
 
 # Install dependencies
 bundle install
 
 # Run local server
-bundle exec jekyll serve --baseurl "/peeka"
+bundle exec jekyll serve --baseurl ""
 
-# Open browser to http://localhost:4000/peeka
+# Open browser to http://localhost:4000/
 ```
 
 ### Build
 
 ```bash
-bundle exec jekyll build --baseurl "/peeka"
+bundle exec jekyll build --baseurl ""
+bundle exec jekyll build --config _config_en.yml --source en --destination _site/en --baseurl "/en"
+bundle exec jekyll build --config _config_es.yml --source es --destination _site/es --baseurl "/es"
+bundle exec jekyll build --config _config_ja.yml --source ja --destination _site/ja --baseurl "/ja"
 ```
 
 The built site will be in `_site/`.
@@ -103,11 +96,11 @@ To enable GitHub Pages for this repository:
 
 1. Go to repository Settings → Pages
 2. Source: GitHub Actions
-3. The site will be available at `https://peeka-project.github.io/peeka-docs`
+3. The site will be available at `https://peeka-project.github.io/`
 
 ## Adding New Pages
 
-1. Create a new `.md` file in the `gh-pages/` directory
+1. Create a new `.md` file in the repository root or the relevant language directory
 2. Add front matter:
    ```yaml
    ---
@@ -121,7 +114,7 @@ To enable GitHub Pages for this repository:
 
 ## Adding New Command Documentation
 
-1. Create a new `.md` file in `gh-pages/commands/`
+1. Create a new `.md` file in `commands/` or the relevant language `commands/` directory
 2. Add front matter:
    ```yaml
    ---
@@ -149,7 +142,7 @@ Pages are sorted by `nav_order` in the front matter:
 
 When the project documentation changes:
 
-1. Update the corresponding `.md` files in `gh-pages/`
+1. Update the corresponding `.md` files in this repository
 2. Commit and push to `main`
 3. GitHub Actions will automatically rebuild and deploy the site
 
@@ -168,7 +161,7 @@ color_scheme: light  # or dark, nil (system)
 Add a logo by placing an image in `assets/images/` and updating `_config.yml`:
 
 ```yaml
-logo: "/assets/images/logo.png"
+logo: "https://peeka-project.github.io/assets/images/logo.png"
 ```
 
 ### Footer

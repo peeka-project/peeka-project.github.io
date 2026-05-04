@@ -264,9 +264,9 @@ Consulta [GDB on macOS](https://sourceware.org/gdb/wiki/PermissionsDarwin) para 
 
 Después de completar la instalación, puedes:
 
-- [Inicio Rápido]({% link es/quickstart.md %}) - Aprender el uso básico
-- [Referencia de Comandos]({% link es/commands/index.md %}) - Ver todos los comandos disponibles
-- [Ejemplos y Tutoriales]({% link es/examples.md %}) - Escenarios prácticos de aplicación
+- [Inicio Rápido]({% link quickstart.md %}) - Aprender el uso básico
+- [Referencia de Comandos]({% link commands/index.md %}) - Ver todos los comandos disponibles
+- [Ejemplos y Tutoriales]({% link examples.md %}) - Escenarios prácticos de aplicación
 
 ---
 
@@ -274,5 +274,5 @@ Después de completar la instalación, puedes:
 
 Si encuentras problemas durante la instalación:
 
-1. Consulta [Resolución de Problemas]({% link es/troubleshooting.md %})
+1. Consulta [Resolución de Problemas]({% link troubleshooting.md %})
 2. Pregunta en [GitHub Issues](https://github.com/peeka-project/peeka/issues)

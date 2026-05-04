@@ -53,12 +53,22 @@ jobs:
           bundle install
 
       - name: Build Chinese site
-        run: bundle exec jekyll build --baseurl "/peeka-docs"
+        run: bundle exec jekyll build --baseurl ""
         env:
           JEKYLL_ENV: production
 
       - name: Build English site
-        run: bundle exec jekyll build --config _config_en.yml --source en --destination _site/en --baseurl "/peeka-docs"
+        run: bundle exec jekyll build --config _config_en.yml --source en --destination _site/en --baseurl "/en"
+        env:
+          JEKYLL_ENV: production
+
+      - name: Build Spanish site
+        run: bundle exec jekyll build --config _config_es.yml --source es --destination _site/es --baseurl "/es"
+        env:
+          JEKYLL_ENV: production
+
+      - name: Build Japanese site
+        run: bundle exec jekyll build --config _config_ja.yml --source ja --destination _site/ja --baseurl "/ja"
         env:
           JEKYLL_ENV: production
 

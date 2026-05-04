@@ -1,6 +1,6 @@
 title: Peeka
 description: "Peeka - Herramienta de diagnóstico en tiempo de ejecución para Python usando observación de funciones no intrusiva basada en PEP 768"
-baseurl: "/peeka-docs"
+baseurl: "/es"
 url: "https://peeka-project.github.io"
 theme: just-the-docs
 color_scheme: light
@@ -8,7 +8,7 @@ color_scheme: light
 destination: "_site_es"
 
 # Logo and favicon
-logo: "/assets/images/logo.png"
+logo: "https://peeka-project.github.io/assets/images/logo.png"
 
 # Enable search
 search_enabled: true
@@ -31,11 +31,11 @@ back_to_top_text: "Volver al inicio"
 
 aux_links:
   "中文":
-    - "/peeka/"
+    - "/"
   "English":
-    - "/peeka/en/"
+    - "/en/"
   "日本語":
-    - "/peeka/ja/"
+    - "/ja/"
   "GitHub":
     - "https://github.com/peeka-project/peeka"
 

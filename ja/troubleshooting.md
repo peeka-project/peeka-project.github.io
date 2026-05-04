@@ -612,6 +612,6 @@ python -c "import peeka; print(peeka.__version__)"
 
 ## 関連ドキュメント
 
-- [インストールガイド]({% link ja/installation.md %})
-- [クイックスタート]({% link ja/quickstart.md %})
-- [コマンドリファレンス]({% link ja/commands/index.md %})
+- [インストールガイド]({% link installation.md %})
+- [クイックスタート]({% link quickstart.md %})
+- [コマンドリファレンス]({% link commands/index.md %})

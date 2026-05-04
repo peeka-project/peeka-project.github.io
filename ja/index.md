@@ -20,7 +20,7 @@ PEP 768 (Python 3.14 リモートデバッグプロトコル) ベースのラン
 ---
 
 {: .note }
-> 🌐 **言語 / Language**: このドキュメントは[中文（中国語）](/peeka/)と[English（英語）](/peeka/en/)でも利用可能です。
+> 🌐 **言語 / Language**: このドキュメントは[中文（中国語）](/)と[English（英語）](/en/)でも利用可能です。
 
 ---
 
@@ -131,7 +131,7 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 | `top` | 関数レベルパフォーマンスサンプリング | ✅ |
 | `detach` | 診断セッションを安全に終了 | ✅ |
 
-[完全なコマンドリファレンスを見る]({% link ja/commands/index.md %}){: .btn .btn-outline }
+[完全なコマンドリファレンスを見る]({% link commands/index.md %}){: .btn .btn-outline }
 
 ### 🎨 インタラクティブ TUI インターフェース
 {: .text-delta }
@@ -152,7 +152,7 @@ peeka
 # 1/2/3/4/5/6/7/8/9/0/8
 ```
 
-[完全な TUI 使用ガイドを見る]({% link ja/tui.md %}){: .btn .btn-outline }
+[完全な TUI 使用ガイドを見る]({% link tui.md %}){: .btn .btn-outline }
 
 ---
 
@@ -182,7 +182,7 @@ simpleeval ライブラリベースで安全な条件付きフィルタリング
 - 属性保護 - リフレクション攻撃をブロック
 - 関数ブラックリスト - 危険な関数を無効化
 
-[アーキテクチャ設計を学ぶ]({% link ja/architecture.md %}){: .btn .btn-outline }
+[アーキテクチャ設計を学ぶ]({% link architecture.md %}){: .btn .btn-outline }
 
 ---
 

@@ -318,9 +318,9 @@ ps -p 12345 -o stat=
 
 ## 関連コマンド
 
-- [detach]({% link ja/commands/detach.md %}) - プロセスからデタッチ
-- [watch]({% link ja/commands/watch.md %}) - 関数呼び出しをオブザーブ
-- [reset]({% link ja/commands/reset.md %}) - 拡張をリセット
+- [detach]({% link commands/detach.md %}) - プロセスからデタッチ
+- [watch]({% link commands/watch.md %}) - 関数呼び出しをオブザーブ
+- [reset]({% link commands/reset.md %}) - 拡張をリセット
 
 ---
 

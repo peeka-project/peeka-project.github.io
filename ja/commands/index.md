@@ -121,7 +121,7 @@ peeka
 # 0 - Top ビュー
 ```
 
-詳細は [TUI 使用ガイド]({% link ja/tui.md %}) を参照してください。
+詳細は [TUI 使用ガイド]({% link tui.md %}) を参照してください。
 
 ---
 
@@ -196,18 +196,18 @@ peeka
 
 必要なコマンドを選択して詳細なドキュメントを確認してください：
 
-- [attach - ターゲットプロセスにアタッチ]({% link ja/commands/attach.md %})
-- [watch - 関数呼び出しをオブザーブ]({% link ja/commands/watch.md %})
-- [trace - 呼び出しチェーンをトレース]({% link ja/commands/trace.md %})
-- [stack - 呼び出しスタックをトレース]({% link ja/commands/stack.md %})
-- [monitor - パフォーマンスモニタリング]({% link ja/commands/monitor.md %})
-- [logger - ログ管理]({% link ja/commands/logger.md %})
-- [memory - メモリ分析]({% link ja/commands/memory.md %})
-- [inspect - オブジェクト検査]({% link ja/commands/inspect.md %})
-- [search - クラスとメソッドを検索]({% link ja/commands/search.md %})
-- [reset - 拡張をリセット]({% link ja/commands/reset.md %})
-- [thread - スレッド分析]({% link ja/commands/thread.md %})
-- [top - 関数プロファイリング]({% link ja/commands/top.md %})
-- [detach - 切断]({% link ja/commands/detach.md %})
+- [attach - ターゲットプロセスにアタッチ]({% link commands/attach.md %})
+- [watch - 関数呼び出しをオブザーブ]({% link commands/watch.md %})
+- [trace - 呼び出しチェーンをトレース]({% link commands/trace.md %})
+- [stack - 呼び出しスタックをトレース]({% link commands/stack.md %})
+- [monitor - パフォーマンスモニタリング]({% link commands/monitor.md %})
+- [logger - ログ管理]({% link commands/logger.md %})
+- [memory - メモリ分析]({% link commands/memory.md %})
+- [inspect - オブジェクト検査]({% link commands/inspect.md %})
+- [search - クラスとメソッドを検索]({% link commands/search.md %})
+- [reset - 拡張をリセット]({% link commands/reset.md %})
+- [thread - スレッド分析]({% link commands/thread.md %})
+- [top - 関数プロファイリング]({% link commands/top.md %})
+- [detach - 切断]({% link commands/detach.md %})
 
-クイックスタートは [クイックスタート]({% link ja/quickstart.md %}) で基本的な使用方法を学んでください。
+クイックスタートは [クイックスタート]({% link quickstart.md %}) で基本的な使用方法を学んでください。

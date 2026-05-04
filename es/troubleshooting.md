@@ -611,6 +611,6 @@ Si ninguna de las soluciones anteriores resuelve tu problema:
 
 ## Documentación Relacionada
 
-- [Guía de Instalación]({% link es/installation.md %})
-- [Inicio Rápido]({% link es/quickstart.md %})
-- [Referencia de Comandos]({% link es/commands/index.md %})
+- [Guía de Instalación]({% link installation.md %})
+- [Inicio Rápido]({% link quickstart.md %})
+- [Referencia de Comandos]({% link commands/index.md %})

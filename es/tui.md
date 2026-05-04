@@ -582,7 +582,7 @@ Los requisitos de permisos para el modo TUI son los mismos que para el modo CLI:
   - Python 3.14+: usa PEP 768 `sys.remote_exec()`
   - Python 3.9-3.13: necesita GDB y python3-dbg
 
-Para requisitos detallados de permisos, consulta [documentación del comando attach]({% link es/commands/attach.md %})
+Para requisitos detallados de permisos, consulta [documentación del comando attach]({% link commands/attach.md %})
 
 ---
 

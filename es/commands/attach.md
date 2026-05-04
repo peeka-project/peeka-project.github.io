@@ -317,9 +317,9 @@ ps -p 12345 -o stat=
 
 ## Comandos Relacionados
 
-- [detach]({% link es/commands/detach.md %}) - Desadjuntar del proceso
-- [watch]({% link es/commands/watch.md %}) - Observar llamadas a funciones
-- [reset]({% link es/commands/reset.md %}) - Restablecer inyección
+- [detach]({% link commands/detach.md %}) - Desadjuntar del proceso
+- [watch]({% link commands/watch.md %}) - Observar llamadas a funciones
+- [reset]({% link commands/reset.md %}) - Restablecer inyección
 
 ---
 

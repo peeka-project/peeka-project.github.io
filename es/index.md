@@ -20,7 +20,7 @@ Es una herramienta de diagnóstico en tiempo de ejecución basada en PEP 768 (el
 ---
 
 {: .note }
-> 🌐 **Idioma / Language**: Esta documentación también está disponible en [中文 (Chino)](/peeka/) y [English (Inglés)](/peeka/en/).
+> 🌐 **Idioma / Language**: Esta documentación también está disponible en [中文 (Chino)](/) y [English (Inglés)](/en/).
 
 ---
 
@@ -131,7 +131,7 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 | `top` | Muestreo de rendimiento a nivel de función | ✅ |
 | `detach` | Terminar sesión de diagnóstico de forma segura | ✅ |
 
-[Ver referencia completa de comandos]({% link es/commands/index.md %}){: .btn .btn-outline }
+[Ver referencia completa de comandos]({% link commands/index.md %}){: .btn .btn-outline }
 
 ### 🎨 Interfaz TUI interactiva
 {: .text-delta }
@@ -152,7 +152,7 @@ peeka
 # 1/2/3/4/5/6/7/8/9/0/8
 ```
 
-[Ver guía completa de uso de TUI]({% link es/tui.md %}){: .btn .btn-outline }
+[Ver guía completa de uso de TUI]({% link tui.md %}){: .btn .btn-outline }
 
 ---
 
@@ -182,7 +182,7 @@ Implementamos filtrado condicional seguro basado en la biblioteca simpleeval:
 - Protección de atributos — bloquea ataques de reflexión
 - Lista negra de funciones — desactiva funciones peligrosas
 
-[Aprender sobre arquitectura]({% link es/architecture.md %}){: .btn .btn-outline }
+[Aprender sobre arquitectura]({% link architecture.md %}){: .btn .btn-outline }
 
 ---
 

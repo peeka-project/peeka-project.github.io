@@ -3,7 +3,7 @@ layout: default
 title: Referencia de Comandos
 nav_order: 4
 has_children: true
-permalink: /es/commands
+permalink: /commands
 ---
 
 # Referencia de Comandos
@@ -24,19 +24,19 @@ Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando s
 
 | Comando | Función | Escenario de Aplicación |
 |---------|---------|-------------------------|
-| [attach]({% link es/commands/attach.md %}) | Adjuntar al proceso objetivo | Primer paso para todos los escenarios |
-| [watch]({% link es/commands/watch.md %}) | Observar llamadas a funciones | Ver parámetros, valores de retorno, tiempo de ejecución |
-| [trace]({% link es/commands/trace.md %}) | Rastrear cadena de llamadas | Analizar relación de llamadas de funciones y distribución de tiempo consumido |
-| [stack]({% link es/commands/stack.md %}) | Rastrear pila de llamadas | Rastrear quién llamó a la función |
-| [monitor]({% link es/commands/monitor.md %}) | Estadísticas de rendimiento | Monitorear en tiempo real métricas de rendimiento de funciones |
-| [logger]({% link es/commands/logger.md %}) | Gestión de registros | Ajustar dinámicamente el nivel de registro |
-| [memory]({% link es/commands/memory.md %}) | Análisis de memoria | Analizar uso de memoria y fugas |
-| [inspect]({% link es/commands/inspect.md %}) | Inspección de objetos | Inspeccionar atributos de objetos en tiempo de ejecución |
-| [search]({% link es/commands/search.md %}) | Buscar clases y métodos (sc/sm) | Exploración y descubrimiento de código |
-| [thread]({% link es/commands/thread.md %}) | Análisis de hilos | Enumerar hilos y ver pila de hilos |
-| [top]({% link es/commands/top.md %}) | Muestreo de rendimiento de funciones | Análisis de puntos calientes de rendimiento a nivel de función |
-| [detach]({% link es/commands/detach.md %}) | Desconectar conexión | Salir de forma segura de la sesión de diagnóstico |
-| [reset]({% link es/commands/reset.md %}) | Restablecer inyección | Restaurar funciones observadas |
+| [attach]({% link commands/attach.md %}) | Adjuntar al proceso objetivo | Primer paso para todos los escenarios |
+| [watch]({% link commands/watch.md %}) | Observar llamadas a funciones | Ver parámetros, valores de retorno, tiempo de ejecución |
+| [trace]({% link commands/trace.md %}) | Rastrear cadena de llamadas | Analizar relación de llamadas de funciones y distribución de tiempo consumido |
+| [stack]({% link commands/stack.md %}) | Rastrear pila de llamadas | Rastrear quién llamó a la función |
+| [monitor]({% link commands/monitor.md %}) | Estadísticas de rendimiento | Monitorear en tiempo real métricas de rendimiento de funciones |
+| [logger]({% link commands/logger.md %}) | Gestión de registros | Ajustar dinámicamente el nivel de registro |
+| [memory]({% link commands/memory.md %}) | Análisis de memoria | Analizar uso de memoria y fugas |
+| [inspect]({% link commands/inspect.md %}) | Inspección de objetos | Inspeccionar atributos de objetos en tiempo de ejecución |
+| [search]({% link commands/search.md %}) | Buscar clases y métodos (sc/sm) | Exploración y descubrimiento de código |
+| [thread]({% link commands/thread.md %}) | Análisis de hilos | Enumerar hilos y ver pila de hilos |
+| [top]({% link commands/top.md %}) | Muestreo de rendimiento de funciones | Análisis de puntos calientes de rendimiento a nivel de función |
+| [detach]({% link commands/detach.md %}) | Desconectar conexión | Salir de forma segura de la sesión de diagnóstico |
+| [reset]({% link commands/reset.md %}) | Restablecer inyección | Restaurar funciones observadas |
 
 ---
 
@@ -121,7 +121,7 @@ peeka
 # 0 - Vista Top de puntos calientes de funciones
 ```
 
-Para más detalles, consulta [Guía de Uso de TUI]({% link es/tui.md %}).
+Para más detalles, consulta [Guía de Uso de TUI]({% link tui.md %}).
 
 ---
 
@@ -196,18 +196,18 @@ La expresión condicional usa la biblioteca `simpleeval` para evaluación segura
 
 Selecciona el comando que necesitas para ver la documentación detallada:
 
-- [attach - Adjuntar al proceso]({% link es/commands/attach.md %})
-- [watch - Observar llamadas a funciones]({% link es/commands/watch.md %})
-- [trace - Rastrear cadena de llamadas]({% link es/commands/trace.md %})
-- [stack - Rastrear pila de llamadas]({% link es/commands/stack.md %})
-- [monitor - Monitoreo de rendimiento]({% link es/commands/monitor.md %})
-- [logger - Gestión de registros]({% link es/commands/logger.md %})
-- [memory - Análisis de memoria]({% link es/commands/memory.md %})
-- [inspect - Inspección de objetos]({% link es/commands/inspect.md %})
-- [search - Buscar clases y métodos]({% link es/commands/search.md %})
-- [reset - Restablecer inyección]({% link es/commands/reset.md %})
-- [thread - Análisis de hilos]({% link es/commands/thread.md %})
-- [top - Muestreo de rendimiento de funciones]({% link es/commands/top.md %})
-- [detach - Desconectar conexión]({% link es/commands/detach.md %})
+- [attach - Adjuntar al proceso]({% link commands/attach.md %})
+- [watch - Observar llamadas a funciones]({% link commands/watch.md %})
+- [trace - Rastrear cadena de llamadas]({% link commands/trace.md %})
+- [stack - Rastrear pila de llamadas]({% link commands/stack.md %})
+- [monitor - Monitoreo de rendimiento]({% link commands/monitor.md %})
+- [logger - Gestión de registros]({% link commands/logger.md %})
+- [memory - Análisis de memoria]({% link commands/memory.md %})
+- [inspect - Inspección de objetos]({% link commands/inspect.md %})
+- [search - Buscar clases y métodos]({% link commands/search.md %})
+- [reset - Restablecer inyección]({% link commands/reset.md %})
+- [thread - Análisis de hilos]({% link commands/thread.md %})
+- [top - Muestreo de rendimiento de funciones]({% link commands/top.md %})
+- [detach - Desconectar conexión]({% link commands/detach.md %})
 
-O consulta [Inicio Rápido]({% link es/quickstart.md %}) para conocer el método de uso básico.
+O consulta [Inicio Rápido]({% link quickstart.md %}) para conocer el método de uso básico.

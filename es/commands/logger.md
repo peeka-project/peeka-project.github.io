@@ -902,7 +902,7 @@ ALERT ProductionDebugLogger
   FOR 5m
   ANNOTATIONS {
     summary = "Production logger at DEBUG level",
-    description = "Logger {{ $labels.name }} is at DEBUG level in production.",
+    description = "Logger {% raw %}{{ $labels.name }}{% endraw %} is at DEBUG level in production.",
   }
 ```
 

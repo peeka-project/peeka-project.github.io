@@ -1,6 +1,6 @@
 title: Peeka
 description: "Peeka - PEP 768 ベースの非侵入型関数オブザベーションによる Python ランタイム診断ツール"
-baseurl: "/peeka-docs"
+baseurl: "/ja"
 url: "https://peeka-project.github.io"
 theme: just-the-docs
 color_scheme: light
@@ -8,7 +8,7 @@ color_scheme: light
 destination: "_site_ja"
 
 # Logo and favicon
-logo: "/assets/images/logo.png"
+logo: "https://peeka-project.github.io/assets/images/logo.png"
 
 # Enable search
 search_enabled: true
@@ -31,9 +31,9 @@ back_to_top_text: "トップに戻る"
 
 aux_links:
   "中文":
-    - "/peeka/"
+    - "/"
   "English":
-    - "/peeka/en/"
+    - "/en/"
   "GitHub":
     - "https://github.com/peeka-project/peeka"
 

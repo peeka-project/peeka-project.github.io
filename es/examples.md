@@ -498,6 +498,6 @@ python -m peeka.analyze --baseline baseline.jsonl --current current.jsonl
 
 ## Más Recursos
 
-- [Referencia de Comandos]({% link es/commands/index.md %}) - Documentación detallada de comandos
-- [Diseño de Arquitectura]({% link es/architecture.md %}) - Conoce los principios de implementación
-- [Resolución de Problemas]({% link es/troubleshooting.md %}) - Solución de problemas comunes
+- [Referencia de Comandos]({% link commands/index.md %}) - Documentación detallada de comandos
+- [Diseño de Arquitectura]({% link architecture.md %}) - Conoce los principios de implementación
+- [Resolución de Problemas]({% link troubleshooting.md %}) - Solución de problemas comunes

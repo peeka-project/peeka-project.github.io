@@ -1,13 +1,13 @@
 # GitHub Pages Configuration for Peeka
 title: Peeka
 description: Python 运行时诊断工具 - 基于 PEP 768 的非侵入式函数观测
-baseurl: "/peeka-docs"
+baseurl: ""
 url: "https://peeka-project.github.io"
 theme: just-the-docs
 color_scheme: light
 
 # Logo and favicon
-logo: "/assets/images/logo.png"
+logo: "https://peeka-project.github.io/assets/images/logo.png"
 
 # Enable search
 search_enabled: true
@@ -32,11 +32,11 @@ back_to_top_text: "回到顶部"
 # Auxiliary links
 aux_links:
   "English":
-    - "/peeka/en/"
+    - "/en/"
   "日本語":
-    - "/peeka/ja/"
+    - "/ja/"
   "Español":
-    - "/peeka/es/"
+    - "/es/"
   "GitHub":
     - "https://github.com/peeka-project/peeka"
 
@@ -88,3 +88,5 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - en/
+  - es/
+  - ja/

@@ -1,11 +1,11 @@
 ---
 layout: default
-title: attach
+title: attach 命令
 parent: 命令参考
 nav_order: 1
 ---
 
-# attach - 附加到目标进程
+# attach 命令
 {: .no_toc }
 
 将 Peeka Agent 注入到目标 Python 进程，建立诊断通道。

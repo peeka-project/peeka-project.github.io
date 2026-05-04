@@ -1,11 +1,11 @@
 ---
 layout: default
-title: logger
+title: Comando logger
 parent: Referencia de Comandos
 nav_order: 6
 ---
 
-# logger - Ajuste dinámico de nivel de registro
+# Comando logger
 {: .no_toc }
 
 ## Tabla de Contenidos

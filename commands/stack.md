@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Peeka Stack 命令详解
+title: stack 命令
 parent: 命令参考
 nav_order: 4
 ---
 
-# Peeka Stack 命令详解
+# stack 命令
 {: .no_toc }
 
 ## 目录

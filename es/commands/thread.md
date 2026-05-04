@@ -1,11 +1,11 @@
 ---
 layout: default
-title: thread
+title: Comando thread
 parent: Referencia de Comandos
 nav_order: 11
 ---
 
-# Comando `thread` - Listar e Inspeccionar Hilos
+# Comando thread
 {: .no_toc }
 
 ## Tabla de Contenidos

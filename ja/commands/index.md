@@ -117,7 +117,7 @@ peeka
 # 5 - Monitor ビュー
 # 6 - Memory ビュー
 # 7 - Logger ビュー
-# 8 - Agent Log ビュー
+# 8 - Inspect ビュー
 # 9 - Threads ビュー
 # 0 - Top ビュー
 ```

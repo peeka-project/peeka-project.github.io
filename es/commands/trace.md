@@ -1,11 +1,11 @@
 ---
 layout: default
-title: trace
+title: Comando trace
 parent: Referencia de Comandos
 nav_order: 3
 ---
 
-# trace - Rastrear cadena de llamadas
+# Comando trace
 {: .no_toc }
 
 ## Tabla de Contenidos

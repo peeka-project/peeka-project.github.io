@@ -1,11 +1,11 @@
 ---
 layout: default
-title: búsqueda
+title: Comando search (sc / sm)
 parent: Referencia de Comandos
 nav_order: 9
 ---
 
-# Comando `sc` / `sm` - Búsqueda de Clases y Métodos
+# Comando search (sc / sm)
 {: .no_toc }
 
 ## Tabla de Contenidos

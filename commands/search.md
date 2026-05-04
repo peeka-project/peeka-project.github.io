@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Peeka Search 命令详解（sc / sm）
+title: search 命令（sc / sm）
 parent: 命令参考
 nav_order: 9
 ---
 
-# Peeka Search 命令详解（sc / sm）
+# search 命令（sc / sm）
 {: .no_toc }
 
 ## 目录

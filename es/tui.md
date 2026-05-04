@@ -75,7 +75,7 @@ Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 │ └─────────────────────────────────────────────────────┘ │
 │                                                         │
 ├─────────────────────────────────────────────────────────┤
-│ Footer - Keybinding Hints (1)Dashboard (2)Watch (3)Trace (4)Stack (5)Monitor (6)Memory (7)Logger (8)Agent Log (9)Threads (0)Top │
+│ Footer - Keybinding Hints (1)Dashboard (2)Watch (3)Trace (4)Stack (5)Monitor (6)Memory (7)Logger (8)Inspect (9)Threads (0)Top │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -98,13 +98,13 @@ Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 | `5`     | Vista Monitor       | Cambiar a monitoreo de rendimiento                 |
 | `6`     | Vista Memory        | Cambiar a análisis de memoria                 |
 | `7`     | Vista Logger        | Cambiar a gestión de registros                 |
-| `8`     | Vista Agent Log     | Cambiar a registros del Agente inyectado                 |
+| `8`     | Vista Inspect       | Cambiar a inspección de objetos                 |
 | `9`     | Vista Threads       | Cambiar a gestión de hilos                 |
 | `0`     | Vista Top           | Cambiar a analizador de rendimiento                |
 | `?`     | Ayuda Help          | Muestra información de ayuda (disponible en algunas vistas)        |
 | `escape` / `q` | Volver / Salir | Sale en Dashboard, vuelve a Dashboard en otras vistas |
 
-## Once Vistas Detalladas
+## Diez Vistas Detalladas
 
 ### 1. Vista Dashboard (tecla `1`)
 
@@ -295,24 +295,26 @@ Logger: myapp.api
 
 ---
 
-### 8. Vista Agent Log (tecla `8`)
+### 8. Vista Inspect (tecla `8`)
 
-**Función**: Ver registros del Agente inyectado que se ejecuta en el proceso objetivo
+**Función**: Inspección de objetos en tiempo de ejecución y evaluación de expresiones
 
 **Características**:
-- Actualización en streaming en tiempo real
-- Codificación de colores por nivel de registro:
-  - DEBUG: azul tenue
-  - INFO: azul
-  - WARNING: amarillo
-  - ERROR/CRITICAL: rojo
-- Limpieza con la tecla `c`
-- Desplazamiento automático
+- Ejecuta expresiones Python en un sandbox seguro
+- Inspecciona atributos de objetos
+- Muestra valores de variables
+- Soporta inspección de `locals()` / `globals()`
 
 **Operaciones interactivas**:
-- Se conecta automáticamente y muestra registros cuando cambias a esta vista
-- Presiona `c` para limpiar el contenido del registro
-- Desplázate hacia arriba para ver registros históricos
+- Ingresa una expresión Python (por ejemplo, `len(my_list)`)
+- Ingresa una ruta de objeto (por ejemplo, `module.MyClass.attr`)
+- Presiona Enter para ejecutar
+- Consulta resultados en formato JSON
+
+**Restricciones de seguridad**:
+- Deshabilita `eval` / `exec` / `__import__`
+- Acceso de solo lectura (no modifica objetos)
+- Sandbox seguro basado en `simpleeval`
 
 ---
 
@@ -588,7 +590,7 @@ Para requisitos detallados de permisos, consulta [documentación del comando att
 
 ## Resumen
 
-Peeka TUI proporciona una experiencia completa de diagnóstico interactivo, adecuada para escenarios que necesitan operaciones frecuentes, monitoreo en tiempo real y análisis visual. A través de 11 vistas dedicadas y atajos de teclado globales, los desarrolladores pueden diagnosticar eficientemente problemas en aplicaciones Python sin necesidad de memorizar parámetros de comandos complejos.
+Peeka TUI proporciona una experiencia completa de diagnóstico interactivo, adecuada para escenarios que necesitan operaciones frecuentes, monitoreo en tiempo real y análisis visual. A través de 10 vistas dedicadas y atajos de teclado globales, los desarrolladores pueden diagnosticar eficientemente problemas en aplicaciones Python sin necesidad de memorizar parámetros de comandos complejos.
 
 **Mejores prácticas**:
 - Entorno de desarrollo: Prioriza usar TUI (buena experiencia interactiva)

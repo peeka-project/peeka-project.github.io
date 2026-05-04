@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Peeka Monitor 命令详解
+title: monitor 命令
 parent: 命令参考
 nav_order: 5
 ---
 
-# Peeka Monitor 命令详解
+# monitor 命令
 {: .no_toc }
 
 ## 目录

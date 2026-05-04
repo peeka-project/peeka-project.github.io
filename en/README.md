@@ -17,13 +17,12 @@ en/
 Currently available:
 - ✅ Home page (index.md)
 - ✅ Commands overview (commands/index.md)
-
-Planned translations:
-- ⏳ Individual command documentation (watch, trace, stack, etc.)
-- ⏳ Installation guide
-- ⏳ Quick start guide
-- ⏳ Architecture documentation
-- ⏳ Troubleshooting guide
+- ✅ Installation guide (installation.md)
+- ✅ Quick start guide (quickstart.md)
+- ✅ Architecture documentation (architecture.md)
+- ✅ TUI guide (tui.md)
+- ✅ Troubleshooting guide (troubleshooting.md)
+- ✅ All individual command documentation
 
 ## Contributing Translations
 

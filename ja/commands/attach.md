@@ -1,12 +1,12 @@
 ---
 layout: default
-title: attach
+title: attach コマンド
 parent: コマンドリファレンス
 nav_order: 1
 permalink: /commands/attach
 ---
 
-# attach - ターゲットプロセスにアタッチ
+# attach コマンド
 {: .no_toc }
 
 ターゲットの Python プロセスに Peeka Agent を注入し、診断チャネルを確立します。

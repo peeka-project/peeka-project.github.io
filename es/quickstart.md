@@ -266,7 +266,7 @@ peeka
 | `5` | Cambiar a vista Monitor |
 | `6` | Cambiar a vista Memory |
 | `7` | Cambiar a vista Logger |
-| `8` | Cambiar a vista Agent Log |
+| `8` | Cambiar a vista Inspect |
 | `9` | Cambiar a vista Threads |
 | `0` | Cambiar a vista Top |
 | `?` | Mostrar ayuda |

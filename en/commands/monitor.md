@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Peeka Monitor Command Reference
+title: monitor Command
 parent: Command Reference
 nav_order: 5
 permalink: /commands/monitor
 ---
 
-# Peeka Monitor Command Reference
+# monitor Command
 {: .no_toc }
 
 ## Table of Contents

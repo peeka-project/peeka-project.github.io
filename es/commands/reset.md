@@ -1,11 +1,11 @@
 ---
 layout: default
-title: reset
+title: Comando reset
 parent: Referencia de Comandos
 nav_order: 10
 ---
 
-# reset - Restablecer inyección
+# Comando reset
 {: .no_toc }
 
 ## Tabla de Contenidos

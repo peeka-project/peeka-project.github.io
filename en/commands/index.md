@@ -214,6 +214,4 @@ Select the command you need for detailed documentation:
 - [detach - Disconnect]({% link commands/detach.md %})
 - [run - Launch and attach]({% link commands/run.md %})
 
-> **Note**: Detailed English documentation for individual commands is being prepared. Currently, command documentation is available in Chinese. Please refer to the Chinese version for complete command documentation.
-
 Or view [Quick Start]({% link quickstart.md %}) to learn basic usage methods.

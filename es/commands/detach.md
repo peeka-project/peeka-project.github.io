@@ -1,11 +1,11 @@
 ---
 layout: default
-title: detach
+title: Comando detach
 parent: Referencia de Comandos
 nav_order: 13
 ---
 
-# detach - Desadjuntar del proceso objetivo
+# Comando detach
 {: .no_toc }
 
 ## Tabla de Contenidos

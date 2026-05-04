@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Peeka logger コマンドガイド
+title: logger コマンド
 parent: コマンドリファレンス
 nav_order: 6
 permalink: /commands/logger
 ---
 
-# Peeka logger コマンドガイド
+# logger コマンド
 {: .no_toc }
 
 ## 目次

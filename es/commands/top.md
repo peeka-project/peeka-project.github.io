@@ -1,11 +1,11 @@
 ---
 layout: default
-title: top
+title: Comando top
 parent: Referencia de Comandos
 nav_order: 12
 ---
 
-# Comando `top` - Perfilador de Rendimiento por Muestreo
+# Comando top
 {: .no_toc }
 
 ## Tabla de Contenidos

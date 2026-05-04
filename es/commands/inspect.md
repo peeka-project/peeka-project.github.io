@@ -1,11 +1,11 @@
 ---
 layout: default
-title: inspect
+title: Comando inspect
 parent: Referencia de Comandos
 nav_order: 8
 ---
 
-# inspect - Inspección de objetos en tiempo de ejecución
+# Comando inspect
 {: .no_toc }
 
 ## Tabla de Contenidos

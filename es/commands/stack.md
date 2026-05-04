@@ -1,11 +1,11 @@
 ---
 layout: default
-title: stack
+title: Comando stack
 parent: Referencia de Comandos
 nav_order: 4
 ---
 
-# stack - Rastrear pila de llamadas
+# Comando stack
 {: .no_toc }
 
 ## Tabla de Contenidos

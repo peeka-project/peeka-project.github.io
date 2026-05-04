@@ -1,11 +1,11 @@
 ---
 layout: default
-title: watch
+title: Comando watch
 parent: Referencia de Comandos
 nav_order: 2
 ---
 
-# watch - Observar llamadas a funciones
+# Comando watch
 {: .no_toc }
 
 ## Tabla de Contenidos

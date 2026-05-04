@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Peeka Stack Command Reference
+title: stack Command
 parent: Command Reference
 nav_order: 4
 permalink: /commands/stack
 ---
 
-# Peeka Stack Command Reference
+# stack Command
 {: .no_toc }
 
 ## Table of Contents

@@ -139,7 +139,7 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 Además de los comandos CLI, Peeka también proporciona una rica interfaz TUI (interfaz de usuario de texto):
 
 - **Selector de procesos** — Muestra automáticamente la lista de procesos del sistema, con filtrado de búsqueda
-- **11 vistas dedicadas** — Panel, watch, trace, stack, monitor, logger, memory, inspect, thread, top, **Agent Log**
+- **10 vistas dedicadas** — Panel, watch, trace, stack, monitor, logger, memory, inspect, thread, top
 - **Transmisión de datos en tiempo real** — Streaming de datos de observación, con soporte para pausa/reanudación/limpieza
 - **Autocompletado** — Obtiene clases y métodos dinámicamente desde el proceso objetivo
 - **Soporte de temas** — Múltiples temas de colores incorporados

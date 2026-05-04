@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Peeka Logger 命令详解
+title: logger 命令
 parent: 命令参考
 nav_order: 6
 ---
 
-# Peeka Logger 命令详解
+# logger 命令
 {: .no_toc }
 
 ## 目录

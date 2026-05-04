@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Peeka Search Command Reference (sc / sm)
+title: search Command (sc / sm)
 parent: Command Reference
 nav_order: 9
 permalink: /commands/search
 ---
 
-# Peeka Search Command Reference (sc / sm)
+# search Command (sc / sm)
 {: .no_toc }
 
 ## Table of Contents

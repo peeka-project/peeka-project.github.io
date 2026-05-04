@@ -1,11 +1,11 @@
 ---
 layout: default
-title: run
+title: Comando run
 parent: Referencia de Comandos
 nav_order: 14
 ---
 
-# run - Ejecutar script con Peeka inyectado
+# Comando run
 {: .no_toc }
 
 ## Tabla de contenidos

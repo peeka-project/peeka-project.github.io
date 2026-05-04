@@ -1,11 +1,11 @@
 ---
 layout: default
-title: memory
+title: Comando memory
 parent: Referencia de Comandos
 nav_order: 7
 ---
 
-# memory - Análisis de memoria
+# Comando memory
 {: .no_toc }
 
 ## Tabla de Contenidos

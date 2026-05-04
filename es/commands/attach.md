@@ -1,11 +1,11 @@
 ---
 layout: default
-title: attach
+title: Comando attach
 parent: Referencia de Comandos
 nav_order: 1
 ---
 
-# attach - Adjuntar al proceso objetivo
+# Comando attach
 {: .no_toc }
 
 Inyecta el Agente Peeka en el proceso Python objetivo y establece un canal de diagnóstico.

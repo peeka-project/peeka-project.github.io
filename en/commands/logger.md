@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Peeka Logger Command Guide
+title: logger Command
 parent: Command Reference
 nav_order: 6
 permalink: /commands/logger
 ---
 
-# Peeka Logger Command Guide
+# logger Command
 {: .no_toc }
 
 ## Table of Contents

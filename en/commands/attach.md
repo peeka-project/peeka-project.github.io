@@ -1,12 +1,12 @@
 ---
 layout: default
-title: attach
+title: attach Command
 parent: Command Reference
 nav_order: 1
 permalink: /commands/attach
 ---
 
-# attach - Attach to Target Process
+# attach Command
 {: .no_toc }
 
 Inject Peeka Agent into a target Python process and establish a diagnostic channel.

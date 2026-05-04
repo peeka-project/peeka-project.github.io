@@ -1,11 +1,11 @@
 ---
 layout: default
-title: monitor
+title: Comando monitor
 parent: Referencia de Comandos
 nav_order: 5
 ---
 
-# monitor - Estadísticas de rendimiento
+# Comando monitor
 {: .no_toc }
 
 ## Tabla de Contenidos

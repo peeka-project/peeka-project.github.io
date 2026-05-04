@@ -117,7 +117,7 @@ peeka
 # 5 - Vista Monitor de monitoreo de rendimiento
 # 6 - Vista Memory de análisis de memoria
 # 7 - Vista Logger de gestión de registros
-# 8 - Vista Agent Log de registros del Agente
+# 8 - Vista Inspect de inspección de objetos
 # 9 - Vista Threads de análisis de hilos
 # 0 - Vista Top de puntos calientes de funciones
 ```

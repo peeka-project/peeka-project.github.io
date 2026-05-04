@@ -266,7 +266,7 @@ Peeka's `trace` command automatically selects the optimal implementation based o
 | Python Version | Implementation | Performance Overhead | Notes |
 |----------------|----------------|----------------------|-------|
 | 3.12+ | sys.monitoring | < 5% | Official PEP 669 API, optimal performance |
-| 3.9-3.11 | sys.settrace | < 20% | Good compatibility, auto-enabled |
+| 3.8.1-3.11 | sys.settrace | < 20% | Good compatibility, auto-enabled |
 
 **sys.monitoring Implementation (Python 3.12+)**:
 
@@ -275,7 +275,7 @@ Peeka's `trace` command automatically selects the optimal implementation based o
 - Performance overhead < 5%, recommended for production environments
 - Automatically allocates tool_id, no conflicts with multiple observations
 
-**sys.settrace Implementation (Python 3.9-3.11)**:
+**sys.settrace Implementation (Python 3.8.1-3.11)**:
 
 - Uses Python's built-in `sys.settrace()` mechanism
 - Enabled only during target function execution (local trace)
@@ -294,7 +294,7 @@ Peeka's `trace` command automatically selects the optimal implementation based o
 | Scenario | Overhead | Notes |
 |----------|----------|-------|
 | **Simple functions** | < 5% | Python 3.12+ |
-| **Simple functions** | < 20% | Python 3.9-3.11 |
+| **Simple functions** | < 20% | Python 3.8.1-3.11 |
 | **Complex call tree (depth 5)** | 10-30% | Depends on Python version |
 | **High-frequency calls (>1000 QPS)** | 20-50% | Recommend limiting observation count |
 

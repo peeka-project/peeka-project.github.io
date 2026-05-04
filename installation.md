@@ -22,7 +22,7 @@ nav_order: 2
 
 ### 基本要求
 
-- **Python 版本**: Python 3.9 或更高版本
+- **Python 版本**: Python 3.8.1 或更高版本
 - **操作系统**: Linux（推荐）、macOS
 - **权限**: 需要附加到目标进程的权限（相同 UID 或 CAP_SYS_PTRACE）
 
@@ -31,7 +31,7 @@ nav_order: 2
 | Python 版本 | 附加机制 | 额外要求 |
 |------------|---------|---------|
 | **3.14+** | PEP 768 `sys.remote_exec` | 无 |
-| **3.9-3.13** | GDB + ptrace 降级方案 | GDB、python3-dbg、CAP_SYS_PTRACE |
+| **3.8.1-3.13** | Linux: GDB + ptrace；macOS: LLDB + dlopen | Linux: GDB 7.3+、python3-dbg、CAP_SYS_PTRACE；macOS: Xcode Command Line Tools |
 
 ---
 
@@ -85,7 +85,7 @@ uv sync --dev
 
 ## Python < 3.14 额外配置
 
-对于 Python 3.9-3.13 版本，需要安装 GDB 和 Python 调试符号。
+对于 Python 3.8.1-3.13 版本，Linux 需要 GDB 和 Python 调试符号；macOS 使用 LLDB，需要安装 Xcode Command Line Tools。
 
 ### Debian/Ubuntu
 
@@ -103,10 +103,7 @@ sudo yum install gdb python3-debuginfo
 ### macOS
 
 ```bash
-brew install gdb
-
-# 首次使用需要给 GDB 授权
-# 参考: https://sourceware.org/gdb/wiki/PermissionsDarwin
+xcode-select --install
 ```
 
 ---
@@ -193,10 +190,13 @@ peeka-cli attach <pid>
 # 检查 Python 版本
 python --version
 
-# 检查 GDB（Python < 3.14）
+# 检查 GDB（Linux，Python < 3.14）
 gdb --version
 
-# 检查 Python 调试符号（Python < 3.14）
+# 检查 LLDB（macOS，Python < 3.14）
+lldb --version
+
+# 检查 Python 调试符号（Linux，Python < 3.14）
 python -c "import sys; print(hasattr(sys, 'gettotalrefcount'))"
 ```
 
@@ -216,7 +216,7 @@ Error: Operation not permitted
 2. 检查 ptrace_scope 设置
 3. 对于 Docker，确保添加了 CAP_SYS_PTRACE
 
-### Python < 3.14：找不到调试符号
+### Linux，Python < 3.14：找不到调试符号
 
 **错误信息**:
 ```
@@ -248,15 +248,20 @@ sudo apt-get install --only-upgrade gdb
 # 或从源码编译最新版本
 ```
 
-### macOS: GDB 需要授权
+### macOS: LLDB 不可用或权限不足
 
 **错误信息**:
 ```
-Error: Unable to find Mach task port for process-id
+Error: LLDB not found
+Error: LLDB attach failed: permission denied
 ```
 
 **解决方案**:
-参考 [GDB on macOS](https://sourceware.org/gdb/wiki/PermissionsDarwin) 进行代码签名授权。
+安装 Xcode Command Line Tools：
+
+```bash
+xcode-select --install
+```
 
 ---
 

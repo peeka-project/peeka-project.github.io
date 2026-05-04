@@ -93,14 +93,14 @@ ps aux | grep "your_app"
 pgrep -f "your_app.py"
 ```
 
-### 错误：Python debugging symbols not found (Python < 3.14)
+### 错误：Python debugging symbols not found（Linux，Python < 3.14）
 
 **症状**:
 ```
 Error: Python debugging symbols not found. Install python3-dbg.
 ```
 
-**原因**: Python 调试符号未安装（GDB 降级方案需要）。
+**原因**: Python 调试符号未安装（Linux 的 GDB 降级方案需要）。
 
 **解决方案**:
 
@@ -117,7 +117,7 @@ python3 -c "import sys; print(hasattr(sys, 'gettotalrefcount'))"
 # 应该输出 True
 ```
 
-### 错误：GDB not found (Python < 3.14)
+### 错误：GDB not found（Linux，Python < 3.14）
 
 **症状**:
 ```
@@ -135,11 +135,24 @@ sudo apt-get install gdb
 # RHEL/CentOS
 sudo yum install gdb
 
-# macOS
-brew install gdb
-
 # 验证版本（需要 7.3+）
 gdb --version
+```
+
+### 错误：LLDB not found（macOS，Python < 3.14）
+
+**症状**:
+```
+Error: LLDB not found
+```
+
+**原因**: 未安装 Xcode Command Line Tools。
+
+**解决方案**:
+
+```bash
+xcode-select --install
+lldb --version
 ```
 
 ### 错误：Timeout attaching to process

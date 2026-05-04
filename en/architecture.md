@@ -90,7 +90,7 @@ The agent architecture can easily support new diagnostic commands and feature ex
 │  │  Process Attachment                       │               │
 │  │                                           │               │
 │  │  Python 3.14+:  sys.remote_exec()        │               │
-│  │  Python < 3.14: GDB + ptrace             │               │
+│  │  Python < 3.14: GDB/LLDB fallback        │               │
 │  └──────────────────────────────────────────┘               │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -116,12 +116,12 @@ sys.remote_exec(pid, agent_script_path)
 
 **Advantages**:
 - Official support, safe and reliable
-- No external dependencies (GDB)
+- No external debugger dependency on Python 3.14+
 - Cross-platform compatibility
 
-#### Python 3.9-3.13
+#### Python 3.8.1-3.13
 
-Uses GDB + ptrace fallback:
+Uses a debugger fallback: GDB + ptrace on Linux, LLDB + dlopen on macOS. The example below shows the Linux legacy GDB path:
 
 ```python
 # 1. GDB attaches to process
@@ -142,9 +142,8 @@ quit
 ```
 
 **Requirements**:
-- GDB 7.3+
-- Python debugging symbols
-- CAP_SYS_PTRACE permission
+- Linux: GDB 7.3+, Python debugging symbols, CAP_SYS_PTRACE permission
+- macOS: Xcode Command Line Tools (provides LLDB)
 
 ### 2. Agent Core (agent.py)
 
@@ -478,7 +477,7 @@ sys.monitoring.register_callback(
 
 **Performance Comparison**:
 - `sys.monitoring`: < 5% overhead
-- `sys.settrace`: < 20% overhead (Python 3.9-3.11)
+- `sys.settrace`: < 20% overhead (Python 3.8.1-3.11)
 
 ### 3. Streaming Transmission
 

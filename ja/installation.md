@@ -23,7 +23,7 @@ permalink: /installation
 
 ### 基本要件
 
-- **Python バージョン**: Python 3.9 以上
+- **Python バージョン**: Python 3.8.1 以上
 - **OS**: Linux（推奨）、macOS
 - **権限**: ターゲットプロセスにアタッチする権限が必要（同じ UID または CAP_SYS_PTRACE）
 
@@ -32,7 +32,7 @@ permalink: /installation
 | Python バージョン | アタッチメカニズム | 追加要件 |
 |----------------|---------------------|---------|
 | **3.14+** | PEP 768 `sys.remote_exec` | なし |
-| **3.9-3.13** | GDB + ptrace フォールバック | GDB、python3-dbg、CAP_SYS_PTRACE |
+| **3.8.1-3.13** | Linux: GDB + ptrace、macOS: LLDB + dlopen | Linux: GDB 7.3+、python3-dbg、CAP_SYS_PTRACE、macOS: Xcode Command Line Tools |
 
 ---
 
@@ -86,7 +86,7 @@ uv sync --dev
 
 ## Python < 3.14 の追加設定
 
-Python 3.9-3.13 では、GDB と Python デバッグシンボルのインストールが必要です。
+Python 3.8.1-3.13 では、Linux は GDB と Python デバッグシンボル、macOS は LLDB と Xcode Command Line Tools が必要です。
 
 ### Debian/Ubuntu
 
@@ -104,10 +104,7 @@ sudo yum install gdb python3-debuginfo
 ### macOS
 
 ```bash
-brew install gdb
-
-# 初回使用時に GDB の権限承認が必要
-# 参考: https://sourceware.org/gdb/wiki/PermissionsDarwin
+xcode-select --install
 ```
 
 ---
@@ -194,10 +191,13 @@ peeka-cli attach <pid>
 # Python バージョンを確認
 python --version
 
-# GDB の確認（Python < 3.14）
+# GDB の確認（Linux、Python < 3.14）
 gdb --version
 
-# Python デバッグシンボルの確認（Python < 3.14）
+# LLDB の確認（macOS、Python < 3.14）
+lldb --version
+
+# Python デバッグシンボルの確認（Linux、Python < 3.14）
 python -c "import sys; print(hasattr(sys, 'gettotalrefcount'))"
 ```
 
@@ -217,7 +217,7 @@ Error: Operation not permitted
 2. ptrace_scope の設定を確認
 3. Docker の場合は CAP_SYS_PTRACE が追加されていることを確認
 
-### Python < 3.14：デバッグシンボルが見つからない
+### Linux、Python < 3.14：デバッグシンボルが見つからない
 
 **エラーメッセージ**:
 ```
@@ -249,15 +249,20 @@ sudo apt-get install --only-upgrade gdb
 # またはソースから最新バージョンをコンパイル
 ```
 
-### macOS: GDB の権限承認が必要
+### macOS: LLDB が利用できない、または権限不足
 
 **エラーメッセージ**:
 ```
-Error: Unable to find Mach task port for process-id
+Error: LLDB not found
+Error: LLDB attach failed: permission denied
 ```
 
-**解決策**:
-[GDB on macOS](https://sourceware.org/gdb/wiki/PermissionsDarwin) を参照してコード署名の権限承認を行ってください。
+**解決方法**:
+Xcode Command Line Tools をインストールしてください：
+
+```bash
+xcode-select --install
+```
 
 ---
 

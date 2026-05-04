@@ -30,8 +30,9 @@ permalink: /commands/attach
 - PEP 768 の `sys.remote_exec()` API を使用
 - 安全、効率的、公式サポート
 
-**Python 3.9-3.13**:
-- GDB + ptrace メカニズムを使用
+**Python 3.8.1-3.13**:
+- Linux では GDB + ptrace メカニズムを使用
+- macOS では LLDB + dlopen メカニズムを使用
 - 互換性フォールバックソリューション
 
 ---
@@ -48,7 +49,7 @@ permalink: /commands/attach
 - リアルタイムプロセスリスト更新
 - プロセスの PID、コマンドライン、CPU/メモリ使用量を表示
 - 検索/フィルタリングをサポート（キーワードを入力してフィルタ）
-- 権限を自動検証（PEP 768 または GDB の利用可能性を表示）
+- 権限を自動検証（PEP 768、GDB、または LLDB の利用可能性を表示）
 
 **CLI との同等性**: 以下の例はデモンストレーションのために CLI コマンドを使用しています。TUI はグラフィカルインターフェースで同じ機能を提供します。
 
@@ -253,9 +254,9 @@ ps -p 12345
 pgrep -f "my_app.py"
 ```
 
-### エラー: Python debugging symbols not found (Python < 3.14)
+### エラー: Python debugging symbols not found (Linux, Python < 3.14)
 
-**原因**: Python デバッグシンボルが不足している
+**原因**: Python デバッグシンボルが不足しています（Linux の GDB フォールバック方式で必要）
 
 **解決策**:
 ```bash
@@ -266,7 +267,7 @@ sudo apt-get install python3-dbg
 sudo yum install python3-debuginfo
 ```
 
-### エラー: GDB not found (Python < 3.14)
+### エラー: GDB not found (Linux、Python < 3.14)
 
 **原因**: GDB がインストールされていない
 
@@ -277,6 +278,15 @@ sudo apt-get install gdb
 
 # RHEL/CentOS
 sudo yum install gdb
+```
+
+### エラー: LLDB not found (macOS、Python < 3.14)
+
+**原因**: Xcode Command Line Tools がインストールされていません
+
+**解決方法**:
+```bash
+xcode-select --install
 ```
 
 ### エラー: Timeout attaching to process

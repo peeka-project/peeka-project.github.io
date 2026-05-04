@@ -23,7 +23,7 @@ This guide will help you install and configure Peeka in different environments.
 
 ### Basic Requirements
 
-- **Python Version**: Python 3.9 or higher
+- **Python Version**: Python 3.8.1 or higher
 - **Operating System**: Linux (recommended), macOS
 - **Permissions**: Permission to attach to target processes (same UID or CAP_SYS_PTRACE)
 
@@ -32,7 +32,7 @@ This guide will help you install and configure Peeka in different environments.
 | Python Version | Attach Mechanism | Additional Requirements |
 |------------|---------|---------|
 | **3.14+** | PEP 768 `sys.remote_exec` | None |
-| **3.9-3.13** | GDB + ptrace fallback | GDB, python3-dbg, CAP_SYS_PTRACE |
+| **3.8.1-3.13** | Linux: GDB + ptrace; macOS: LLDB + dlopen | Linux: GDB 7.3+, python3-dbg, CAP_SYS_PTRACE; macOS: Xcode Command Line Tools |
 
 ---
 
@@ -85,7 +85,7 @@ uv sync --dev
 
 ## Additional Configuration for Python < 3.14
 
-For Python 3.9-3.13, you need to install GDB and Python debugging symbols.
+For Python 3.8.1-3.13, Linux needs GDB and Python debugging symbols; macOS uses LLDB and needs Xcode Command Line Tools.
 
 ### Debian/Ubuntu
 
@@ -103,10 +103,7 @@ sudo yum install gdb python3-debuginfo
 ### macOS
 
 ```bash
-brew install gdb
-
-# First-time use requires GDB authorization
-# See: https://sourceware.org/gdb/wiki/PermissionsDarwin
+xcode-select --install
 ```
 
 ---
@@ -193,10 +190,13 @@ peeka-cli attach <pid>
 # Check Python version
 python --version
 
-# Check GDB (Python < 3.14)
+# Check GDB (Linux, Python < 3.14)
 gdb --version
 
-# Check Python debugging symbols (Python < 3.14)
+# Check LLDB (macOS, Python < 3.14)
+lldb --version
+
+# Check Python debugging symbols (Linux, Python < 3.14)
 python -c "import sys; print(hasattr(sys, 'gettotalrefcount'))"
 ```
 
@@ -216,7 +216,7 @@ Error: Operation not permitted
 2. Check ptrace_scope settings
 3. For Docker, ensure CAP_SYS_PTRACE is added
 
-### Python < 3.14: Debugging Symbols Not Found
+### Python < 3.14 on Linux: Debugging Symbols Not Found
 
 **Error Message**:
 ```
@@ -248,15 +248,20 @@ sudo apt-get install --only-upgrade gdb
 # Or compile the latest version from source
 ```
 
-### macOS: GDB Requires Authorization
+### macOS: LLDB Unavailable or Permission Denied
 
 **Error Message**:
 ```
-Error: Unable to find Mach task port for process-id
+Error: LLDB not found
+Error: LLDB attach failed: permission denied
 ```
 
 **Solution**:
-Refer to [GDB on macOS](https://sourceware.org/gdb/wiki/PermissionsDarwin) for code signing authorization.
+Install Xcode Command Line Tools:
+
+```bash
+xcode-select --install
+```
 
 ---
 

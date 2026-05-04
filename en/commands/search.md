@@ -146,12 +146,14 @@ peeka-cli sm "requests.Session.*"
 ### sc - Search Classes
 
 ```bash
-peeka-cli sc [--pid PID | --name NAME] <pattern> [options]
+# Attach to the target process first
+peeka-cli attach <pid>
+
+# Then search classes
+peeka-cli sc <pattern> [options]
 ```
 
 **Required Parameters**:
-- `--pid, -p`: Target process PID (choose one: `--pid` or `--name`)
-- `--name`: Target process name (choose one: `--pid` or `--name`)
 - `pattern`: Class pattern (supports wildcards)
 
 **Optional Parameters**:
@@ -161,12 +163,14 @@ peeka-cli sc [--pid PID | --name NAME] <pattern> [options]
 ### sm - Search Methods
 
 ```bash
-peeka-cli sm [--pid PID | --name NAME] <class_pattern> [options]
+# Attach to the target process first
+peeka-cli attach <pid>
+
+# Then search methods
+peeka-cli sm <class_pattern> [options]
 ```
 
 **Required Parameters**:
-- `--pid, -p`: Target process PID (choose one: `--pid` or `--name`)
-- `--name`: Target process name (choose one: `--pid` or `--name`)
 - `class_pattern`: Class pattern (supports wildcards)
 
 **Optional Parameters**:

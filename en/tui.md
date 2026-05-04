@@ -583,7 +583,7 @@ TUI mode permission requirements are the same as CLI mode:
 - **ptrace_scope**: Requires `ptrace_scope <= 1` (Linux)
 - **Python Version**:
   - Python 3.14+: Uses PEP 768 `sys.remote_exec()`
-  - Python 3.9-3.13: Requires GDB and python3-dbg
+  - Python 3.8.1-3.13: Linux requires GDB and python3-dbg; macOS requires LLDB (Xcode Command Line Tools)
 
 For detailed permission requirements, see [attach command documentation](commands/attach.html)
 

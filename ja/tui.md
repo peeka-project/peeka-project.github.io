@@ -584,7 +584,7 @@ TUI モードの権限要件は CLI モードと同じです：
 - **ptrace_scope**: `ptrace_scope <= 1` が必要（Linux）
 - **Python バージョン**:
   - Python 3.14+：PEP 768 `sys.remote_exec()` を使用
-  - Python 3.9-3.13：GDB と python3-dbg が必要
+  - Python 3.8.1-3.13：Linux は GDB と python3-dbg、macOS は LLDB（Xcode Command Line Tools）が必要
 
 詳細な権限要件は [attach コマンドドキュメント](commands/attach.html) を参照してください。
 

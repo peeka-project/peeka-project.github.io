@@ -136,12 +136,14 @@ peeka-cli stack "myapp.api.handle_request"
 ## Command Format
 
 ```bash
-peeka-cli stack [--pid PID | --name NAME] <pattern> [options]
+# Attach to the target process first
+peeka-cli attach <pid>
+
+# Then run stack
+peeka-cli stack <pattern> [options]
 ```
 
 **Required Parameters**:
-- `--pid, -p`: Target process PID (choose one: `--pid` or `--name`)
-- `--name`: Target process name (choose one: `--pid` or `--name`)
 - `pattern`: Target function pattern (e.g., `module.Class.method`)
 
 **Optional Parameters**:

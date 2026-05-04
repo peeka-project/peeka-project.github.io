@@ -90,7 +90,7 @@ Peeka Agent の設計はこれらのコア目標に従っています：
 │  │  Process Attachment                       │               │
 │  │                                           │               │
 │  │  Python 3.14+:  sys.remote_exec()        │               │
-│  │  Python < 3.14: GDB + ptrace             │               │
+│  │  Python < 3.14: GDB/LLDB fallback        │               │
 │  └──────────────────────────────────────────┘               │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -116,12 +116,12 @@ sys.remote_exec(pid, agent_script_path)
 
 **利点：**
 - 公式サポート、安全で信頼性がある
-- 外部依存関係なし (GDB)
+- Python 3.14+ では外部デバッガ依存なし
 - クロスプラットフォーム互換性
 
-#### Python 3.9-3.13
+#### Python 3.8.1-3.13
 
-GDB + ptrace フォールバックを使用：
+デバッガフォールバックを使用します。Linux では GDB + ptrace、macOS では LLDB + dlopen を使います。以下は Linux の従来 GDB パスの例です：
 
 ```python
 # 1. GDB がプロセスにアタッチ
@@ -142,9 +142,8 @@ quit
 ```
 
 **要件：**
-- GDB 7.3+
-- Python デバッグシンボル
-- CAP_SYS_PTRACE パーミッション
+- Linux: GDB 7.3+、Python デバッグシンボル、CAP_SYS_PTRACE パーミッション
+- macOS: Xcode Command Line Tools（LLDB を含む）
 
 ### 2. Agent コア (agent.py)
 
@@ -478,7 +477,7 @@ sys.monitoring.register_callback(
 
 **パフォーマンス比較：**
 - `sys.monitoring`: < 5% オーバーヘッド
-- `sys.settrace`: < 20% オーバーヘッド (Python 3.9-3.11)
+- `sys.settrace`: < 20% オーバーヘッド (Python 3.8.1-3.11)
 
 ### 3. ストリーミング送信
 

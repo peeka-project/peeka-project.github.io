@@ -185,7 +185,7 @@ peeka
 |------|---------|------|
 | `watch` | < 1% | 装饰器注入，开销极小 |
 | `trace` | < 5% (3.12+) | 使用 sys.monitoring API |
-| `trace` | < 20% (3.9-3.11) | 使用 sys.settrace |
+| `trace` | < 20% (3.8.1-3.11) | 使用 sys.settrace |
 | `stack` | < 1% | 仅捕获调用栈 |
 | `monitor` | < 1% | 定期统计 |
 | `logger` | 0% | 不影响性能 |

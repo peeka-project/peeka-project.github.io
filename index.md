@@ -166,7 +166,7 @@ peeka
 
 核心的 `sys.remote_exec(pid, script_path)` 函数是整个系统运作的关键，它封装了复杂的进程附加、代码注入和执行调度逻辑。
 
-**Python < 3.14 降级方案**：对于旧版本 Python，使用 GDB + ptrace 机制（参考 pyrasite）。
+**Python < 3.14 降级方案**：对于旧版本 Python，Linux 使用 GDB + ptrace，macOS 使用 LLDB + dlopen（参考 pyrasite）。
 
 ### Unix Domain Socket
 
@@ -193,7 +193,7 @@ peeka
 | Python 版本 | 附加机制 | 要求 |
 |------------|---------|------|
 | 3.14+ | PEP 768 `sys.remote_exec` | 无 |
-| 3.9-3.13 | GDB + ptrace 降级方案 | GDB, python3-dbg, CAP_SYS_PTRACE |
+| 3.8.1-3.13 | Linux: GDB + ptrace；macOS: LLDB + dlopen | Linux: GDB 7.3+, python3-dbg, CAP_SYS_PTRACE；macOS: Xcode Command Line Tools |
 
 ---
 

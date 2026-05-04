@@ -166,7 +166,7 @@ peeka
 
 The core `sys.remote_exec(pid, script_path)` function is the key to the entire system's operation, encapsulating complex process attachment, code injection, and execution scheduling logic.
 
-**Fallback for Python < 3.14**: For older Python versions, uses GDB + ptrace mechanism (reference: pyrasite).
+**Fallback for Python < 3.14**: For older Python versions, uses GDB + ptrace on Linux and LLDB + dlopen on macOS (reference: pyrasite).
 
 ### Unix Domain Socket
 
@@ -193,7 +193,7 @@ Implements safe conditional filtering based on simpleeval library:
 | Python Version | Attachment Mechanism | Requirements |
 |----------------|---------------------|--------------|
 | 3.14+ | PEP 768 `sys.remote_exec` | None |
-| 3.9-3.13 | GDB + ptrace fallback | GDB, python3-dbg, CAP_SYS_PTRACE |
+| 3.8.1-3.13 | Linux: GDB + ptrace; macOS: LLDB + dlopen | Linux: GDB 7.3+, python3-dbg, CAP_SYS_PTRACE; macOS: Xcode Command Line Tools |
 
 ---
 

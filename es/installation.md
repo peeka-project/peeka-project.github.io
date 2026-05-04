@@ -22,7 +22,7 @@ Esta guía te ayudará a instalar y configurar Peeka en diferentes entornos.
 
 ### Requisitos Básicos
 
-- **Versión de Python**: Python 3.9 o superior
+- **Versión de Python**: Python 3.8.1 o superior
 - **Sistema Operativo**: Linux (recomendado), macOS
 - **Permisos**: Se necesitan permisos para adjuntarse al proceso objetivo (mismo UID o CAP_SYS_PTRACE)
 
@@ -31,7 +31,7 @@ Esta guía te ayudará a instalar y configurar Peeka en diferentes entornos.
 | Versión de Python | Mecanismo de Adjunte | Requisitos Adicionales |
 |-------------------|-----------------------|-------------------------|
 | **3.14+** | PEP 768 `sys.remote_exec` | Ninguno |
-| **3.9-3.13** | Alternativa GDB + ptrace | GDB, python3-dbg, CAP_SYS_PTRACE |
+| **3.8.1-3.13** | Linux: GDB + ptrace; macOS: LLDB + dlopen | Linux: GDB 7.3+, python3-dbg, CAP_SYS_PTRACE; macOS: Xcode Command Line Tools |
 
 ---
 
@@ -85,7 +85,7 @@ uv sync --dev
 
 ## Configuración Adicional para Python < 3.14
 
-Para versiones de Python 3.9-3.13, necesitas instalar GDB y símbolos de depuración de Python.
+Para Python 3.8.1-3.13, Linux necesita GDB y símbolos de depuración de Python; macOS usa LLDB y necesita Xcode Command Line Tools.
 
 ### Debian/Ubuntu
 
@@ -103,10 +103,7 @@ sudo yum install gdb python3-debuginfo
 ### macOS
 
 ```bash
-brew install gdb
-
-# El primer uso necesita autorizar GDB
-# Referencia: https://sourceware.org/gdb/wiki/PermissionsDarwin
+xcode-select --install
 ```
 
 ---
@@ -193,10 +190,13 @@ peeka-cli attach <pid>
 # Verificar versión de Python
 python --version
 
-# Verificar GDB (Python < 3.14)
+# Verificar GDB (Linux, Python < 3.14)
 gdb --version
 
-# Verificar símbolos de depuración de Python (Python < 3.14)
+# Verificar LLDB (macOS, Python < 3.14)
+lldb --version
+
+# Verificar símbolos de depuración de Python (Linux, Python < 3.14)
 python -c "import sys; print(hasattr(sys, 'gettotalrefcount'))"
 ```
 
@@ -216,7 +216,7 @@ Error: Operation not permitted
 2. Verifica la configuración de ptrace_scope
 3. Para Docker, asegúrate de haber agregado CAP_SYS_PTRACE
 
-### Python < 3.14: no se encuentran los símbolos de depuración
+### Linux, Python < 3.14: no se encuentran los símbolos de depuración
 
 **Mensaje de error**:
 ```
@@ -248,15 +248,20 @@ sudo apt-get install --only-upgrade gdb
 # O compila la última versión desde código fuente
 ```
 
-### macOS: GDB necesita autorización
+### macOS: LLDB no disponible o sin permiso
 
 **Mensaje de error**:
 ```
-Error: Unable to find Mach task port for process-id
+Error: LLDB not found
+Error: LLDB attach failed: permission denied
 ```
 
 **Solución**:
-Consulta [GDB on macOS](https://sourceware.org/gdb/wiki/PermissionsDarwin) para realizar la autorización de firma de código.
+Instala Xcode Command Line Tools:
+
+```bash
+xcode-select --install
+```
 
 ---
 

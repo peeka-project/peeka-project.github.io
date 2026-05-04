@@ -186,7 +186,7 @@ Conditional expressions use `simpleeval` library for safe evaluation, not suppor
 |---------|---------------------|-------|
 | `watch` | < 1% | Decorator injection, minimal overhead |
 | `trace` | < 5% (3.12+) | Uses sys.monitoring API |
-| `trace` | < 20% (3.9-3.11) | Uses sys.settrace |
+| `trace` | < 20% (3.8.1-3.11) | Uses sys.settrace |
 | `stack` | < 1% | Only captures call stack |
 | `monitor` | < 1% | Periodic statistics |
 | `logger` | 0% | No performance impact |

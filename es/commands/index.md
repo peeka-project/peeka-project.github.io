@@ -185,7 +185,7 @@ La expresión condicional usa la biblioteca `simpleeval` para evaluación segura
 |---------|---------------------------|-------------|
 | `watch` | < 1% | Inyección de decorador, sobrecoste extremadamente pequeño |
 | `trace` | < 5% (3.12+) | Usa la API sys.monitoring |
-| `trace` | < 20% (3.9-3.11) | Usa sys.settrace |
+| `trace` | < 20% (3.8.1-3.11) | Usa sys.settrace |
 | `stack` | < 1% | Solo captura pila de llamadas |
 | `monitor` | < 1% | Estadísticas periódicas |
 | `logger` | 0% | No afecta el rendimiento |

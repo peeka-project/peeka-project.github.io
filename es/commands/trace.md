@@ -265,7 +265,7 @@ El comando `trace` de Peeka selecciona automáticamente la implementación ópti
 | Versión de Python | Implementación | Sobrecoste de Rendimiento | Notas |
 |----------------|----------------|----------------------|-------|
 | 3.12+ | sys.monitoring | < 5% | API oficial de PEP 669, rendimiento óptimo |
-| 3.9-3.11 | sys.settrace | < 20% | Buena compatibilidad, habilitado automáticamente |
+| 3.8.1-3.11 | sys.settrace | < 20% | Buena compatibilidad, habilitado automáticamente |
 
 **Implementación sys.monitoring (Python 3.12+)**:
 
@@ -274,7 +274,7 @@ El comando `trace` de Peeka selecciona automáticamente la implementación ópti
 - Sobrecoste de rendimiento < 5%, recomendado para entornos de producción
 - Asigna automáticamente tool_id, sin conflictos con múltiples observaciones
 
-**Implementación sys.settrace (Python 3.9-3.11)**:
+**Implementación sys.settrace (Python 3.8.1-3.11)**:
 
 - Usa el mecanismo incorporado `sys.settrace()` de Python
 - Habilitado solo durante la ejecución de la función objetivo (rastreo local)
@@ -293,7 +293,7 @@ El comando `trace` de Peeka selecciona automáticamente la implementación ópti
 | Escenario | Sobrecoste | Notas |
 |----------|----------|-------|
 | **Funciones simples** | < 5% | Python 3.12+ |
-| **Funciones simples** | < 20% | Python 3.9-3.11 |
+| **Funciones simples** | < 20% | Python 3.8.1-3.11 |
 | **Árbol de llamada complejo (profundidad 5)** | 10-30% | Depende de la versión de Python |
 | **Llamadas de alta frecuencia (>1000 QPS)** | 20-50% | Recomienda limitar el número de observaciones |
 

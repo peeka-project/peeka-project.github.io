@@ -10,6 +10,12 @@ This repository is the GitHub Pages documentation site for Peeka. Keep changes s
 - The site uses Jekyll with the Just the Docs theme.
 - Do not edit generated output in `_site/`, `.jekyll-cache/`, `.sass-cache/`, `.bundle/`, or `vendor/`.
 
+## Source Of Truth
+
+- Compare behavior-sensitive docs against the Peeka source repository in the sibling directory `../peeka`.
+- If `../peeka` is missing, clone it beside this repository with `git clone https://github.com/peeka-project/peeka.git ../peeka`.
+- Use source files such as `pyproject.toml`, `peeka/cli/main.py`, and `peeka/tui/screens/main.py` as the reference for supported Python versions, CLI options, command names, and TUI key mappings.
+
 ## Documentation Consistency
 
 - Keep equivalent pages aligned across all languages when changing shared behavior, navigation, command names, shortcuts, or examples.

@@ -29,8 +29,9 @@ El comando `attach` es el primer paso para usar Peeka, inyecta el código del Ag
 - Usa la API `sys.remote_exec()` de PEP 768
 - Seguro, eficiente, soporte oficial
 
-**Python 3.9-3.13**:
-- Usa el mecanismo GDB + ptrace
+**Python 3.8.1-3.13**:
+- Usa GDB + ptrace en Linux
+- Usa LLDB + dlopen en macOS
 - Alternativa de compatibilidad
 
 ## Uso en TUI
@@ -45,7 +46,7 @@ El comando `attach` es el primer paso para usar Peeka, inyecta el código del Ag
 - Lista de procesos se actualiza en tiempo real
 - Muestra PID del proceso, línea de comandos, uso de CPU/memoria
 - Soporta filtrado de búsqueda (ingresa palabras clave para filtrar)
-- Verifica permisos automáticamente (muestra disponibilidad de PEP 768 o GDB)
+- Verifica permisos automáticamente (muestra disponibilidad de PEP 768, GDB o LLDB)
 
 **Equivalente CLI**: Todos los ejemplos a continuación usan comandos CLI para demostrar, TUI proporciona una interfaz gráfica con la misma funcionalidad.
 
@@ -252,9 +253,9 @@ ps -p 12345
 pgrep -f "my_app.py"
 ```
 
-### Error: Python debugging symbols not found (Python < 3.14)
+### Error: Python debugging symbols not found (Linux, Python < 3.14)
 
-**Causa**: Faltan símbolos de depuración de Python
+**Causa**: Faltan símbolos de depuración de Python (requeridos por la alternativa GDB en Linux)
 
 **Solución**:
 ```bash
@@ -265,7 +266,7 @@ sudo apt-get install python3-dbg
 sudo yum install python3-debuginfo
 ```
 
-### Error: GDB not found (Python < 3.14)
+### Error: GDB not found (Linux, Python < 3.14)
 
 **Causa**: GDB no está instalado
 
@@ -276,6 +277,15 @@ sudo apt-get install gdb
 
 # RHEL/CentOS
 sudo yum install gdb
+```
+
+### Error: LLDB not found (macOS, Python < 3.14)
+
+**Causa**: Xcode Command Line Tools no está instalado
+
+**Solución**:
+```bash
+xcode-select --install
 ```
 
 ### Error: Timeout attaching to process

@@ -94,14 +94,14 @@ ps aux | grep "your_app"
 pgrep -f "your_app.py"
 ```
 
-### Error: Python debugging symbols not found (Python < 3.14)
+### Error: Python debugging symbols not found (Linux, Python < 3.14)
 
 **Symptom**:
 ```
 Error: Python debugging symbols not found. Install python3-dbg.
 ```
 
-**Cause**: Python debugging symbols not installed (required for GDB fallback).
+**Cause**: Python debugging symbols not installed (required for the Linux GDB fallback).
 
 **Solution**:
 
@@ -118,7 +118,7 @@ python3 -c "import sys; print(hasattr(sys, 'gettotalrefcount'))"
 # Should output True
 ```
 
-### Error: GDB not found (Python < 3.14)
+### Error: GDB not found (Linux, Python < 3.14)
 
 **Symptom**:
 ```
@@ -136,11 +136,24 @@ sudo apt-get install gdb
 # RHEL/CentOS
 sudo yum install gdb
 
-# macOS
-brew install gdb
-
 # Verify version (requires 7.3+)
 gdb --version
+```
+
+### Error: LLDB not found (macOS, Python < 3.14)
+
+**Symptom**:
+```
+Error: LLDB not found
+```
+
+**Cause**: Xcode Command Line Tools are not installed.
+
+**Solution**:
+
+```bash
+xcode-select --install
+lldb --version
 ```
 
 ### Error: Timeout attaching to process

@@ -29,8 +29,9 @@ nav_order: 1
 - 使用 PEP 768 的 `sys.remote_exec()` API
 - 安全、高效、官方支持
 
-**Python 3.9-3.13**:
-- 使用 GDB + ptrace 机制
+**Python 3.8.1-3.13**:
+- Linux 使用 GDB + ptrace 机制
+- macOS 使用 LLDB + dlopen 机制
 - 兼容性降级方案
 
 ## TUI 使用
@@ -45,7 +46,7 @@ nav_order: 1
 - 进程列表实时刷新
 - 显示进程 PID、命令行、CPU/内存使用
 - 支持搜索过滤（输入关键词筛选）
-- 自动验证权限（显示 PEP 768 或 GDB 可用性）
+- 自动验证权限（显示 PEP 768、GDB 或 LLDB 可用性）
 
 **CLI 等效命令**：下文所有示例使用 CLI 命令演示，TUI 提供了相同功能的图形化界面。
 ---
@@ -251,9 +252,9 @@ ps -p 12345
 pgrep -f "my_app.py"
 ```
 
-### 错误：Python debugging symbols not found (Python < 3.14)
+### 错误：Python debugging symbols not found（Linux，Python < 3.14）
 
-**原因**: 缺少 Python 调试符号
+**原因**: 缺少 Python 调试符号（Linux 的 GDB 降级方案需要）
 
 **解决方案**:
 ```bash
@@ -264,7 +265,7 @@ sudo apt-get install python3-dbg
 sudo yum install python3-debuginfo
 ```
 
-### 错误：GDB not found (Python < 3.14)
+### 错误：GDB not found（Linux，Python < 3.14）
 
 **原因**: 未安装 GDB
 
@@ -275,6 +276,15 @@ sudo apt-get install gdb
 
 # RHEL/CentOS
 sudo yum install gdb
+```
+
+### 错误：LLDB not found（macOS，Python < 3.14）
+
+**原因**: 未安装 Xcode Command Line Tools
+
+**解决方案**:
+```bash
+xcode-select --install
 ```
 
 ### 错误：Timeout attaching to process

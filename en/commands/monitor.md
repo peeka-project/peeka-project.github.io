@@ -165,12 +165,14 @@ peeka-cli monitor "myapp.process" --interval 10 | \
 ## Command Format
 
 ```bash
-peeka-cli monitor [--pid PID | --name NAME] <pattern> [options]
+# Attach to the target process first
+peeka-cli attach <pid>
+
+# Then run monitor
+peeka-cli monitor <pattern> [options]
 ```
 
 **Required Parameters**:
-- `--pid, -p`: Target process PID (choose one: `--pid` or `--name`)
-- `--name`: Target process name (choose one: `--pid` or `--name`)
 - `pattern`: Target function pattern (e.g., `module.Class.method`)
 
 **Optional Parameters**:

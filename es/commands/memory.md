@@ -985,7 +985,7 @@ rss_gauge = Gauge('process_rss_bytes', 'Process RSS memory', ['pid'])
 tracemalloc_gauge = Gauge('tracemalloc_bytes', 'Tracemalloc memory', ['pid', 'type'])
 
 def collect_metrics(pid):
-    result = subprocess.check_output(['peeka', 'memory', '--pid', str(pid)])
+    result = subprocess.check_output(['peeka-cli', 'memory', '--action', 'overview'])
     data = json.loads(result)
 
     rss_gauge.labels(pid=pid).set(data['rss_bytes'])

@@ -90,7 +90,7 @@ La arquitectura del Agente puede admitir convenientemente nuevos comandos de dia
 │  │  Process Attachment                       │               │
 │  │                                           │               │
 │  │  Python 3.14+:  sys.remote_exec()        │               │
-│  │  Python < 3.14: GDB + ptrace             │               │
+│  │  Python < 3.14: GDB/LLDB fallback        │               │
 │  └──────────────────────────────────────────┘               │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -116,12 +116,12 @@ sys.remote_exec(pid, agent_script_path)
 
 **Ventajas**:
 - Soporte oficial, seguro y confiable
-- Sin dependencias externas (GDB)
+- Sin dependencia de depurador externo en Python 3.14+
 - Compatible multiplataforma
 
-#### Python 3.9-3.13
+#### Python 3.8.1-3.13
 
-Usa el plan alternativo GDB + ptrace:
+Usa una alternativa con depurador: GDB + ptrace en Linux y LLDB + dlopen en macOS. El ejemplo siguiente muestra la ruta GDB heredada de Linux:
 
 ```python
 # 1. Adjuntar GDB al proceso
@@ -142,9 +142,8 @@ quit
 ```
 
 **Requisitos**:
-- GDB 7.3+
-- Símbolos de depuración de Python
-- Permiso CAP_SYS_PTRACE
+- Linux: GDB 7.3+, símbolos de depuración de Python, permiso CAP_SYS_PTRACE
+- macOS: Xcode Command Line Tools (incluye LLDB)
 
 ### 2. Núcleo del Agente (agent.py)
 
@@ -478,7 +477,7 @@ sys.monitoring.register_callback(
 
 **Comparación de Rendimiento**:
 - `sys.monitoring`: < 5% de sobrecoste
-- `sys.settrace`: < 20% de sobrecoste (Python 3.9-3.11)
+- `sys.settrace`: < 20% de sobrecoste (Python 3.8.1-3.11)
 
 ### 3. Transmisión en Streaming
 

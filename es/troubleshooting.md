@@ -93,14 +93,14 @@ ps aux | grep "your_app"
 pgrep -f "your_app.py"
 ```
 
-### Error: Python debugging symbols not found (Python < 3.14)
+### Error: Python debugging symbols not found (Linux, Python < 3.14)
 
 **Síntomas**:
 ```
 Error: Python debugging symbols not found. Install python3-dbg.
 ```
 
-**Causa**: Los símbolos de depuración de Python no están instalados (requerido por la alternativa GDB).
+**Causa**: Los símbolos de depuración de Python no están instalados (requerido por la alternativa GDB en Linux).
 
 **Solución**:
 
@@ -117,7 +117,7 @@ python3 -c "import sys; print(hasattr(sys, 'gettotalrefcount'))"
 # Debe mostrar True
 ```
 
-### Error: GDB not found (Python < 3.14)
+### Error: GDB not found (Linux, Python < 3.14)
 
 **Síntomas**:
 ```
@@ -135,11 +135,24 @@ sudo apt-get install gdb
 # RHEL/CentOS
 sudo yum install gdb
 
-# macOS
-brew install gdb
-
 # Verificar versión (se necesita 7.3+)
 gdb --version
+```
+
+### Error: LLDB not found (macOS, Python < 3.14)
+
+**Síntomas**:
+```
+Error: LLDB not found
+```
+
+**Causa**: Xcode Command Line Tools no está instalado.
+
+**Solución**:
+
+```bash
+xcode-select --install
+lldb --version
 ```
 
 ### Error: Timeout attaching to process

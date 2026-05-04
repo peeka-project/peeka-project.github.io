@@ -164,7 +164,7 @@ peeka
 
 コアの `sys.remote_exec(pid, script_path)` 関数がシステム全体の動作の鍵であり、複雑なプロセスアタッチ、コードインジェクション、実行スケジューリングロジックをカプセル化しています。
 
-**Python < 3.14 へのフォールバック**: 古い Python バージョンでは、GDB + ptrace メカニズムを使用 (参考: pyrasite)。
+**Python < 3.14 へのフォールバック**: 古い Python バージョンでは、Linux では GDB + ptrace、macOS では LLDB + dlopen を使用 (参考: pyrasite)。
 
 ### Unix ドメインソケット
 
@@ -191,7 +191,7 @@ simpleeval ライブラリベースで安全な条件付きフィルタリング
 | Python バージョン | アタッチメカニズム | 要件 |
 |----------------|---------------------|--------------|
 | 3.14+ | PEP 768 `sys.remote_exec` | なし |
-| 3.9-3.13 | GDB + ptrace フォールバック | GDB, python3-dbg, CAP_SYS_PTRACE |
+| 3.8.1-3.13 | Linux: GDB + ptrace、macOS: LLDB + dlopen | Linux: GDB 7.3+, python3-dbg, CAP_SYS_PTRACE、macOS: Xcode Command Line Tools |
 
 ---
 

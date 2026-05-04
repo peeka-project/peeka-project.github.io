@@ -164,7 +164,7 @@ peeka
 
 La función principal `sys.remote_exec(pid, script_path)` es la clave de todo el sistema, encapsula la compleja lógica de conexión al proceso, inyección de código y programación de ejecución.
 
-**Retroceso para Python < 3.14**: Para versiones antiguas de Python, usa el mecanismo GDB + ptrace (referencia: pyrasite).
+**Retroceso para Python < 3.14**: Para versiones antiguas de Python, usa GDB + ptrace en Linux y LLDB + dlopen en macOS (referencia: pyrasite).
 
 ### Socket de dominio Unix
 
@@ -191,7 +191,7 @@ Implementamos filtrado condicional seguro basado en la biblioteca simpleeval:
 | Versión de Python | Mecanismo de conexión | Requisitos |
 |------------------|---------------------|--------------|
 | 3.14+ | PEP 768 `sys.remote_exec` | Ninguno |
-| 3.9-3.13 | Retroceso GDB + ptrace | GDB, python3-dbg, CAP_SYS_PTRACE |
+| 3.8.1-3.13 | Linux: GDB + ptrace; macOS: LLDB + dlopen | Linux: GDB 7.3+, python3-dbg, CAP_SYS_PTRACE; macOS: Xcode Command Line Tools |
 
 ---
 

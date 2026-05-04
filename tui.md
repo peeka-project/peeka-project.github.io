@@ -583,7 +583,7 @@ TUI 模式的权限要求与 CLI 模式相同：
 - **ptrace_scope**：需要 `ptrace_scope <= 1`（Linux）
 - **Python 版本**：
   - Python 3.14+：使用 PEP 768 `sys.remote_exec()`
-  - Python 3.9-3.13：需要 GDB 和 python3-dbg
+  - Python 3.8.1-3.13：Linux 需要 GDB 和 python3-dbg；macOS 需要 LLDB（Xcode Command Line Tools）
 
 详细权限要求请参考 [attach 命令文档](commands/attach.html)
 

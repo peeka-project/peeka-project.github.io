@@ -9,7 +9,7 @@ permalink: /commands
 # Command Reference
 {: .no_toc }
 
-Peeka provides a series of powerful diagnostic commands, each focused on specific diagnostic scenarios. This documentation covers 13 core commands.
+Peeka provides a series of powerful diagnostic commands, each focused on specific diagnostic scenarios. This documentation covers 14 core commands.
 {: .fs-6 .fw-300 }
 
 ## Table of Contents
@@ -37,6 +37,7 @@ Peeka provides a series of powerful diagnostic commands, each focused on specifi
 | thread | Thread analysis | Enumerate threads and view thread stacks |
 | top | Function profiling | Function-level performance hotspot analysis |
 | detach | Disconnect | Safely exit diagnostic session |
+| run | Launch and attach | Start a Python program and automatically enter a diagnostic session |
 
 ---
 
@@ -211,6 +212,7 @@ Select the command you need for detailed documentation:
 - [thread - Thread analysis]({% link commands/thread.md %})
 - [top - Function profiling]({% link commands/top.md %})
 - [detach - Disconnect]({% link commands/detach.md %})
+- [run - Launch and attach]({% link commands/run.md %})
 
 > **Note**: Detailed English documentation for individual commands is being prepared. Currently, command documentation is available in Chinese. Please refer to the Chinese version for complete command documentation.
 

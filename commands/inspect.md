@@ -37,7 +37,7 @@ nav_order: 8
 生产环境运行时查看配置值，无需重启进程：
 
 ```bash
-peeka inspect --action get --target "app.config.DEBUG"
+peeka-cli inspect --action get --target "app.config.DEBUG"
 ```
 
 ### 2. 内存泄漏排查
@@ -45,7 +45,7 @@ peeka inspect --action get --target "app.config.DEBUG"
 找出特定类型的所有实例，检查是否有对象未释放：
 
 ```bash
-peeka inspect --action instances --type myapp.User --limit 10
+peeka-cli inspect --action instances --type myapp.User --limit 10
 ```
 
 ### 3. 对象统计
@@ -53,7 +53,7 @@ peeka inspect --action instances --type myapp.User --limit 10
 快速统计某类型对象数量，评估内存使用：
 
 ```bash
-peeka inspect --action count --type list
+peeka-cli inspect --action count --type list
 ```
 
 ### 4. 状态诊断
@@ -61,7 +61,7 @@ peeka inspect --action count --type list
 查看运行时状态变量，诊断应用行为：
 
 ```bash
-peeka inspect --action get --target "sys.path"
+peeka-cli inspect --action get --target "sys.path"
 ```
 
 ---
@@ -285,10 +285,10 @@ peeka-cli inspect --action <action> [options]
 
 ```bash
 # 查看 Python 版本
-peeka inspect --action get --target "sys.version"
+peeka-cli inspect --action get --target "sys.version"
 
 # 查看 sys.path
-peeka inspect --action get --target "sys.path" --depth 3
+peeka-cli inspect --action get --target "sys.path" --depth 3
 ```
 
 **输出**：
@@ -311,24 +311,24 @@ peeka inspect --action get --target "sys.path" --depth 3
 
 ```bash
 # 查看应用配置
-peeka inspect --action get --target "myapp.config.DEBUG"
+peeka-cli inspect --action get --target "myapp.config.DEBUG"
 
 # 查看类常量
-peeka inspect --action get --target "myapp.Database.POOL_SIZE"
+peeka-cli inspect --action get --target "myapp.Database.POOL_SIZE"
 ```
 
 ### 示例 3：内存泄漏排查
 
 ```bash
 # 查找所有 User 实例
-peeka inspect --action instances --type myapp.User --limit 20
+peeka-cli inspect --action instances --type myapp.User --limit 20
 
 # 过滤活跃用户
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "obj.active == True" --limit 10
 
 # 过滤大对象
-peeka inspect --action instances --type list \
+peeka-cli inspect --action instances --type list \
   --filter-express "len(obj) > 100" --limit 5
 ```
 
@@ -355,13 +355,13 @@ peeka inspect --action instances --type list \
 
 ```bash
 # 统计所有 list 实例
-peeka inspect --action count --type list
+peeka-cli inspect --action count --type list
 
 # 统计 dict 实例
-peeka inspect --action count --type dict
+peeka-cli inspect --action count --type dict
 
 # 统计特定条件的对象
-peeka inspect --action count --type myapp.Connection \
+peeka-cli inspect --action count --type myapp.Connection \
   --filter-express "obj.closed == False"
 ```
 
@@ -380,13 +380,13 @@ peeka inspect --action count --type myapp.Connection \
 
 ```bash
 # 提取 value 字段
-peeka inspect --action get --target "sys.version" | jq -r '.value'
+peeka-cli inspect --action get --target "sys.version" | jq -r '.value'
 
 # 统计实例数
-peeka inspect --action count --type list | jq '.count'
+peeka-cli inspect --action count --type list | jq '.count'
 
 # 美化输出
-peeka inspect --action instances --type dict --limit 3 | jq .
+peeka-cli inspect --action instances --type dict --limit 3 | jq .
 ```
 
 ---
@@ -401,11 +401,11 @@ peeka inspect --action instances --type dict --limit 3 | jq .
 
 ```bash
 # 定期统计可疑类型
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # 输出: {"count": 1500}
 
 # 5 分钟后再次统计
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # 输出: {"count": 1800}  ← 持续增长!
 ```
 
@@ -413,10 +413,10 @@ peeka inspect --action count --type myapp.Cache
 
 ```bash
 # 获取前 10 个实例
-peeka inspect --action instances --type myapp.Cache --limit 10 | jq .
+peeka-cli inspect --action instances --type myapp.Cache --limit 10 | jq .
 
 # 查看大对象
-peeka inspect --action instances --type myapp.Cache \
+peeka-cli inspect --action instances --type myapp.Cache \
   --filter-express "len(obj.data) > 1000" --limit 5
 ```
 
@@ -424,7 +424,7 @@ peeka inspect --action instances --type myapp.Cache \
 
 ```bash
 # 查看缓存配置
-peeka inspect --action get --target "myapp.cache_config.MAX_SIZE"
+peeka-cli inspect --action get --target "myapp.cache_config.MAX_SIZE"
 # 发现 MAX_SIZE 未生效!
 ```
 
@@ -433,7 +433,7 @@ peeka inspect --action get --target "myapp.cache_config.MAX_SIZE"
 修复代码后重新部署，再次统计：
 
 ```bash
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # 输出: {"count": 100}  ← 恢复正常
 ```
 
@@ -462,10 +462,10 @@ peeka inspect --action count --type myapp.Cache
 
 ```bash
 # ❌ 错误：不支持字典键语法
-peeka inspect --action get --target 'config["debug"]'
+peeka-cli inspect --action get --target 'config["debug"]'
 
 # ✅ 正确：先获取字典，手动查看
-peeka inspect --action get --target "config" | jq '.value.debug'
+peeka-cli inspect --action get --target "config" | jq '.value.debug'
 ```
 
 ### ⚠️ 模块加载限制
@@ -474,7 +474,7 @@ peeka inspect --action get --target "config" | jq '.value.debug'
 
 ```bash
 # ❌ 错误：myapp 未加载时查询会失败
-peeka inspect --action instances --type myapp.User
+peeka-cli inspect --action instances --type myapp.User
 
 # ✅ 正确：确保目标进程已导入 myapp 模块
 # （在目标代码中必须有 import myapp）
@@ -499,11 +499,11 @@ peeka inspect --action instances --type myapp.User
 
 ```bash
 # ✅ 安全：SimpleEval 允许的操作
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "obj.age > 18 and obj.active"
 
 # ❌ 禁止：代码注入攻击
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "__import__('os').system('rm -rf /')"
 # 错误: Invalid filter expression: __import__ not allowed
 ```
@@ -519,22 +519,22 @@ peeka inspect --action instances --type myapp.User \
 1. **对象未被 GC 追踪**（如 `str`, `int`）
    ```bash
    # str/int 可能不可靠
-   peeka inspect --action count --type str  # 可能为 0
+   peeka-cli inspect --action count --type str  # 可能为 0
    
    # 改用容器类型
-   peeka inspect --action count --type list  # 可靠
+   peeka-cli inspect --action count --type list  # 可靠
    ```
 
 2. **模块未加载**
    ```bash
    # 确认模块已导入
-   peeka inspect --action get --target "sys.modules.keys()" | grep myapp
+   peeka-cli inspect --action get --target "sys.modules.keys()" | grep myapp
    ```
 
 3. **filter-express 过滤掉了所有对象**
    ```bash
    # 先不用过滤器测试
-   peeka inspect --action instances --type myapp.User --limit 5
+   peeka-cli inspect --action instances --type myapp.User --limit 5
    ```
 
 ### Q2: target 查询失败 "Module not loaded"
@@ -545,7 +545,7 @@ peeka inspect --action instances --type myapp.User \
 
 ```bash
 # 检查已加载模块
-peeka inspect --action get --target "list(sys.modules.keys())" | grep myapp
+peeka-cli inspect --action get --target "list(sys.modules.keys())" | grep myapp
 
 # 如果模块未加载，需要在目标代码中添加 import
 ```
@@ -578,7 +578,7 @@ peeka inspect --action get --target "list(sys.modules.keys())" | grep myapp
 
 ```bash
 # 使用 instances 代替（有 limit）
-peeka inspect --action instances --type list --limit 10
+peeka-cli inspect --action instances --type list --limit 10
 
 # 或者在业务低峰期执行 count
 ```
@@ -591,10 +591,10 @@ peeka inspect --action instances --type list --limit 10
 
 ```bash
 # 增加 limit（最大 1000）
-peeka inspect --action instances --type list --limit 1000
+peeka-cli inspect --action instances --type list --limit 1000
 
 # 或使用过滤器缩小范围
-peeka inspect --action instances --type list \
+peeka-cli inspect --action instances --type list \
   --filter-express "len(obj) > 100" --limit 10
 ```
 
@@ -612,7 +612,7 @@ PID=12345
 TYPE="myapp.Connection"
 
 while true; do
-  COUNT=$(peeka inspect --action count --type $TYPE | jq '.count')
+  COUNT=$(peeka-cli inspect --action count --type $TYPE | jq '.count')
   echo "$(date): $TYPE count = $COUNT"
   sleep 60
 done
@@ -622,10 +622,10 @@ done
 
 ```bash
 # 先查询配置
-CONFIG=$(peeka inspect --action get --target "myapp.config.MAX_CONNECTIONS" | jq '.value')
+CONFIG=$(peeka-cli inspect --action get --target "myapp.config.MAX_CONNECTIONS" | jq '.value')
 
 # 再统计实际连接数
-ACTUAL=$(peeka inspect --action count --type myapp.Connection | jq '.count')
+ACTUAL=$(peeka-cli inspect --action count --type myapp.Connection | jq '.count')
 
 # 比较
 echo "配置: $CONFIG, 实际: $ACTUAL"
@@ -635,11 +635,11 @@ echo "配置: $CONFIG, 实际: $ACTUAL"
 
 ```bash
 # GC 前
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # 输出: {"count": 1500}
 
 # 强制 GC 后
-peeka inspect --action count --type myapp.Cache --gc-first
+peeka-cli inspect --action count --type myapp.Cache --gc-first
 # 输出: {"count": 1200}  ← 清理了未引用对象
 ```
 
@@ -647,12 +647,12 @@ peeka inspect --action count --type myapp.Cache --gc-first
 
 ```bash
 # 多条件过滤
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "obj.age > 18 and obj.active and len(obj.name) > 0" \
   --limit 10
 
 # 算术运算
-peeka inspect --action instances --type myapp.Score \
+peeka-cli inspect --action instances --type myapp.Score \
   --filter-express "obj.math + obj.english > 180" \
   --limit 5
 ```
@@ -661,7 +661,7 @@ peeka inspect --action instances --type myapp.Score \
 
 ```bash
 # 导出 instances 到文件
-peeka inspect --action instances --type myapp.User --limit 100 > users.json
+peeka-cli inspect --action instances --type myapp.User --limit 100 > users.json
 
 # 离线分析
 jq '.instances | map(.value.age) | add / length' users.json  # 平均年龄

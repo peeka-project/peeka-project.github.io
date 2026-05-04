@@ -60,7 +60,7 @@ TUI モードでは、**`8`** キーを押して **Inspect ビュー** に切り
 プロセスを再起動することなく、本番環境で実行時の設定値を確認：
 
 ```bash
-peeka inspect --action get --target "app.config.DEBUG"
+peeka-cli inspect --action get --target "app.config.DEBUG"
 ```
 
 ### 2. メモリリークのトラブルシューティング
@@ -68,7 +68,7 @@ peeka inspect --action get --target "app.config.DEBUG"
 解放されていないオブジェクトを確認するために、特定の型のすべてのインスタンスを検索：
 
 ```bash
-peeka inspect --action instances --type myapp.User --limit 10
+peeka-cli inspect --action instances --type myapp.User --limit 10
 ```
 
 ### 3. オブジェクト統計
@@ -76,7 +76,7 @@ peeka inspect --action instances --type myapp.User --limit 10
 メモリ使用量を評価するために、素早く型のオブジェクトをカウント：
 
 ```bash
-peeka inspect --action count --type list
+peeka-cli inspect --action count --type list
 ```
 
 ### 4. 状態診断
@@ -84,7 +84,7 @@ peeka inspect --action count --type list
 アプリケーションの動作を診断するために実行時の状態変数を表示：
 
 ```bash
-peeka inspect --action get --target "sys.path"
+peeka-cli inspect --action get --target "sys.path"
 ```
 
 ---
@@ -92,14 +92,17 @@ peeka inspect --action get --target "sys.path"
 ## コマンドフォーマット
 
 ```bash
-peeka inspect --action <action> [options]
+# まずターゲットプロセスにアタッチ
+peeka-cli attach <pid>
+
+# 次に inspect コマンドを実行
+peeka-cli inspect --action <action> [options]
 ```
 
 ### 基本パラメータ
 
 | パラメータ | 説明 | 必須 | デフォルト |
 |-----------|-------------|----------|---------|
-| `-p, --pid` | ターゲットプロセス PID | はい | - |
 | `--action` | 操作タイプ | いいえ | `get` |
 
 ### action 操作タイプ
@@ -282,10 +285,10 @@ peeka inspect --action <action> [options]
 
 ```bash
 # Python バージョンを表示
-peeka inspect --action get --target "sys.version"
+peeka-cli inspect --action get --target "sys.version"
 
 # sys.path を表示
-peeka inspect --action get --target "sys.path" --depth 3
+peeka-cli inspect --action get --target "sys.path" --depth 3
 ```
 
 **出力**:
@@ -308,24 +311,24 @@ peeka inspect --action get --target "sys.path" --depth 3
 
 ```bash
 # アプリケーション設定を表示
-peeka inspect --action get --target "myapp.config.DEBUG"
+peeka-cli inspect --action get --target "myapp.config.DEBUG"
 
 # クラス定数を表示
-peeka inspect --action get --target "myapp.Database.POOL_SIZE"
+peeka-cli inspect --action get --target "myapp.Database.POOL_SIZE"
 ```
 
 ### 例 3: メモリリークのトラブルシューティング
 
 ```bash
 # すべての User インスタンスを検索
-peeka inspect --action instances --type myapp.User --limit 20
+peeka-cli inspect --action instances --type myapp.User --limit 20
 
 # アクティブなユーザーをフィルタ
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "obj.active == True" --limit 10
 
 # 大きなオブジェクトをフィルタ
-peeka inspect --action instances --type list \
+peeka-cli inspect --action instances --type list \
   --filter-express "len(obj) > 100" --limit 5
 ```
 
@@ -352,13 +355,13 @@ peeka inspect --action instances --type list \
 
 ```bash
 # すべての list インスタンスをカウント
-peeka inspect --action count --type list
+peeka-cli inspect --action count --type list
 
 # dict インスタンスをカウント
-peeka inspect --action count --type dict
+peeka-cli inspect --action count --type dict
 
 # 特定の条件でオブジェクトをカウント
-peeka inspect --action count --type myapp.Connection \
+peeka-cli inspect --action count --type myapp.Connection \
   --filter-express "obj.closed == False"
 ```
 
@@ -377,13 +380,13 @@ peeka inspect --action count --type myapp.Connection \
 
 ```bash
 # value フィールドを抽出
-peeka inspect --action get --target "sys.version" | jq -r '.value'
+peeka-cli inspect --action get --target "sys.version" | jq -r '.value'
 
 # インスタンス数を取得
-peeka inspect --action count --type list | jq '.count'
+peeka-cli inspect --action count --type list | jq '.count'
 
 # 整形表示
-peeka inspect --action instances --type dict --limit 3 | jq .
+peeka-cli inspect --action instances --type dict --limit 3 | jq .
 ```
 
 ---
@@ -398,11 +401,11 @@ peeka inspect --action instances --type dict --limit 3 | jq .
 
 ```bash
 # 疑わしい型を定期的にカウント
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # 出力: {"count": 1500}
 
 # 5分後に再度カウント
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # 出力: {"count": 1800}  ← 継続的に成長している！
 ```
 
@@ -410,10 +413,10 @@ peeka inspect --action count --type myapp.Cache
 
 ```bash
 # 最初の 10 個のインスタンスを取得
-peeka inspect --action instances --type myapp.Cache --limit 10 | jq .
+peeka-cli inspect --action instances --type myapp.Cache --limit 10 | jq .
 
 # 大きなオブジェクトを表示
-peeka inspect --action instances --type myapp.Cache \
+peeka-cli inspect --action instances --type myapp.Cache \
   --filter-express "len(obj.data) > 1000" --limit 5
 ```
 
@@ -421,7 +424,7 @@ peeka inspect --action instances --type myapp.Cache \
 
 ```bash
 # キャッシュ設定を表示
-peeka inspect --action get --target "myapp.cache_config.MAX_SIZE"
+peeka-cli inspect --action get --target "myapp.cache_config.MAX_SIZE"
 # MAX_SIZE が効いていないことが発覚！
 ```
 
@@ -430,7 +433,7 @@ peeka inspect --action get --target "myapp.cache_config.MAX_SIZE"
 コードを修正して再デプロイした後、再度カウント：
 
 ```bash
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # 出力: {"count": 100}  ← 正常に戻った
 ```
 
@@ -459,10 +462,10 @@ peeka inspect --action count --type myapp.Cache
 
 ```bash
 # ❌ 間違い: 辞書キー構文はサポートされていません
-peeka inspect --action get --target 'config["debug"]'
+peeka-cli inspect --action get --target 'config["debug"]'
 
 # ✅ 正しい: まず辞書を取得して、手動で表示
-peeka inspect --action get --target "config" | jq '.value.debug'
+peeka-cli inspect --action get --target "config" | jq '.value.debug'
 ```
 
 ### ⚠️ モジュールロードの制限
@@ -471,7 +474,7 @@ peeka inspect --action get --target "config" | jq '.value.debug'
 
 ```bash
 # ❌ 間違い: myapp がロードされていないとクエリは失敗します
-peeka inspect --action instances --type myapp.User
+peeka-cli inspect --action instances --type myapp.User
 
 # ✅ 正しい: ターゲットプロセスが myapp モジュールをインポートしていることを確認
 # (ターゲットコードに import myapp が必要です)
@@ -496,11 +499,11 @@ peeka inspect --action instances --type myapp.User
 
 ```bash
 # ✅ 安全: SimpleEval で許可されている操作
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "obj.age > 18 and obj.active"
 
 # ❌ 禁止: コードインジェクション攻撃
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "__import__('os').system('rm -rf /')"
 # エラー: Invalid filter expression: __import__ not allowed
 ```
@@ -516,22 +519,22 @@ peeka inspect --action instances --type myapp.User \
 1. **オブジェクトが GC トラッキングされていない**（`str`、`int` のような場合）
    ```bash
    # str/int は信頼できない可能性がある
-   peeka inspect --action count --type str  # 0 になる可能性がある
+   peeka-cli inspect --action count --type str  # 0 になる可能性がある
 
    # 代わりにコンテナ型を使用
-   peeka inspect --action count --type list  # 信頼できる
+   peeka-cli inspect --action count --type list  # 信頼できる
    ```
 
 2. **モジュールがロードされていない**
    ```bash
    # ロードされているモジュールを確認
-   peeka inspect --action get --target "sys.modules.keys()" | grep myapp
+   peeka-cli inspect --action get --target "sys.modules.keys()" | grep myapp
    ```
 
 3. **filter-express がすべてのオブジェクトをフィルタアウトした**
    ```bash
    # まずフィルタなしでテスト
-   peeka inspect --action instances --type myapp.User --limit 5
+   peeka-cli inspect --action instances --type myapp.User --limit 5
    ```
 
 ### Q2: target クエリが "Module not loaded" で失敗
@@ -542,7 +545,7 @@ peeka inspect --action instances --type myapp.User \
 
 ```bash
 # ロードされているモジュールを確認
-peeka inspect --action get --target "list(sys.modules.keys())" | grep myapp
+peeka-cli inspect --action get --target "list(sys.modules.keys())" | grep myapp
 
 # モジュールがロードされていない場合、ターゲットコードにインポートを追加してください
 ```
@@ -575,7 +578,7 @@ peeka inspect --action get --target "list(sys.modules.keys())" | grep myapp
 
 ```bash
 # 代わりに instances を使用（制限がある）
-peeka inspect --action instances --type list --limit 10
+peeka-cli inspect --action instances --type list --limit 10
 
 # またはオフピーク時に count を実行
 ```
@@ -588,10 +591,10 @@ peeka inspect --action instances --type list --limit 10
 
 ```bash
 # 制限を増やす（最大 1000）
-peeka inspect --action instances --type list --limit 1000
+peeka-cli inspect --action instances --type list --limit 1000
 
 # またはフィルタを使用して範囲を絞る
-peeka inspect --action instances --type list \
+peeka-cli inspect --action instances --type list \
   --filter-express "len(obj) > 100" --limit 10
 ```
 
@@ -609,7 +612,7 @@ PID=12345
 TYPE="myapp.Connection"
 
 while true; do
-  COUNT=$(peeka inspect --action count --type $TYPE | jq '.count')
+  COUNT=$(peeka-cli inspect --action count --type $TYPE | jq '.count')
   echo "$(date): $TYPE count = $COUNT"
   sleep 60
 done
@@ -619,10 +622,10 @@ done
 
 ```bash
 # まず設定をクエリ
-CONFIG=$(peeka inspect --action get --target "myapp.config.MAX_CONNECTIONS" | jq '.value')
+CONFIG=$(peeka-cli inspect --action get --target "myapp.config.MAX_CONNECTIONS" | jq '.value')
 
 # 次に実際の接続をカウント
-ACTUAL=$(peeka inspect --action count --type myapp.Connection | jq '.count')
+ACTUAL=$(peeka-cli inspect --action count --type myapp.Connection | jq '.count')
 
 # 比較
 echo "Config: $CONFIG, Actual: $ACTUAL"
@@ -632,11 +635,11 @@ echo "Config: $CONFIG, Actual: $ACTUAL"
 
 ```bash
 # GC 前
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # 出力: {"count": 1500}
 
 # 強制 GC 後
-peeka inspect --action count --type myapp.Cache --gc-first
+peeka-cli inspect --action count --type myapp.Cache --gc-first
 # 出力: {"count": 1200}  ← 参照されていないオブジェクトがクリーンアップされた
 ```
 
@@ -644,12 +647,12 @@ peeka inspect --action count --type myapp.Cache --gc-first
 
 ```bash
 # 複数条件フィルタ
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "obj.age > 18 and obj.active and len(obj.name) > 0" \
   --limit 10
 
 # 算術演算
-peeka inspect --action instances --type myapp.Score \
+peeka-cli inspect --action instances --type myapp.Score \
   --filter-express "obj.math + obj.english > 180" \
   --limit 5
 ```
@@ -658,7 +661,7 @@ peeka inspect --action instances --type myapp.Score \
 
 ```bash
 # インスタンスをファイルにエクスポート
-peeka inspect --action instances --type myapp.User --limit 100 > users.json
+peeka-cli inspect --action instances --type myapp.User --limit 100 > users.json
 
 # オフライン分析
 jq '.instances | map(.value.age) | add / length' users.json  # 平均年齢

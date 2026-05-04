@@ -9,7 +9,7 @@ permalink: /commands
 # Referencia de Comandos
 {: .no_toc }
 
-Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando se centra en un escenario de diagnóstico específico. Este documento cubre los 13 comandos centrales.
+Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando se centra en un escenario de diagnóstico específico. Este documento cubre los 14 comandos centrales.
 {: .fs-6 .fw-300 }
 
 ## Tabla de Contenidos
@@ -37,6 +37,7 @@ Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando s
 | [top]({% link commands/top.md %}) | Muestreo de rendimiento de funciones | Análisis de puntos calientes de rendimiento a nivel de función |
 | [detach]({% link commands/detach.md %}) | Desconectar conexión | Salir de forma segura de la sesión de diagnóstico |
 | [reset]({% link commands/reset.md %}) | Restablecer inyección | Restaurar funciones observadas |
+| [run]({% link commands/run.md %}) | Iniciar y adjuntar | Iniciar un programa Python y entrar automáticamente en una sesión de diagnóstico |
 
 ---
 
@@ -209,5 +210,6 @@ Selecciona el comando que necesitas para ver la documentación detallada:
 - [thread - Análisis de hilos]({% link commands/thread.md %})
 - [top - Muestreo de rendimiento de funciones]({% link commands/top.md %})
 - [detach - Desconectar conexión]({% link commands/detach.md %})
+- [run - Iniciar y adjuntar]({% link commands/run.md %})
 
 O consulta [Inicio Rápido]({% link quickstart.md %}) para conocer el método de uso básico.

@@ -35,7 +35,7 @@ El comando `inspect` proporciona la función de **inspección de objetos en tiem
 Ver valores de configuración en tiempo de ejecución en entorno de producción, no necesita reiniciar el proceso:
 
 ```bash
-peeka inspect --action get --target "app.config.DEBUG"
+peeka-cli inspect --action get --target "app.config.DEBUG"
 ```
 
 ### 2. Resolución de fugas de memoria
@@ -43,7 +43,7 @@ peeka inspect --action get --target "app.config.DEBUG"
 Encontrar todas las instancias de un tipo específico, verificar si hay objetos no liberados:
 
 ```bash
-peeka inspect --action instances --type myapp.User --limit 10
+peeka-cli inspect --action instances --type myapp.User --limit 10
 ```
 
 ### 3. Estadísticas de objetos
@@ -51,7 +51,7 @@ peeka inspect --action instances --type myapp.User --limit 10
 Contar rápidamente el número de objetos de un tipo para evaluar el uso de memoria:
 
 ```bash
-peeka inspect --action count --type list
+peeka-cli inspect --action count --type list
 ```
 
 ### 4. Diagnóstico de estado
@@ -59,7 +59,7 @@ peeka inspect --action count --type list
 Ver variables de estado en tiempo de ejecución para diagnosticar el comportamiento de la aplicación:
 
 ```bash
-peeka inspect --action get --target "sys.path"
+peeka-cli inspect --action get --target "sys.path"
 ```
 
 ---
@@ -283,10 +283,10 @@ La expresión de filtrado usa el evaluador seguro **SimpleEval**, la sintaxis so
 
 ```bash
 # Ver versión de Python
-peeka inspect --action get --target "sys.version"
+peeka-cli inspect --action get --target "sys.version"
 
 # Ver sys.path
-peeka inspect --action get --target "sys.path" --depth 3
+peeka-cli inspect --action get --target "sys.path" --depth 3
 ```
 
 **Salida**:
@@ -309,24 +309,24 @@ peeka inspect --action get --target "sys.path" --depth 3
 
 ```bash
 # Ver configuración de la aplicación
-peeka inspect --action get --target "myapp.config.DEBUG"
+peeka-cli inspect --action get --target "myapp.config.DEBUG"
 
 # Ver constante de clase
-peeka inspect --action get --target "myapp.Database.POOL_SIZE"
+peeka-cli inspect --action get --target "myapp.Database.POOL_SIZE"
 ```
 
 ### Ejemplo 3: Resolución de fuga de memoria
 
 ```bash
 # Encontrar todas las instancias de User
-peeka inspect --action instances --type myapp.User --limit 20
+peeka-cli inspect --action instances --type myapp.User --limit 20
 
 # Filtrar usuarios activos
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "obj.active == True" --limit 10
 
 # Filtrar objetos grandes
-peeka inspect --action instances --type list \
+peeka-cli inspect --action instances --type list \
   --filter-express "len(obj) > 100" --limit 5
 ```
 
@@ -353,13 +353,13 @@ peeka inspect --action instances --type list \
 
 ```bash
 # Contar todas las instancias de list
-peeka inspect --action count --type list
+peeka-cli inspect --action count --type list
 
 # Contar instancias de dict
-peeka inspect --action count --type dict
+peeka-cli inspect --action count --type dict
 
 # Contar objetos que cumplen condiciones específicas
-peeka inspect --action count --type myapp.Connection \
+peeka-cli inspect --action count --type myapp.Connection \
   --filter-express "obj.closed == False"
 ```
 
@@ -378,13 +378,13 @@ peeka inspect --action count --type myapp.Connection \
 
 ```bash
 # Extraer campo value
-peeka inspect --action get --target "sys.version" | jq -r '.value'
+peeka-cli inspect --action get --target "sys.version" | jq -r '.value'
 
 # Contar número de instancias
-peeka inspect --action count --type list | jq '.count'
+peeka-cli inspect --action count --type list | jq '.count'
 
 # Hermosquear salida
-peeka inspect --action instances --type dict --limit 3 | jq .
+peeka-cli inspect --action instances --type dict --limit 3 | jq .
 ```
 
 ---
@@ -399,11 +399,11 @@ peeka inspect --action instances --type dict --limit 3 | jq .
 
 ```bash
 # Contar periódicamente el tipo sospechoso
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # Salida: {"count": 1500}
 
 # Después de 5 minutos vuelve a contar
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # Salida: {"count": 1800}  ← ¡Sigue creciendo!
 ```
 
@@ -411,10 +411,10 @@ peeka inspect --action count --type myapp.Cache
 
 ```bash
 # Obtener las primeras 10 instancias
-peeka inspect --action instances --type myapp.Cache --limit 10 | jq .
+peeka-cli inspect --action instances --type myapp.Cache --limit 10 | jq .
 
 # Ver objetos grandes
-peeka inspect --action instances --type myapp.Cache \
+peeka-cli inspect --action instances --type myapp.Cache \
   --filter-express "len(obj.data) > 1000" --limit 5
 ```
 
@@ -422,7 +422,7 @@ peeka inspect --action instances --type myapp.Cache \
 
 ```bash
 # Ver configuración de caché
-peeka inspect --action get --target "myapp.cache_config.MAX_SIZE"
+peeka-cli inspect --action get --target "myapp.cache_config.MAX_SIZE"
 # ¡Descubres que MAX_SIZE no tiene efecto!
 ```
 
@@ -431,7 +431,7 @@ peeka inspect --action get --target "myapp.cache_config.MAX_SIZE"
 Después de reparar el código y volver a desplegar, vuelve a contar:
 
 ```bash
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # Salida: {"count": 100}  ← Vuelve a la normalidad
 ```
 
@@ -460,10 +460,10 @@ El parámetro `--target` usa la cadena de `getattr()`, **no soporta claves de di
 
 ```bash
 # ❌ Error: no soporta sintaxis de clave de diccionario
-peeka inspect --action get --target 'config["debug"]'
+peeka-cli inspect --action get --target 'config["debug"]'
 
 # ✅ Correcto: Primero obtén el diccionario, verifica manualmente
-peeka inspect --action get --target "config" | jq '.value.debug'
+peeka-cli inspect --action get --target "config" | jq '.value.debug'
 ```
 
 ### ⚠️ Restricciones de carga de módulos
@@ -472,7 +472,7 @@ El parámetro `--type` **no importa dinámicamente módulos**:
 
 ```bash
 # ❌ Error: La consulta falla cuando myapp no está cargado
-peeka inspect --action instances --type myapp.User
+peeka-cli inspect --action instances --type myapp.User
 
 # ✅ Correcto: Asegúrate de que el módulo myapp ya está importado en el proceso objetivo
 # (debe haber un import myapp en el código objetivo)
@@ -497,11 +497,11 @@ La expresión de filtrado usa **SimpleEval** para prevenir inyección de código
 
 ```bash
 # ✅ Seguro: operaciones permitidas por SimpleEval
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "obj.age > 18 and obj.active"
 
 # ❌ Prohibido: ataque de inyección de código
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "__import__('os').system('rm -rf /')"
 # Error: Invalid filter expression: __import__ not allowed
 ```
@@ -517,22 +517,22 @@ peeka inspect --action instances --type myapp.User \
 1. **El objeto no es rastreado por GC** (como `str`, `int`)
    ```bash
    # str/int puede no ser confiable
-   peeka inspect --action count --type str  # Puede ser 0
+   peeka-cli inspect --action count --type str  # Puede ser 0
 
    # Mejor usa tipos contenedores
-   peeka inspect --action count --type list  # Confiable
+   peeka-cli inspect --action count --type list  # Confiable
    ```
 
 2. **Módulo no cargado**
    ```bash
    # Confirma que el módulo está importado
-   peeka inspect --action get --target "list(sys.modules.keys())" | grep myapp
+   peeka-cli inspect --action get --target "list(sys.modules.keys())" | grep myapp
    ```
 
 3. **filter-express filtró todos los objetos**
    ```bash
    # Prueba primero sin filtro
-   peeka inspect --action instances --type myapp.User --limit 5
+   peeka-cli inspect --action instances --type myapp.User --limit 5
    ```
 
 ### P2: La consulta target falló "Module not loaded"
@@ -543,7 +543,7 @@ peeka inspect --action instances --type myapp.User \
 
 ```bash
 # Verifica módulos cargados
-peeka inspect --action get --target "list(sys.modules.keys())" | grep myapp
+peeka-cli inspect --action get --target "list(sys.modules.keys())" | grep myapp
 
 # Si el módulo no está cargado, necesitas agregar un import en el código objetivo
 ```
@@ -576,7 +576,7 @@ peeka inspect --action get --target "list(sys.modules.keys())" | grep myapp
 
 ```bash
 # Usa instances en su lugar (con limit)
-peeka inspect --action instances --type list --limit 10
+peeka-cli inspect --action instances --type list --limit 10
 
 # O ejecuta count durante el período de baja carga empresarial
 ```
@@ -589,10 +589,10 @@ peeka inspect --action instances --type list --limit 10
 
 ```bash
 # Aumenta el límite (máximo 1000)
-peeka inspect --action instances --type list --limit 1000
+peeka-cli inspect --action instances --type list --limit 1000
 
 # O usa un filtro para reducir el alcance
-peeka inspect --action instances --type list \
+peeka-cli inspect --action instances --type list \
   --filter-express "len(obj) > 100" --limit 10
 ```
 
@@ -610,7 +610,7 @@ PID=12345
 TYPE="myapp.Connection"
 
 while true; do
-  COUNT=$(peeka inspect --action count --type $TYPE | jq '.count')
+  COUNT=$(peeka-cli inspect --action count --type $TYPE | jq '.count')
   echo "$(date): $TYPE count = $COUNT"
   sleep 60
 done
@@ -620,10 +620,10 @@ done
 
 ```bash
 # Primero consulta la configuración
-CONFIG=$(peeka inspect --action get --target "myapp.config.MAX_CONNECTIONS" | jq '.value')
+CONFIG=$(peeka-cli inspect --action get --target "myapp.config.MAX_CONNECTIONS" | jq '.value')
 
 # Luego cuenta el número real de conexiones
-ACTUAL=$(peeka inspect --action count --type myapp.Connection | jq '.count')
+ACTUAL=$(peeka-cli inspect --action count --type myapp.Connection | jq '.count')
 
 # Compara
 echo "Configuración: $CONFIG, Real: $ACTUAL"
@@ -633,11 +633,11 @@ echo "Configuración: $CONFIG, Real: $ACTUAL"
 
 ```bash
 # Antes de GC
-peeka inspect --action count --type myapp.Cache
+peeka-cli inspect --action count --type myapp.Cache
 # Salida: {"count": 1500}
 
 # Después de forzar GC
-peeka inspect --action count --type myapp.Cache --gc-first
+peeka-cli inspect --action count --type myapp.Cache --gc-first
 # Salida: {"count": 1200}  ← Se limpiaron objetos no referenciados
 ```
 
@@ -645,12 +645,12 @@ peeka inspect --action count --type myapp.Cache --gc-first
 
 ```bash
 # Filtrado de múltiples condiciones
-peeka inspect --action instances --type myapp.User \
+peeka-cli inspect --action instances --type myapp.User \
   --filter-express "obj.age > 18 and obj.active and len(obj.name) > 0" \
   --limit 10
 
 # Operaciones aritméticas
-peeka inspect --action instances --type myapp.Score \
+peeka-cli inspect --action instances --type myapp.Score \
   --filter-express "obj.math + obj.english > 180" \
   --limit 5
 ```
@@ -659,7 +659,7 @@ peeka inspect --action instances --type myapp.Score \
 
 ```bash
 # Exportar instances a un archivo
-peeka inspect --action instances --type myapp.User --limit 100 > users.json
+peeka-cli inspect --action instances --type myapp.User --limit 100 > users.json
 
 # Análisis offline
 jq '.instances | map(.value.age) | add / length' users.json  # Promedio de edad

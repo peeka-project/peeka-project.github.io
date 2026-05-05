@@ -147,12 +147,14 @@ CLI コマンドに加えて、Peeka は機能豊富な TUI（テキストユー
 - **オートコンプリート** - ターゲットプロセスからクラスとメソッドを動的に取得
 - **テーマサポート** - 複数のビルトインカラーテーマ
 
+![Peeka Dashboard ビュー]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
+
 ```bash
 # TUI を起動
 peeka
 
 # 数字キーでビューを切り替え
-# 1/2/3/4/5/6/7/8/9/0/8
+# 1/2/3/4/5/6/7/8/9/0
 ```
 
 [完全な TUI 使用ガイドを見る]({% link tui.md %}){: .btn .btn-outline }

@@ -37,6 +37,8 @@ nav_order: 3
   - 按 `c` 清空追踪记录
   - 按 Delete 删除选中记录
 
+![Peeka Trace 视图]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
+
 **CLI 等效命令**：下文所有示例使用 CLI 命令演示，TUI 提供了相同功能的图形化界面。
 
 ## 使用场景
@@ -178,23 +180,17 @@ peeka-cli trace "calculator.Calculator.calculate" -n 5
 | `duration_ms` | 执行耗时（毫秒）   | `10.5`                 |
 | `children`    | 子调用列表      | `[...]`                |
 
-### 2. 树形文本输出（TUI）
+### 2. 可视化调用树（TUI）
 
 在 TUI 模式下，调用树以可视化的树形结构展示：
 
-```
-`---[125.3ms] calculator.Calculator.calculate()
-    +---[2.1ms] calculator.Calculator._validate()
-    +---[98.2ms] calculator.Calculator._compute()
-    |   `---[95.1ms] math.sqrt()
-    `---[15.7ms] calculator.Logger.info()
-```
+![Peeka Trace 调用树]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **说明**：
-- `---` 表示最后一个子节点
-- `+---` 表示中间子节点
-- `|` 表示父节点有后续兄弟节点的连接线
-- `[Xms]` 显示函数执行耗时
+- 左侧 Active Traces 显示当前追踪任务和每次观测的耗时
+- 右侧 Call Tree 显示可展开/折叠的调用树
+- 不同颜色用于突出不同耗时区间
+- 底部 Stats 展示当前选中观测的总耗时、节点数量和函数名
 
 ### 3. 调整追踪深度
 
@@ -692,5 +688,3 @@ for line in proc.stdout:
 |-------|---------|---------------|
 | 0.2.0 | 2026-02 | 添加 trace 命令文档 |
 | 0.1.0 | 2025-01 | 初始版本          |
-
-

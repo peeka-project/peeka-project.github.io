@@ -149,6 +149,8 @@ In addition to CLI commands, Peeka also provides a feature-complete TUI (Text Us
 - **Auto-Completion** - Dynamically retrieve classes and methods from target process
 - **Theme Support** - Multiple built-in color themes
 
+![Peeka Dashboard view]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
+
 ```bash
 # Launch TUI
 peeka

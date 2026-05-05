@@ -240,6 +240,8 @@ Peeka 提供了一个基于 Textual 的交互式 TUI 界面。
 peeka
 ```
 
+![Peeka TUI Dashboard 视图]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
+
 ### TUI 功能
 
 1. **进程选择** - 自动发现并选择目标进程

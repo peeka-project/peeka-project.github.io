@@ -61,24 +61,7 @@ peeka --list-themes
 
 After starting TUI, the interface is divided into the following areas:
 
-```
-┌─────────────────────────────────────────────────────────┐
-│ Header - Peeka TUI                                      │
-├─────────────────────────────────────────────────────────┤
-│ Process Selector / PID Status                          │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│ Tab 1  Tab 2  Tab 3  ...                               │
-│ ┌─────────────────────────────────────────────────────┐ │
-│ │                                                     │ │
-│ │         View Content Area                           │ │
-│ │                                                     │ │
-│ └─────────────────────────────────────────────────────┘ │
-│                                                         │
-├─────────────────────────────────────────────────────────┤
-│ Footer - Keybinding Hints (1)Dashboard (2)Watch (3)Trace (4)Stack (5)Monitor (6)Memory (7)Logger (8)Inspect (9)Threads (0)Top     │
-└─────────────────────────────────────────────────────────┘
-```
+![Peeka TUI Dashboard view]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
 
 ### Area Descriptions
 
@@ -109,27 +92,30 @@ After starting TUI, the interface is divided into the following areas:
 
 ### 1. Dashboard View (`1` key)
 
-**Function**: Command input and execution center
+**Function**: Real-time diagnostic overview for the target process
 
 **Features**:
-- Command auto-completion (supports Tab completion)
-- Command history (↑ / ↓ keys)
-- Real-time execution result display
-- Supports all CLI commands
+- Thread count and state summary
+- Thread list with daemon markers and current top frame
+- Memory, GC, and runtime information overview
+- Activity Log showing client and agent events in real time
+- Refresh support for the current process snapshot
 
 **Usage**:
-1. Enter command (e.g., `watch module.func -n 10`)
-2. Press Enter to execute
-3. View JSON output results
+1. Start TUI and attach to the target process
+2. Review thread, memory, GC, and runtime state
+3. Use Activity Log to confirm connection and command execution status
 4. Press other view shortcuts to switch to dedicated views
 
-**Suitable Scenarios**: Quick one-off command execution, viewing command output
+**Suitable Scenarios**: Quickly checking process health, thread state, and diagnostic session connectivity
 
 ---
 
 ### 2. Watch View (`2` key)
 
 **Function**: Observe function call parameters, return values, exceptions, timing
+
+![Peeka Watch view]({{ site.url }}/assets/images/screenshots/peeka-watch.png)
 
 **Features**:
 - Real-time streaming updates (observation data continuously displayed)
@@ -155,6 +141,8 @@ After starting TUI, the interface is divided into the following areas:
 
 **Function**: Trace function call chains, showing hierarchical relationships and timing of method calls
 
+![Peeka Trace view]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
+
 **Features**:
 - **Tree structure display**: Visualize call hierarchy
 - **Color-coded timing**:
@@ -173,14 +161,7 @@ After starting TUI, the interface is divided into the following areas:
 - Press Delete to stop tracing
 - Click nodes to expand/collapse (mouse support)
 
-**Output Example**:
-```
-`---[125.3ms] calculator.Calculator.calculate()
-    +---[2.1ms] calculator.Calculator._validate()
-    +---[98.2ms] calculator.Calculator._compute()
-    |   `---[95.1ms] math.sqrt()
-    `---[15.7ms] calculator.Logger.info()
-```
+**Output Example**: The Trace view displays call chains and each node's timing as an expandable tree.
 
 ---
 

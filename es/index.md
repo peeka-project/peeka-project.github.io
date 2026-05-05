@@ -147,12 +147,14 @@ Además de los comandos CLI, Peeka también proporciona una rica interfaz TUI (i
 - **Autocompletado** — Obtiene clases y métodos dinámicamente desde el proceso objetivo
 - **Soporte de temas** — Múltiples temas de colores incorporados
 
+![Vista Dashboard de Peeka]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
+
 ```bash
 # Iniciar TUI
 peeka
 
 # Cambiar de vista con teclas numéricas
-# 1/2/3/4/5/6/7/8/9/0/8
+# 1/2/3/4/5/6/7/8/9/0
 ```
 
 [Ver guía completa de uso de TUI]({% link tui.md %}){: .btn .btn-outline }

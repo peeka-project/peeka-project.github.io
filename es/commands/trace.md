@@ -37,6 +37,8 @@ En modo TUI, presiona la tecla **`3`** para cambiar a la **Vista Trace**, que pr
   - Presiona `c` para limpiar registros de rastreo
   - Presiona Delete para eliminar el registro seleccionado
 
+![Vista Trace de Peeka]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
+
 **Comandos CLI equivalentes**: Todos los ejemplos a continuación usan comandos CLI para demostración. TUI proporciona la misma funcionalidad con una interfaz gráfica.
 
 ## Escenarios de Uso
@@ -178,23 +180,17 @@ peeka-cli trace "calculator.Calculator.calculate" -n 5
 | `duration_ms` | Tiempo de ejecución (milisegundos) | `10.5` |
 | `children` | Lista de sub-llamadas | `[...]` |
 
-### 2. Salida de Árbol de Texto (TUI)
+### 2. Árbol de llamadas visual (TUI)
 
 En modo TUI, el árbol de llamadas se muestra como una estructura de árbol visual:
 
-```
-`---[125.3ms] calculator.Calculator.calculate()
-    +---[2.1ms] calculator.Calculator._validate()
-    +---[98.2ms] calculator.Calculator._compute()
-    |   `---[95.1ms] math.sqrt()
-    `---[15.7ms] calculator.Logger.info()
-```
+![Árbol de llamadas Trace de Peeka]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **Explicación**:
-- `---` indica el último nodo hijo
-- `+---` indica nodos hijos intermedios
-- `|` indica línea de conexión para nodos padre con nodos hermanos subsiguientes
-- `[Xms]` muestra el tiempo de ejecución de la función
+- Active Traces a la izquierda muestra las tareas de rastreo actuales y el tiempo de cada observación
+- Call Tree a la derecha muestra el árbol de llamadas expandible/colapsable
+- Los colores resaltan distintos rangos de tiempo
+- Stats en la parte inferior muestra duración total, número de nodos y nombre de función de la observación seleccionada
 
 ### 3. Ajustar Profundidad de Rastreo
 

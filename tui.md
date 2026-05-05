@@ -61,24 +61,7 @@ peeka --list-themes
 
 启动 TUI 后，界面分为以下几个区域：
 
-```
-┌─────────────────────────────────────────────────────────┐
-│ Header - Peeka TUI                                      │
-├─────────────────────────────────────────────────────────┤
-│ Process Selector / PID Status                          │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│ Tab 1  Tab 2  Tab 3  ...                               │
-│ ┌─────────────────────────────────────────────────────┐ │
-│ │                                                     │ │
-│ │         View Content Area                           │ │
-│ │                                                     │ │
-│ └─────────────────────────────────────────────────────┘ │
-│                                                         │
-├─────────────────────────────────────────────────────────┤
-│ Footer - Keybinding Hints (1)Dashboard (2)Watch (3)Trace (4)Stack (5)Monitor (6)Memory (7)Logger (8)Inspect (9)Threads (0)Top     │
-└─────────────────────────────────────────────────────────┘
-```
+![Peeka TUI Dashboard 视图]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
 
 ### 区域说明
 
@@ -109,27 +92,30 @@ peeka --list-themes
 
 ### 1. Dashboard 视图（`1` 键）
 
-**功能**：命令输入和执行中心
+**功能**：目标进程的实时诊断总览
 
 **特点**：
-- 命令自动补全（支持 Tab 补全）
-- 命令历史记录（↑ / ↓ 键）
-- 实时执行结果显示
-- 支持所有 CLI 命令
+- 线程数量和运行状态汇总
+- 线程列表、守护线程标记和当前栈顶帧
+- 内存、GC、运行时信息概览
+- Activity Log 实时展示客户端和 Agent 事件
+- 支持刷新当前进程快照
 
 **使用方式**：
-1. 输入命令（如 `watch module.func -n 10`）
-2. 按 Enter 执行
-3. 查看 JSON 输出结果
+1. 启动 TUI 并附加到目标进程
+2. 查看线程、内存、GC 和运行时状态
+3. 根据 Activity Log 确认连接和命令执行状态
 4. 按其他视图快捷键切换到专用视图
 
-**适合场景**：快速执行一次性命令、查看命令输出
+**适合场景**：快速确认进程健康状态、线程状态和诊断会话连接情况
 
 ---
 
 ### 2. Watch 视图（`2` 键）
 
 **功能**：观测函数调用的入参、返回值、异常、耗时
+
+![Peeka Watch 视图]({{ site.url }}/assets/images/screenshots/peeka-watch.png)
 
 **特点**：
 - 实时流式更新（观测数据持续显示）
@@ -155,6 +141,8 @@ peeka --list-themes
 
 **功能**：追踪函数调用链，展示方法调用的层次关系和耗时
 
+![Peeka Trace 视图]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
+
 **特点**：
 - **树形结构展示**：可视化调用层次
 - **颜色编码耗时**：
@@ -173,14 +161,7 @@ peeka --list-themes
 - 按 Delete 停止追踪
 - 点击节点展开/折叠（鼠标支持）
 
-**输出示例**：
-```
-`---[125.3ms] calculator.Calculator.calculate()
-    +---[2.1ms] calculator.Calculator._validate()
-    +---[98.2ms] calculator.Calculator._compute()
-    |   `---[95.1ms] math.sqrt()
-    `---[15.7ms] calculator.Logger.info()
-```
+**输出示例**：Trace 视图会以可展开的树形结构展示调用链和每个节点的耗时。
 
 ---
 

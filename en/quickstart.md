@@ -241,6 +241,8 @@ Peeka provides an interactive TUI interface based on Textual.
 peeka
 ```
 
+![Peeka TUI Dashboard view]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
+
 ### TUI Features
 
 1. **Process Selection** - Automatically discover and select target processes

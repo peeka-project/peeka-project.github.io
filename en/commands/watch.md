@@ -35,6 +35,8 @@ In TUI mode, press **`2`** key to switch to **Watch View**, providing the follow
   - Press `c` to clear observation records
   - Press `r` to refresh view
 
+![Peeka Watch view]({{ site.url }}/assets/images/screenshots/peeka-watch.png)
+
 **CLI Equivalent Commands**: All examples below use CLI commands for demonstration. TUI provides the same functionality with a graphical interface.
 ## Use Cases
 

@@ -60,24 +60,7 @@ peeka --list-themes
 
 Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 
-```
-┌─────────────────────────────────────────────────────────┐
-│ Header - Peeka TUI                                      │
-├─────────────────────────────────────────────────────────┤
-│ Process Selector / PID Status                          │
-├─────────────────────────────────────────────────────────┤
-│                                                         │
-│ Tab 1  Tab 2  Tab 3  ...                               │
-│ ┌─────────────────────────────────────────────────────┐ │
-│ │                                                     │ │
-│ │         View Content Area                           │ │
-│ │                                                     │ │
-│ └─────────────────────────────────────────────────────┘ │
-│                                                         │
-├─────────────────────────────────────────────────────────┤
-│ Footer - Keybinding Hints (1)Dashboard (2)Watch (3)Trace (4)Stack (5)Monitor (6)Memory (7)Logger (8)Inspect (9)Threads (0)Top │
-└─────────────────────────────────────────────────────────┘
-```
+![Vista Dashboard de Peeka TUI]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
 
 ### Descripción de Áreas
 
@@ -108,27 +91,30 @@ Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 
 ### 1. Vista Dashboard (tecla `1`)
 
-**Función**: Centro de entrada y ejecución de comandos
+**Función**: Vista general de diagnóstico en tiempo real del proceso objetivo
 
 **Características**:
-- Autocompletado de comandos (soporta completado con Tab)
-- Historial de comandos (teclas ↑ / ↓)
-- Visualización de resultados de ejecución en tiempo real
-- Soporta todos los comandos CLI
+- Resumen del número de hilos y sus estados
+- Lista de hilos con marcadores de daemon y frame superior actual
+- Vista general de memoria, GC e información de runtime
+- Activity Log con eventos del cliente y del agente en tiempo real
+- Soporte para refrescar la instantánea del proceso actual
 
 **Modo de uso**:
-1. Ingresa el comando (como `watch module.func -n 10`)
-2. Presiona Enter para ejecutar
-3. Ver el resultado JSON de salida
+1. Inicia TUI y adjúntate al proceso objetivo
+2. Revisa el estado de hilos, memoria, GC y runtime
+3. Usa Activity Log para confirmar la conexión y el estado de ejecución de comandos
 4. Presiona el atajo de otra vista para cambiar a la vista dedicada
 
-**Escenarios adecuados**: Ejecución rápida de comandos de una sola vez, ver salida de comandos
+**Escenarios adecuados**: Comprobar rápidamente la salud del proceso, el estado de hilos y la conexión de la sesión de diagnóstico
 
 ---
 
 ### 2. Vista Watch (tecla `2`)
 
 **Función**: Observa parámetros de entrada, valores de retorno, excepciones y tiempo consumido de llamadas a funciones
+
+![Vista Watch de Peeka]({{ site.url }}/assets/images/screenshots/peeka-watch.png)
 
 **Características**:
 - Actualización en streaming en tiempo real (datos de observación se muestran continuamente)
@@ -154,6 +140,8 @@ Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 
 **Función**: Rastrear la cadena de llamadas de funciones, mostrando la relación jerárquica y el tiempo consumido de las llamadas a métodos
 
+![Vista Trace de Peeka]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
+
 **Características**:
 - **Visualización en estructura de árbol**: Jerarquía de llamada visual
 - **Codificación de colores por tiempo consumido**:
@@ -172,14 +160,7 @@ Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 - Presiona Delete para detener el rastreo
 - Clic en el nodo para expandir/colapsar (soporte de ratón)
 
-**Ejemplo de salida**:
-```
-`---[125.3ms] calculator.Calculator.calculate()
-    +---[2.1ms] calculator.Calculator._validate()
-    +---[98.2ms] calculator.Calculator._compute()
-    |   `---[95.1ms] math.sqrt()
-    `---[15.7ms] calculator.Logger.info()
-```
+**Ejemplo de salida**: La vista Trace muestra cadenas de llamadas y el tiempo de cada nodo como un árbol expandible.
 
 ---
 

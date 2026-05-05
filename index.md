@@ -149,6 +149,8 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 - **自动补全** - 动态获取目标进程的类和方法列表
 - **主题支持** - 内置多种配色主题
 
+![Peeka Dashboard 视图]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
+
 ```bash
 # 启动 TUI
 peeka

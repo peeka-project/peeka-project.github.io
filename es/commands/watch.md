@@ -31,6 +31,8 @@ En modo TUI, presiona la tecla **`2`** para cambiar a la **Vista Watch**, que pr
   - Presiona `c` para limpiar los registros de observación
   - Presiona `r` para actualizar la vista
 
+![Vista Watch de Peeka]({{ site.url }}/assets/images/screenshots/peeka-watch.png)
+
 **Comandos CLI equivalentes**: Todos los ejemplos a continuación usan comandos CLI para demostración. TUI proporciona la misma funcionalidad con una interfaz gráfica.
 
 ## Escenarios de Uso

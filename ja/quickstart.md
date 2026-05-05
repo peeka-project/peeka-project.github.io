@@ -242,6 +242,8 @@ Peeka は Textual ベースのインタラクティブな TUI インターフェ
 peeka
 ```
 
+![Peeka TUI Dashboard ビュー]({{ site.url }}/assets/images/screenshots/peeka-dashboard.png)
+
 ### TUI 機能
 
 1. **プロセス選択** - システムプロセスを自動検出して選択可能

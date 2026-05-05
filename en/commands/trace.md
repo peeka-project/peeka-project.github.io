@@ -39,6 +39,8 @@ In TUI mode, press **`3`** key to switch to **Trace View**, providing the follow
   - Press `c` to clear trace records
   - Press Delete to remove selected record
 
+![Peeka Trace view]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
+
 **CLI Equivalent Commands**: All examples below use CLI commands for demonstration. TUI provides the same functionality with a graphical interface.
 ## Use Cases
 
@@ -179,23 +181,17 @@ peeka-cli trace "calculator.Calculator.calculate" -n 5
 | `duration_ms` | Execution time (milliseconds) | `10.5` |
 | `children` | Sub-call list | `[...]` |
 
-### 2. Tree Text Output (TUI)
+### 2. Visual Call Tree (TUI)
 
 In TUI mode, the call tree is displayed as a visual tree structure:
 
-```
-`---[125.3ms] calculator.Calculator.calculate()
-    +---[2.1ms] calculator.Calculator._validate()
-    +---[98.2ms] calculator.Calculator._compute()
-    |   `---[95.1ms] math.sqrt()
-    `---[15.7ms] calculator.Logger.info()
-```
+![Peeka Trace call tree]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **Explanation**:
-- `---` indicates the last child node
-- `+---` indicates intermediate child nodes
-- `|` indicates connection line for parent nodes with subsequent sibling nodes
-- `[Xms]` shows function execution time
+- Active Traces on the left shows current trace tasks and per-observation timing
+- Call Tree on the right shows the expandable/collapsible call tree
+- Different colors highlight different timing ranges
+- Stats at the bottom shows total duration, node count, and function name for the selected observation
 
 ### 3. Adjust Trace Depth
 

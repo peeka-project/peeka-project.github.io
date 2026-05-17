@@ -155,3 +155,9 @@ Cuando el script termina (normalmente o con error), la observación se detiene a
 - [`watch`](watch.md) - Observar llamadas a funciones
 - [`trace`](trace.md) - Trazar árbol de llamadas
 - [`stack`](stack.md) - Capturar pila de llamadas
+
+## Historial de cambios
+
+| Versión | Fecha      | Cambios                           |
+|---------|------------|-----------------------------------|
+| 0.1.8   | 2025-04-28 | Documentación del comando run añadida |

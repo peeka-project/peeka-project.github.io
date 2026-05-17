@@ -151,3 +151,9 @@ peeka-cli run myscript.py arg1 watch "mymodule.func"
 - [`watch`](watch.md) - 関数呼び出しの観測
 - [`trace`](trace.md) - コールツリーの追跡
 - [`stack`](stack.md) - コールスタックの捕捉
+
+## 更新履歴
+
+| バージョン | 日付       | 更新内容           |
+|-----------|------------|-------------------|
+| 0.1.8     | 2025-04-28 | run コマンドのドキュメント追加 |

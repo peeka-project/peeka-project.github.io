@@ -690,3 +690,11 @@ for line in proc.stdout:
 |---------|------|---------|
 | 0.2.0 | 2026-02 | Agregada documentación del comando trace |
 | 0.1.0 | 2025-01 | Versión inicial |
+
+## Historial de cambios
+
+| Versión | Fecha | Cambios |
+|---------|-------|---------|
+| 0.1.12 | 2026-05-08 | Sistema de paneles TUI unificado, diseños responsivos refinados (commit 50c4af4) |
+| 0.1.11 | 2026-05-07 | Etiquetado de clientes con fuentes estables (commit 965ff22), diagnósticos de actividad enriquecidos (commit b1b0412) |
+| 0.1.10 | 2026-05-04 | Normalización de colores de botones en TUI (commit fd6a0a1), mejora de legibilidad del ajuste de línea del registro de actividad (commit 5f46ae8) |

@@ -992,3 +992,9 @@ echo "DEBUG enabled. Will auto-restore in $DURATION seconds..."
 - 了解 [`memory`](memory.md) 命令（内存分析）
 - 参考 [AGENTS.md](../AGENTS.md)（开发者指南）
 
+
+## 更新历史
+
+| 版本 | 发布日期 | 更新内容 |
+|------|---------|---------|
+| 0.1.12 | 2026-05-08 | TUI 面板系统统一，布局优化（commit 50c4af4） |

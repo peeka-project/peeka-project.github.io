@@ -959,3 +959,11 @@ The `monitor` command is a powerful tool for production environment performance 
 - Learn about [`stack`](stack) command (tracing call stacks)
 - Learn about [`memory`](memory) command (memory analysis)
 - Refer to [AGENTS.md](../AGENTS) (developer guide)
+
+## Version History
+
+| Version | Release Date | Changes |
+|---------|-------------|---------|
+| 0.1.12 | 2026-05-08 | Unified TUI panel system, refined responsive layouts (commit 50c4af4) |
+| 0.1.11 | 2026-05-07 | Client labeling with stable sources (commit 965ff22), enriched activity diagnostics (commit b1b0412) |
+| 0.1.10 | 2026-05-04 | TUI button color normalization (commit fd6a0a1) |

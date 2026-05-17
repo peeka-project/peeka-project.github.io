@@ -710,3 +710,9 @@ jq '.instances | map(select(.value.active == true)) | length' users.json  # Acti
 - `memory` - Memory analysis and tracking
 - `sc` - Search classes
 - `sm` - Search methods
+
+## Version History
+
+| Version | Release Date | Changes |
+|---------|-------------|---------|
+| 0.1.12 | 2026-05-08 | Unified TUI panel system, refined responsive layouts (commit 50c4af4) |

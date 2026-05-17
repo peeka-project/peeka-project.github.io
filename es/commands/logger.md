@@ -995,3 +995,9 @@ El comando `logger` es una herramienta potente para diagnóstico de registros en
 - Conoce el comando [`watch`](watch.md) (observar llamadas a funciones)
 - Conoce el comando [`stack`](stack.md) (rastrear pila de llamadas)
 - Conoce el comando [`memory`](memory.md) (análisis de memoria)
+
+## Historial de cambios
+
+| Versión | Fecha | Cambios |
+|---------|-------|---------|
+| 0.1.12 | 2026-05-08 | Sistema de paneles TUI unificado, diseños responsivos refinados (commit 50c4af4) |

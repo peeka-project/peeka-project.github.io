@@ -992,3 +992,9 @@ The `logger` command is a powerful tool for log diagnostics in production enviro
 - Learn about [`stack`](stack.md) command (trace call stacks)
 - Learn about [`memory`](memory.md) command (memory analysis)
 - Refer to [AGENTS.md](../AGENTS.md) (developer guide)
+
+## Version History
+
+| Version | Release Date | Changes |
+|---------|-------------|---------|
+| 0.1.12 | 2026-05-08 | Unified TUI panel system, refined responsive layouts (commit 50c4af4) |

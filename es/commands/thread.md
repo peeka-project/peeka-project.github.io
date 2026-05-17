@@ -297,3 +297,10 @@ En modo TUI, puedes ver información de hilos a través de la interfaz interacti
 5. **Requisitos de permisos**:
    - Necesitas usar primero el comando `attach` para adjuntar al proceso objetivo
    - Los requisitos de permisos para adjuntar se describen en la [documentación del comando attach](attach)
+
+## Historial de cambios
+
+| Versión | Fecha | Cambios |
+|---------|-------|---------|
+| 0.1.13 | 2026-05-16 | Optimización de rendimiento: inicialización diferida de pestañas ocultas, pausa de trabajadores de actualización ocultos (commit 122962b) |
+| 0.1.10 | 2026-05-04 | Normalización de colores de botones en TUI (commit fd6a0a1) |

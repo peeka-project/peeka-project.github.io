@@ -301,3 +301,10 @@ In TUI mode, you can view thread information through the interactive interface:
 5. **Permission Requirements**:
    - Must first use `attach` command to attach to target process
    - For attachment permission requirements, see [attach command documentation](attach.html)
+
+## Version History
+
+| Version | Release Date | Changes |
+|---------|-------------|---------|
+| 0.1.13 | 2026-05-16 | Performance optimization: lazy-initialize hidden tabs, pause hidden refresh workers (commit 122962b) |
+| 0.1.10 | 2026-05-04 | TUI button color normalization (commit fd6a0a1) |

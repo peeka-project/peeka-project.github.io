@@ -991,3 +991,9 @@ echo "DEBUG enabled. Will auto-restore in $DURATION seconds..."
 - [`watch`](watch.md) コマンドを学ぶ（関数呼び出しをオブザーブ）
 - [`stack`](stack.md) コマンドを学ぶ（呼び出しスタックをトレース）
 - [`memory`](memory.md) コマンドを学ぶ（メモリ分析）
+
+## 更新履歴
+
+| バージョン | リリース日 | 変更内容 |
+|----------|----------|---------|
+| 0.1.12 | 2026-05-08 | TUI パネルシステムの統一、レスポンシブレイアウトの改善（commit 50c4af4） |

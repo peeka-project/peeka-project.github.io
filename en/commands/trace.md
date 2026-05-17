@@ -692,3 +692,11 @@ for line in proc.stdout:
 |---------|------|---------|
 | 0.2.0 | 2026-02 | Added trace command documentation |
 | 0.1.0 | 2025-01 | Initial release |
+
+## Version History
+
+| Version | Release Date | Changes |
+|---------|-------------|---------|
+| 0.1.12 | 2026-05-08 | Unified TUI panel system, refined responsive layouts (commit 50c4af4) |
+| 0.1.11 | 2026-05-07 | Client labeling with stable sources (commit 965ff22), enriched activity diagnostics (commit b1b0412) |
+| 0.1.10 | 2026-05-04 | TUI button color normalization (commit fd6a0a1), improved activity log wrapping readability (commit 5f46ae8) |

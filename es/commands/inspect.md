@@ -706,3 +706,9 @@ jq '.instances | map(select(.value.active == true)) | length' users.json  # Núm
 - `memory` - Análisis y rastreo de memoria
 - `sc` - Buscar clases
 - `sm` - Buscar métodos
+
+## Historial de cambios
+
+| Versión | Fecha | Cambios |
+|---------|-------|---------|
+| 0.1.12 | 2026-05-08 | Sistema de paneles TUI unificado, diseños responsivos refinados (commit 50c4af4) |

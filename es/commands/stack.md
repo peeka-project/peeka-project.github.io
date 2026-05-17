@@ -818,3 +818,11 @@ El comando `stack` es una herramienta potente para rastrear rutas de llamada de 
 - Conoce el comando [`watch`](watch) (observa argumentos y valores de retorno)
 - Conoce el comando [`memory`](memory) (análisis de memoria)
 - Referente a [Guía para Desarrolladores de Agentes de IA](../ai-skill.md)
+
+## Historial de cambios
+
+| Versión | Fecha | Cambios |
+|---------|-------|---------|
+| 0.1.12 | 2026-05-08 | Sistema de paneles TUI unificado, diseños responsivos refinados (commit 50c4af4) |
+| 0.1.11 | 2026-05-07 | Etiquetado de clientes con fuentes estables (commit 965ff22), diagnósticos de actividad enriquecidos (commit b1b0412) |
+| 0.1.10 | 2026-05-04 | Normalización de colores de botones en TUI (commit fd6a0a1) |

@@ -821,7 +821,7 @@ for line in sys.stdin:
 - [Diseño de Arquitectura de Peeka](../architecture.md)
 - [Guía para Desarrolladores de Agentes de IA](../ai-skill.md)
 
-## Registro de Cambios
+## Historial de versiones
 
 | Versión | Fecha       | Actualizaciones |
 |---------|------------|-------------------|
@@ -830,4 +830,4 @@ for line in sys.stdin:
 | 0.1.11  | 2026-05-07 | Corregida detección de generadores asíncronos y perfilado de ejecución |
 | 0.1.10  | 2026-05-04 | Corregido perfilado de ejecución de corutinas con marcadores shield/executor |
 | 0.1.9   | 2026-05-04 | Mejorado manejo de socket y validación de conexión |
-| 0.1.0   | 2025-01    | Versión inicial con funcionalidad básica de watch |
+| 0.1.0   | 2026-03-12 | Versión inicial con funcionalidad básica de watch |

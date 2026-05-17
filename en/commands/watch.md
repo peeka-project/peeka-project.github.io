@@ -825,7 +825,7 @@ for line in sys.stdin:
 - [Peeka Architecture Design](../ARCHITECTURE.md)
 - [Peeka Developer Guide](../AGENTS.md)
 
-## Changelog
+## Version History
 
 | Version | Date       | Updates |
 |---------|------------|-------------------|
@@ -834,4 +834,4 @@ for line in sys.stdin:
 | 0.1.11  | 2026-05-07 | Fixed async-generator detection and execution profiling |
 | 0.1.10  | 2026-05-04 | Fixed coroutine execution profiling with shield/executor markers |
 | 0.1.9   | 2026-05-04 | Enhanced socket handling and connection validation |
-| 0.1.0   | 2025-01    | Initial version with basic watch functionality |
+| 0.1.0   | 2026-03-12 | Initial version with basic watch functionality |

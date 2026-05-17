@@ -326,6 +326,26 @@ ps -p 12345 -o stat=
 
 ---
 
+## Reliability Improvements
+
+Peeka v0.1.9–v0.1.12 introduced several reliability enhancements for attachment:
+- Connection error messages are more descriptive (v0.1.11: `88da13e`)
+- Streaming client identification improved to reduce connection failures (v0.1.9: `a90d080`)
+- Socket handling and connection validation strengthened (v0.1.11–v0.1.12: `9ef3222`)
+- Broadcast frames correctly skipped for improved streaming client stability (v0.1.12: `9c90675`)
+
+---
+
+## Version History
+
+| Version | Release Date | Changes |
+|---------|--------------|---------|
+| 0.1.12 | 2026-05-08 | Socket handling enhancements (`9ef3222`), broadcast frame skip (`9c90675`) |
+| 0.1.11 | 2026-05-07 | Attach reliability fix, error surfacing improvements (`88da13e`) |
+| 0.1.9 | 2026-05-04 | Streaming client identification improvements (`a90d080`) |
+
+---
+
 ## Related Commands
 
 - [detach]({% link commands/detach.md %}) - Detach from process

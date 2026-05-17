@@ -325,6 +325,26 @@ ps -p 12345 -o stat=
 
 ---
 
+## Mejoras de Fiabilidad
+
+Peeka v0.1.9–v0.1.12 introdujo varias mejoras de fiabilidad para el adjunte:
+- Los mensajes de error de conexión son más descriptivos (v0.1.11: `88da13e`)
+- Identificación de clientes de streaming mejorada para reducir fallos de conexión (v0.1.9: `a90d080`)
+- Manejo de Socket y validación de conexión reforzados (v0.1.11–v0.1.12: `9ef3222`)
+- Tramas de broadcast correctamente omitidas para mejorar la estabilidad del cliente de streaming (v0.1.12: `9c90675`)
+
+---
+
+## Historial de Versiones
+
+| Versión | Fecha de Lanzamiento | Cambios |
+|---------|----------------------|---------|
+| 0.1.12 | 2026-05-08 | Mejoras en manejo de Socket (`9ef3222`), omisión de tramas de broadcast (`9c90675`) |
+| 0.1.11 | 2026-05-07 | Corrección de fiabilidad de adjunte, mejoras en visualización de errores (`88da13e`) |
+| 0.1.9 | 2026-05-04 | Mejoras en identificación de clientes de streaming (`a90d080`) |
+
+---
+
 ## Comandos Relacionados
 
 - [detach]({% link commands/detach.md %}) - Desadjuntar del proceso

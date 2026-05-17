@@ -1014,4 +1014,4 @@ while True:
 
 | Versión | Fecha | Actualizaciones |
 |---------|------|---------|
-| 0.1.0 | 2026-01 | Versión inicial, soporta 10 operaciones de memoria |
+| 0.1.0 | 2025-01 | Versión inicial, soporta 10 operaciones de memoria |

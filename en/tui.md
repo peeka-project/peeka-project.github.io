@@ -84,7 +84,7 @@ After starting TUI, the interface is divided into the following areas:
 | `7`          | Logger View        | Switch to logger management                          |
 | `8`          | Inspect View       | Switch to object inspection                          |
 | `9`          | Threads View       | Switch to thread management                          |
-| `0`          | Top View           | Switch to performance profiler                       |
+| `0`          | Top View           | Switch to function profiler                       |
 | `?`          | Help               | Show help information (available in some views)      |
 | `escape` / `q` | Back / Exit      | Exit in Dashboard, return to Dashboard in other views |
 
@@ -108,6 +108,14 @@ After starting TUI, the interface is divided into the following areas:
 4. Press other view shortcuts to switch to dedicated views
 
 **Suitable Scenarios**: Quickly checking process health, thread state, and diagnostic session connectivity
+
+#### Dashboard Activity Log (v0.1.13)
+
+The Dashboard Activity Log component received the following improvements in v0.1.13:
+- **History replay on reconnect** (`15463f9`): Activity history is replayed when reconnecting to restore context
+- **Wrapping preserved** (`86aad2e`): Activity log wrapping setting survives reconnects
+- **Focus cleared before tab shortcuts** (`7677e29`): Input focus is cleared before tab shortcuts to prevent interference
+- **Lazy-initialize hidden tabs** (`59dbe4d`): Hidden tabs skip refresh operations, reducing CPU usage
 
 ---
 

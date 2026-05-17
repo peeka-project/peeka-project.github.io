@@ -83,7 +83,7 @@ Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 | `7`     | Vista Logger        | Cambiar a gestión de registros                 |
 | `8`     | Vista Inspect       | Cambiar a inspección de objetos                 |
 | `9`     | Vista Threads       | Cambiar a gestión de hilos                 |
-| `0`     | Vista Top           | Cambiar a analizador de rendimiento                |
+| `0`     | Vista Top           | Cambiar a perfilador de funciones                |
 | `?`     | Ayuda Help          | Muestra información de ayuda (disponible en algunas vistas)        |
 | `escape` / `q` | Volver / Salir | Sale en Dashboard, vuelve a Dashboard en otras vistas |
 
@@ -107,6 +107,14 @@ Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 4. Presiona el atajo de otra vista para cambiar a la vista dedicada
 
 **Escenarios adecuados**: Comprobar rápidamente la salud del proceso, el estado de hilos y la conexión de la sesión de diagnóstico
+
+#### Registro de actividad del panel (v0.1.13)
+
+El componente Activity Log del Dashboard recibió las siguientes mejoras en v0.1.13:
+- **Reproducción de historial en reconexión** (`15463f9`): El historial de actividad se reproduce al reconectar para restaurar el contexto
+- **Ajuste de línea preservado** (`86aad2e`): La configuración de ajuste de línea del registro de actividad sobrevive a las reconexiones
+- **Foco despejado antes de atajos de pestaña** (`7677e29`): El foco de entrada se borra antes de los atajos de pestaña para evitar interferencias
+- **Inicialización diferida de pestañas ocultas** (`59dbe4d`): Las pestañas ocultas omiten operaciones de actualización, reduciendo el uso de CPU
 
 ---
 

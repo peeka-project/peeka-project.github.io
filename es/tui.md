@@ -83,7 +83,7 @@ Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 | `7`     | Vista Logger        | Cambiar a gestión de registros                 |
 | `8`     | Vista Inspect       | Cambiar a inspección de objetos                 |
 | `9`     | Vista Threads       | Cambiar a gestión de hilos                 |
-| `0`     | Vista Top           | Cambiar a perfilador de funciones                |
+| `0`     | Vista Top           | Cambiar a Perfilador de Funciones (Perfilador de funciones)                |
 | `?`     | Ayuda Help          | Muestra información de ayuda (disponible en algunas vistas)        |
 | `escape` / `q` | Volver / Salir | Sale en Dashboard, vuelve a Dashboard en otras vistas |
 
@@ -335,7 +335,7 @@ Logger: myapp.api
 
 ---
 
-### 10. Vista Top (tecla `0`)
+### 10. Perfilador de Funciones (Perfilador de funciones) (tecla `0`)
 
 **Función**: Analizador de rendimiento por muestreo a nivel de función (similar a `py-spy top`)
 

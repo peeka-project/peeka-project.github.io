@@ -84,7 +84,7 @@ After starting TUI, the interface is divided into the following areas:
 | `7`          | Logger View        | Switch to logger management                          |
 | `8`          | Inspect View       | Switch to object inspection                          |
 | `9`          | Threads View       | Switch to thread management                          |
-| `0`          | Top View           | Switch to function profiler                       |
+| `0`          | Top View           | Switch to Function Profiler (Function profiler)                       |
 | `?`          | Help               | Show help information (available in some views)      |
 | `escape` / `q` | Back / Exit      | Exit in Dashboard, return to Dashboard in other views |
 
@@ -336,7 +336,7 @@ Logger: myapp.api
 
 ---
 
-### 10. Top View (`0` key)
+### 10. Function Profiler (Function profiler) (`0` key)
 
 **Function**: Function-level sampling performance profiler (similar to `py-spy top`)
 

@@ -186,6 +186,32 @@ uptime
 
 ---
 
+## v0.1.13 Version Issues
+
+### watch --times Counting Behavior Changed in v0.1.13
+
+**Symptom**: After upgrading to v0.1.13, `watch --times N` counting behavior differs from previous versions.
+
+**Cause**: v0.1.13 moved `--times` counting logic from agent-side to client-side. Previous versions counted inside the target process, the new version counts observations on the client side.
+
+**Impact**:
+- Count resets after client disconnect and reconnect
+- Multiple clients can independently set their own `--times` limits
+
+**Solution**:
+
+This is an expected behavior change. For detailed behavior changes and usage scenarios, see the [watch command documentation](../commands/watch.md).
+
+### Attach Reliability Improvements (v0.1.9-v0.1.12)
+
+**Improvements**: Versions v0.1.9 to v0.1.12 introduced multiple reliability improvements to the attach command, including more descriptive error messages, better exception handling, and timeout control.
+
+**Related commits**: `88da13e`, `a90d080`, `9ef3222`, `9c90675`
+
+**For detailed improvement content**, see the [attach command documentation](../commands/attach.md).
+
+---
+
 ## Observation Issues
 
 ### No Observation Data

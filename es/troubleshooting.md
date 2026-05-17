@@ -185,6 +185,32 @@ uptime
 
 ---
 
+## Problemas relacionados con la versión v0.1.13
+
+### Cambio de comportamiento del conteo de watch --times en v0.1.13
+
+**Síntomas**: Después de actualizar a v0.1.13, el comportamiento de conteo de `watch --times N` es diferente al de versiones anteriores.
+
+**Causa**: v0.1.13 movió la lógica de conteo de `--times` del lado del agente al lado del cliente. Las versiones anteriores contaban dentro del proceso objetivo, la nueva versión cuenta las observaciones en el lado del cliente.
+
+**Impacto**:
+- El conteo se restablece después de desconectar y reconectar el cliente
+- Múltiples clientes pueden establecer sus propios límites de `--times` de forma independiente
+
+**Solución**:
+
+Este es un cambio de comportamiento esperado. Para conocer los cambios de comportamiento detallados y escenarios de uso, consulte la [documentación del comando watch](../commands/watch.md).
+
+### Mejoras de fiabilidad de Attach (v0.1.9-v0.1.12)
+
+**Mejoras**: Las versiones v0.1.9 a v0.1.12 introdujeron múltiples mejoras de fiabilidad en el comando attach, incluyendo mensajes de error más descriptivos, mejor manejo de excepciones y control de timeout.
+
+**Commits relacionados**: `88da13e`, `a90d080`, `9ef3222`, `9c90675`
+
+**Para conocer el contenido detallado de las mejoras**, consulte la [documentación del comando attach](../commands/attach.md).
+
+---
+
 ## Problemas de Observación
 
 ### No se observan datos

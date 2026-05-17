@@ -252,7 +252,7 @@ En modo TUI, el comando `top` proporciona una interfaz visual de análisis de re
 
 2. Conectarse al proceso objetivo (ingresa PID o selecciona un proceso)
 
-3. Presiona la tecla **`0`** para cambiar a la **vista Top**
+3. Presiona la tecla **`0`** para cambiar a la **vista Top - Perfilador de funciones**
 
 4. Funcionalidades:
    - Mostrar en tiempo real la clasificación de rendimiento de funciones

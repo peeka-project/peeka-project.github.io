@@ -20,6 +20,10 @@ permalink: /commands/watch
 
 The `watch` command is used to observe the execution of specified Python functions, capturing **input parameters**, **return values**, **exception information**, **execution duration**, and other data. This is Peeka's core diagnostic command, suitable for real-time troubleshooting and performance analysis in production environments.
 
+**Coroutine support** (v0.1.13+): Peeka auto-detects coroutine functions (`async def`) and async generators at inject time, preserves AtEnter/AtExit/AtExceptionExit semantics with async wrapper.
+
+**Notice** ⚠️ **`--times` behavior change** (v0.1.13+): This parameter now counts observations **client-side** (after receiving them) rather than agent-side (before sending them). If the agent sends more observations than the `--times` limit, the client will stop receiving and discard remaining data. If your scripts rely on precise observation count control, see [troubleshooting](../troubleshooting.md#times-semantics).
+
 
 
 ## TUI Usage
@@ -823,6 +827,11 @@ for line in sys.stdin:
 
 ## Changelog
 
-| Version | Date | Updates |
-|-------|---------|-------------------|
-| 0.1.0 | 2025-01 | Initial version with basic watch functionality |
+| Version | Date       | Updates |
+|---------|------------|-------------------|
+| 0.1.13  | 2026-05-16 | Added coroutine function and async generator support (commit 9e67e01); `--times` moved to client-side observation counting |
+| 0.1.12  | 2026-05-08 | Internal stability improvements |
+| 0.1.11  | 2026-05-07 | Fixed async-generator detection and execution profiling |
+| 0.1.10  | 2026-05-04 | Fixed coroutine execution profiling with shield/executor markers |
+| 0.1.9   | 2026-05-04 | Enhanced socket handling and connection validation |
+| 0.1.0   | 2025-01    | Initial version with basic watch functionality |

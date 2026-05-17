@@ -18,6 +18,10 @@ nav_order: 2
 
 El comando `watch` se usa para observar la ejecución de funciones Python especificadas, capturando **parámetros de entrada**, **valores de retorno**, **información de excepciones**, **duración de ejecución** y otros datos. Este es el comando de diagnóstico principal de Peeka, adecuado para la solución de problemas en tiempo real y análisis de rendimiento en entornos de producción.
 
+**Soporte de corutinas** (v0.1.13+): Peeka detecta automáticamente funciones de corutina (`async def`) y generadores asíncronos en tiempo de inyección, preserva la semántica AtEnter/AtExit/AtExceptionExit con envoltura asíncrona.
+
+**Aviso** ⚠️ **Cambio de comportamiento de `--times`** (v0.1.13+): Este parámetro ahora cuenta observaciones en el **lado del cliente** (después de recibirlas) en lugar del lado del agente (antes de enviarlas). Si el agente envía más observaciones que el límite de `--times`, el cliente dejará de recibir y descartará los datos restantes. Si sus scripts dependen del control preciso del recuento de observaciones, consulte [solución de problemas](../troubleshooting.md#times-semantics).
+
 ## Uso en TUI
 
 En modo TUI, presiona la tecla **`2`** para cambiar a la **Vista Watch**, que proporciona las siguientes características interactivas:
@@ -819,6 +823,11 @@ for line in sys.stdin:
 
 ## Registro de Cambios
 
-| Versión | Fecha | Actualizaciones |
-|-------|---------|-------------------|
-| 0.1.0 | 2025-01 | Versión inicial con funcionalidad básica de watch |
+| Versión | Fecha       | Actualizaciones |
+|---------|------------|-------------------|
+| 0.1.13  | 2026-05-16 | Añadido soporte para funciones de corutina y generadores asíncronos (commit 9e67e01); `--times` movido al conteo de observaciones del lado del cliente |
+| 0.1.12  | 2026-05-08 | Mejoras internas de estabilidad |
+| 0.1.11  | 2026-05-07 | Corregida detección de generadores asíncronos y perfilado de ejecución |
+| 0.1.10  | 2026-05-04 | Corregido perfilado de ejecución de corutinas con marcadores shield/executor |
+| 0.1.9   | 2026-05-04 | Mejorado manejo de socket y validación de conexión |
+| 0.1.0   | 2025-01    | Versión inicial con funcionalidad básica de watch |

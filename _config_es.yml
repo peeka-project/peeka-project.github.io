@@ -1,6 +1,6 @@
 title: Peeka
 description: "Peeka - Herramienta de diagnóstico en tiempo de ejecución para Python usando observación de funciones no intrusiva basada en PEP 768"
-peeka_version: "0.1.10"
+peeka_version: "0.1.13"
 baseurl: "/es"
 url: "https://peeka-project.github.io"
 theme: just-the-docs

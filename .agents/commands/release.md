@@ -17,6 +17,11 @@ source tag, decide whether the documentation site needs updates, and either:
 The Peeka source checkout is provided by this repository's `AGENTS.md` and
 `.env`. Do not guess another path.
 
+The documentation repository itself does not need release tags for this
+workflow. "Currently documented tag" means the Peeka source tag recorded in the
+documentation content, especially command-page Version History tables and other
+explicit version notes.
+
 ## Workflow
 
 1. Load the source path from `.env`:
@@ -38,13 +43,16 @@ The Peeka source checkout is provided by this repository's `AGENTS.md` and
      git -C "$PEEKA_SRC" rev-parse --verify --quiet "<target-tag>^{commit}"
      ```
 
-3. Find the currently documented source tag from existing version-history
-   tables. Prefer the highest semver tag mentioned under command docs:
+3. Find the currently documented source tag from existing documentation
+   content. Do not use git tags from this documentation repository. Prefer the
+   highest semver tag mentioned under command docs:
 
    ```bash
    rg -o 'v0\.[0-9]+\.[0-9]+' commands en/commands es/commands ja/commands | sort -V | tail
    ```
 
+   If command docs do not contain a newer tag but another source-controlled docs
+   page explicitly documents one, treat that as evidence and explain the choice.
    If the docs contain inconsistent latest versions across languages, stop and
    report the inconsistency before editing.
 

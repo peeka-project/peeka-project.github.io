@@ -2,9 +2,12 @@
 
 Usage: `/release <version>`
 
-Treat `$ARGUMENTS` as `<version>`. It is a Peeka source git tag version. Accept
-either `0.1.13` or `v0.1.13`; normalize it to a tag named `v0.1.13` before
-running source git commands.
+Treat `$ARGUMENTS` as `<version>`. It is a Peeka source version. Accept either
+`0.1.13` or `v0.1.13`.
+
+- Use the no-prefix form, such as `0.1.13`, for documentation repository tags.
+- Use the `v`-prefixed form, such as `v0.1.13`, for Peeka source repository
+  tags.
 
 ## Goal
 
@@ -17,10 +20,9 @@ source tag, decide whether the documentation site needs updates, and either:
 The Peeka source checkout is provided by this repository's `AGENTS.md` and
 `.env`. Do not guess another path.
 
-The documentation repository itself does not need release tags for this
-workflow. "Currently documented tag" means the Peeka source tag recorded in the
-documentation content, especially command-page Version History tables and other
-explicit version notes.
+The documentation repository tag is the source of truth for the currently
+tracked Peeka source version. For example, documentation repository tag
+`0.1.13` means the docs currently track Peeka source tag `v0.1.13`.
 
 ## Workflow
 
@@ -33,34 +35,42 @@ explicit version notes.
    Use `$PEEKA_SRC` for all source-repository git commands. If the path is
    missing or invalid, follow `AGENTS.md` before proceeding.
 
-2. Validate the argument:
+2. Validate and normalize the argument:
 
    - If no version argument is provided, ask for one.
-   - Prefix the argument with `v` when it does not already start with `v`.
-   - Confirm the normalized target tag exists:
+   - Remove a leading `v` to get `<target-doc-tag>`, such as `0.1.13`.
+   - Prefix `<target-doc-tag>` with `v` to get `<target-source-tag>`, such as
+     `v0.1.13`.
+   - Confirm the target Peeka source tag exists:
 
      ```bash
-     git -C "$PEEKA_SRC" rev-parse --verify --quiet "<target-tag>^{commit}"
+     git -C "$PEEKA_SRC" rev-parse --verify --quiet "<target-source-tag>^{commit}"
      ```
 
-3. Find the currently documented source tag from existing documentation
-   content. Do not use git tags from this documentation repository. Prefer the
-   highest semver tag mentioned under command docs:
+   - If the documentation repository already has `<target-doc-tag>`, report
+     that the target version is already tracked unless the user explicitly asks
+     to audit it again.
+
+3. Find the currently tracked documentation tag from this documentation
+   repository's git tags. Prefer the highest semver documentation tag:
 
    ```bash
-   rg -o 'v0\.[0-9]+\.[0-9]+' commands en/commands es/commands ja/commands | sort -V | tail
+   git tag --list '0.*' --sort=-v:refname | head -1
    ```
 
-   If command docs do not contain a newer tag but another source-controlled docs
-   page explicitly documents one, treat that as evidence and explain the choice.
-   If the docs contain inconsistent latest versions across languages, stop and
-   report the inconsistency before editing.
+   Map that documentation tag to the current Peeka source tag by prefixing `v`.
+   For example, `0.1.13` maps to `v0.1.13`.
 
-4. Compare the documented tag with the target tag:
+   If no semver documentation tag exists, infer the baseline once from explicit
+   version notes in source-controlled documentation content, explain the
+   inference, and create the missing baseline documentation tag before using this
+   workflow for future releases.
+
+4. Compare the current source tag with the target source tag:
 
    ```bash
-   git -C "$PEEKA_SRC" log --oneline <documented-tag>..<target-tag>
-   git -C "$PEEKA_SRC" diff --stat <documented-tag>..<target-tag>
+   git -C "$PEEKA_SRC" log --oneline <current-source-tag>..<target-source-tag>
+   git -C "$PEEKA_SRC" diff --stat <current-source-tag>..<target-source-tag>
    ```
 
    Inspect relevant diffs, especially:
@@ -83,10 +93,13 @@ explicit version notes.
 
 6. If no docs need updating, reply with:
 
-   - the documented tag,
-   - the target tag,
+   - the current documentation tag and mapped source tag,
+   - the target documentation tag and mapped source tag,
    - the inspected commit range summary,
    - the reason the changes do not affect documentation.
+
+   Then create `<target-doc-tag>` on the current documentation commit to record
+   that the docs have been audited for the target Peeka source version.
 
 7. If docs need updating, first write a concise update plan. Include:
 
@@ -106,10 +119,10 @@ explicit version notes.
    - Japanese docs under `ja/`
 
    For command reference changes, append a row to each affected page's existing
-   Version History table. Use the target tag commit date:
+   Version History table. Use the target source tag commit date:
 
    ```bash
-   git -C "$PEEKA_SRC" log -1 --format=%ad --date=short <target-tag>
+   git -C "$PEEKA_SRC" log -1 --format=%ad --date=short <target-source-tag>
    ```
 
    Do not create a new top-level changelog page.
@@ -128,7 +141,8 @@ explicit version notes.
    failed builds are not.
 
 10. Commit completed documentation changes with a concise semantic message.
-    Do not push.
+    Then create the documentation repository tag `<target-doc-tag>` on that
+    commit. Do not push commits or tags.
 
 ## Reporting
 
@@ -138,4 +152,5 @@ In the final response, include:
 - whether docs changed,
 - files updated,
 - verification result,
-- commit hash when a commit was created.
+- commit hash when a commit was created,
+- documentation tag created.

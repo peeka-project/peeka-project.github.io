@@ -1,4 +1,5 @@
 .env
+.sisyphus/
 _site/
 .jekyll-cache/
 .sass-cache/

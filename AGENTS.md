@@ -12,9 +12,20 @@ This repository is the GitHub Pages documentation site for Peeka. Keep changes s
 
 ## Source Of Truth
 
-- Compare behavior-sensitive docs against the Peeka source repository in the sibling directory `../peeka`.
-- If `../peeka` is missing, clone it beside this repository with `git clone https://github.com/peeka-project/peeka.git ../peeka`.
+- The local path to the Peeka source repo is recorded in the untracked `.env` file at the repo root as `PEEKA_SRC` (default: `../peeka`). Load it before running git commands against the source: `set -a; . ./.env; set +a`.
+- If `$PEEKA_SRC` is missing, clone with `git clone https://github.com/peeka-project/peeka.git "$PEEKA_SRC"`.
 - Use source files such as `pyproject.toml`, `peeka/cli/main.py`, and `peeka/tui/screens/main.py` as the reference for supported Python versions, CLI options, command names, and TUI key mappings.
+
+## Iteration Workflow (Tag-Driven Doc Sync)
+
+The normal cadence: a new tag lands in `$PEEKA_SRC`, we walk the commits since the last documented tag and update only the pages whose behavior changed.
+
+1. Find the last documented version (search version-history tables, e.g. `grep -rE 'v0\.1\.[0-9]+' commands/ | sort -V | tail`) and the latest source tag: `git -C "$PEEKA_SRC" tag --sort=-v:refname | head -5`.
+2. Diff the range: `git -C "$PEEKA_SRC" log --oneline <last>..<latest>` and `git -C "$PEEKA_SRC" diff --stat <last>..<latest>`. Focus on `peeka/cli/`, `peeka/core/`, `peeka/tui/`, `pyproject.toml`.
+3. For each commit, decide: behavior/CLI/TUI/install change → docs update needed; refactor/test/internal → skip.
+4. Append a row to the affected command page's existing **Version History** table. Use the tag's commit date: `git -C "$PEEKA_SRC" log -1 --format=%ad --date=short <tag>`. Do NOT create a new top-level changelog page.
+5. Cite source as `../peeka/<path>:Lxx` (or SHA) in your reasoning for any new factual claim.
+6. Keep all 4 languages in lockstep per topic; never ship a partial-language update.
 
 ## Documentation Consistency
 
@@ -44,4 +55,5 @@ Existing Sass deprecation warnings from the theme are acceptable; Liquid errors 
 
 - Use the user's global git config for commits; do not set a bot author.
 - Commit completed tasks with concise semantic messages, for example `docs: update command labels`.
-- Keep the worktree clean after committing and pushing.
+- Keep the worktree clean after committing.
+- **Do NOT push.** Only commit. Pushing is performed by the user manually.

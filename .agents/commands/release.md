@@ -107,6 +107,7 @@ tracked Peeka source version. For example, documentation repository tag
    - source evidence using paths and line numbers, such as
      `../peeka/peeka/cli/main.py:L123`,
    - documentation files to edit in all affected languages,
+   - version metadata files to update,
    - build commands to run.
 
 8. Execute the plan immediately unless the user asked only for a plan.
@@ -117,6 +118,19 @@ tracked Peeka source version. For example, documentation repository tag
    - English docs under `en/`
    - Spanish docs under `es/`
    - Japanese docs under `ja/`
+
+   Always update the displayed Peeka version metadata to `<target-doc-tag>` in
+   all four Jekyll config files, even when no page text changes are otherwise
+   required:
+
+   - `_config.yml`
+   - `_config_en.yml`
+   - `_config_es.yml`
+   - `_config_ja.yml`
+
+   These files define `site.peeka_version`, which is rendered on index and
+   installation pages. Leaving them stale causes the published site to show the
+   old tracked Peeka version even after a successful deployment.
 
    For command reference changes, append a row to each affected page's existing
    Version History table. Use the target source tag commit date:
@@ -139,6 +153,14 @@ tracked Peeka source version. For example, documentation repository tag
 
    Existing theme Sass deprecation warnings are acceptable. Liquid errors and
    failed builds are not.
+
+   After building, inspect the generated index and installation pages for all
+   languages and confirm they render `<target-doc-tag>` rather than the previous
+   version:
+
+   ```bash
+   rg '<target-doc-tag>|<previous-doc-tag>' _site/index.html _site/en/index.html _site/es/index.html _site/ja/index.html _site/installation.html _site/en/installation.html _site/es/installation.html _site/ja/installation.html
+   ```
 
 10. Commit completed documentation changes with a concise semantic message.
     Then create the documentation repository tag `<target-doc-tag>` on that

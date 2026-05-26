@@ -1,21 +1,19 @@
+---
+name: release
+description: Sync this Peeka documentation site to a requested Peeka source release tag. Use when the user invokes `$release VERSION` or asks to compare the currently documented Peeka source tag with a target version, decide whether docs need updates, update docs across all languages, refresh displayed Peeka version metadata, verify Jekyll builds, commit locally, and create the documentation repository tag.
+---
+
 # Release Documentation Sync
 
-Usage: `/release <version>`
+## Overview
 
-Treat `$ARGUMENTS` as `<version>`. It is a Peeka source version. Accept either
+Use `$release <version>` to audit and sync this documentation repository against
+a Peeka source tag. Treat the argument as a Peeka source version; accept either
 `0.1.13` or `v0.1.13`.
 
 - Use the no-prefix form, such as `0.1.13`, for documentation repository tags.
-- Use the `v`-prefixed form, such as `v0.1.13`, for Peeka source repository
-  tags.
-
-## Goal
-
-Compare the currently documented Peeka source tag with the requested target
-source tag, decide whether the documentation site needs updates, and either:
-
-- update the documentation according to a concrete plan, or
-- explain briefly why no documentation changes are needed.
+- Use the `v`-prefixed form, such as `v0.1.13`, for Peeka source repository tags.
+- Do not push commits or tags.
 
 The Peeka source checkout is provided by this repository's `AGENTS.md` and
 `.env`. Do not guess another path.
@@ -59,12 +57,10 @@ tracked Peeka source version. For example, documentation repository tag
    ```
 
    Map that documentation tag to the current Peeka source tag by prefixing `v`.
-   For example, `0.1.13` maps to `v0.1.13`.
-
    If no semver documentation tag exists, infer the baseline once from explicit
    version notes in source-controlled documentation content, explain the
-   inference, and create the missing baseline documentation tag before using this
-   workflow for future releases.
+   inference, and create the missing baseline documentation tag before using
+   this workflow for future releases.
 
 4. Compare the current source tag with the target source tag:
 

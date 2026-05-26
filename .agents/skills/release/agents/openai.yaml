@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release"
+  short_description: "Sync Peeka docs to a source tag"
+  default_prompt: "Use $release to sync this documentation site to a Peeka source tag."

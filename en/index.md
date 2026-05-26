@@ -134,6 +134,7 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 | `reset` | Reset enhancements | ✅ |
 | `thread` | Thread analysis | ✅ |
 | `top` | Function-level performance sampling | ✅ |
+| `patch-status` | Runtime patch and RPL integrity diagnostics | ✅ |
 | `detach` | Safely exit diagnostic session | ✅ |
 
 [View Complete Command Reference]({% link commands/index.md %}){: .btn .btn-outline }
@@ -143,7 +144,7 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 
 In addition to CLI commands, Peeka also provides a feature-complete TUI (Text User Interface):
 
-- **Process Selector** - Automatically displays system process list with search filtering
+- **Process Selector** - Automatically displays system process list with search filtering and attach progress/log panels
 - **10 Dedicated Views** - Dashboard, Watch, Trace, Stack, Monitor, Logger, Memory, Inspect, Threads, Top
 - **Real-Time Data Stream** - Streaming observation data with pause/resume/clear support
 - **Auto-Completion** - Dynamically retrieve classes and methods from target process

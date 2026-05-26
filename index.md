@@ -134,6 +134,7 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 | `reset` | 重置增强 | ✅ |
 | `thread` | 线程分析 | ✅ |
 | `top` | 函数级性能采样 | ✅ |
+| `patch-status` | 运行时补丁与 RPL 完整性诊断 | ✅ |
 | `detach` | 安全断开连接 | ✅ |
 
 [查看完整命令参考]({% link commands/index.md %}){: .btn .btn-outline }
@@ -143,7 +144,7 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 
 除了 CLI 命令行工具，Peeka 还提供功能完整的 TUI（文本用户界面）：
 
-- **进程选择器** - 自动显示系统进程列表，支持搜索过滤
+- **进程选择器** - 自动显示系统进程列表，支持搜索过滤和附加进度/日志面板
 - **10 个专用视图** - Dashboard、Watch、Trace、Stack、Monitor、Logger、Memory、Inspect、Threads、Top
 - **实时数据流** - 流式显示观测数据，支持暂停/继续/清屏
 - **自动补全** - 动态获取目标进程的类和方法列表

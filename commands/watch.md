@@ -152,6 +152,35 @@ peeka-cli watch "calculator.Calculator.add" -n 5
 | `thread_id`   | 线程 ID              | `140234567890`                                 |
 | `thread_name` | 线程名                | `"MainThread"`                                 |
 
+#### 异步执行 Profile（v0.1.14）
+
+观测协程函数或异步生成器时，v0.1.14 会额外输出 `execution_profile` JSON 行，用于区分 wall time、CPU time、上下文切换次数、协程终止方式以及异步生成器 yield 次数。Windows 上 `cpu_cost` 和 `context_switches` 可能为 `null`。
+
+```json
+{
+  "type": "execution_profile",
+  "func_name": "service.fetch_user",
+  "mode": "coroutine",
+  "scheduler": "asyncio",
+  "yields": null,
+  "wall_cost": 0.023,
+  "cpu_cost": 0.002,
+  "context_switches": 4,
+  "marker": "executor",
+  "termination": "returned"
+}
+```
+
+| 字段 | 说明 |
+|------|------|
+| `mode` | `coroutine` 或 `async_generator` |
+| `wall_cost` | 墙钟耗时（秒） |
+| `cpu_cost` | 进程 CPU 耗时（秒；不可用时为 `null`） |
+| `context_switches` | 观测期间上下文切换次数（不可用时为 `null`） |
+| `marker` | 协程等待特征，例如 `executor`；异步生成器没有该字段 |
+| `termination` | `returned`、`cancelled`、`errored`、`exhausted` 或 `closed` |
+| `yields` | 异步生成器产出的次数；协程为 `null` |
+
 ### 2. 调整输出深度
 
 ```bash
@@ -828,6 +857,7 @@ for line in sys.stdin:
 
 | 版本    | 日期         | 更新内容               |
 |-------|------------|--------------------|
+| 0.1.14 | 2026-05-24 | 为协程和异步生成器输出 `execution_profile`，包含 wall/CPU 耗时、上下文切换和终止状态 |
 | 0.1.13 | 2026-05-16 | 增加协程函数和异步生成器支持（commit 9e67e01）；`--times` 改为客户端侧计数观测次数 |
 | 0.1.12 | 2026-05-08 | 内部稳定性改进 |
 | 0.1.11 | 2026-05-07 | 修复异步生成器检测和执行分析 |

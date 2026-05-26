@@ -28,7 +28,7 @@ Teach your AI coding assistant to diagnose Python applications using Peeka.
 - **Parse results**: Analyze structured JSONL output using `jq` pipelines
 - **Follow playbooks**: Apply built-in diagnostic workflows (performance, exceptions, memory, threads)
 
-The skill covers all 14 Peeka CLI commands with complete flag references, jq recipes, condition expression syntax, and safety protocols.
+The skill covers all 15 Peeka CLI commands with complete flag references, jq recipes, condition expression syntax, and safety protocols.
 
 ---
 
@@ -46,6 +46,7 @@ The skill includes a symptom-to-command mapping table. The AI automatically sele
 | High memory / memory leak | `memory` command suite | Find what allocates and holds memory |
 | High CPU | `top` → `trace` | Find CPU-intensive code paths |
 | Deadlock / hang | `thread` → `stack` | Find lock contention points |
+| gevent/eventlet or monkey-patch anomalies | `patch-status` → `attach` / `watch` | Confirm runtime patch state and RPL integrity |
 
 ### 4 Diagnostic Playbooks
 

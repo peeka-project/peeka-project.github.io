@@ -27,7 +27,7 @@ Haz que tu asistente de programación de IA aprenda a usar Peeka para diagnostic
 - **Analizar resultados**: Realizar análisis estructurado usando la salida JSONL y `jq`
 - **Solución paso a paso**: Seguir el playbook de diagnóstico incorporado (análisis de rendimiento, resolución de excepciones, análisis de memoria, análisis de hilos)
 
-El archivo de habilidad cubre los 14 comandos CLI completos de Peeka, e incluye descripciones completas de parámetros, métodos de análisis con jq, sintaxis de expresiones condicionales y protocolos de seguridad.
+El archivo de habilidad cubre los 15 comandos CLI completos de Peeka, e incluye descripciones completas de parámetros, métodos de análisis con jq, sintaxis de expresiones condicionales y protocolos de seguridad.
 
 ---
 
@@ -45,6 +45,7 @@ La habilidad tiene una tabla de mapeo incorporada de síntomas a comandos, la IA
 | Crecimiento de memoria / fuga | `memory` comandos de serie | Encontrar asignaciones de memoria y poseedores |
 | CPU alta | `top` → `trace` | Encontrar rutas de puntos calientes de CPU |
 | Interbloqueo / bloqueo | `thread` → `stack` | Encontrar puntos de contención de bloqueos |
+| Anomalías gevent/eventlet o monkey patch | `patch-status` → `attach` / `watch` | Confirmar estado de parches de runtime e integridad RPL |
 
 ### 4 Playbooks de Diagnóstico
 

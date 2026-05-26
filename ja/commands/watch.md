@@ -152,6 +152,35 @@ peeka-cli watch "calculator.Calculator.add" -n 5
 | `thread_id`   | スレッド ID              | `140234567890`                                 |
 | `thread_name` | スレッド名                | `"MainThread"`                                 |
 
+#### 非同期実行 Profile（v0.1.14）
+
+コルーチン関数または非同期ジェネレータをオブザーブすると、v0.1.14 では追加の `execution_profile` JSON 行が出力されます。wall time、CPU time、コンテキストスイッチ数、終了状態、非同期ジェネレータの yield 数を分けて確認できます。Windows では `cpu_cost` と `context_switches` が `null` になる場合があります。
+
+```json
+{
+  "type": "execution_profile",
+  "func_name": "service.fetch_user",
+  "mode": "coroutine",
+  "scheduler": "asyncio",
+  "yields": null,
+  "wall_cost": 0.023,
+  "cpu_cost": 0.002,
+  "context_switches": 4,
+  "marker": "executor",
+  "termination": "returned"
+}
+```
+
+| フィールド | 説明 |
+|------------|------|
+| `mode` | `coroutine` または `async_generator` |
+| `wall_cost` | wall-clock 時間（秒） |
+| `cpu_cost` | プロセス CPU 時間（秒）。利用できない場合は `null` |
+| `context_switches` | オブザーブ中のコンテキストスイッチ数。利用できない場合は `null` |
+| `marker` | `executor` などのコルーチン待機マーカー。非同期ジェネレータでは省略 |
+| `termination` | `returned`、`cancelled`、`errored`、`exhausted`、`closed` |
+| `yields` | 非同期ジェネレータの yield 数。コルーチンでは `null` |
+
 ### 2. 出力深度の調整
 
 ```bash
@@ -825,6 +854,7 @@ for line in sys.stdin:
 
 | バージョン    | 日付         | 更新内容               |
 |-----------|------------|--------------------|
+| 0.1.14    | 2026-05-24 | コルーチンと非同期ジェネレータで `execution_profile` を出力し、wall/CPU 時間、コンテキストスイッチ、終了状態を記録 |
 | 0.1.13    | 2026-05-16 | コルーチン関数と非同期ジェネレータのサポート追加（commit 9e67e01）；`--times` をクライアント側の観測カウントに移行 |
 | 0.1.12    | 2026-05-08 | 内部安定性の改善 |
 | 0.1.11    | 2026-05-07 | 非同期ジェネレータ検出と実行プロファイリングを修正 |

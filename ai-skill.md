@@ -27,7 +27,7 @@ nav_order: 7
 - **解析结果**：利用 JSONL 输出和 `jq` 进行结构化分析
 - **按流程排查**：遵循内置的诊断 Playbook（性能分析、异常排查、内存分析、线程分析）
 
-技能文件覆盖了 Peeka 的全部 14 个 CLI 命令，包含完整的参数说明、jq 解析方法、条件表达式语法、以及安全协议。
+技能文件覆盖了 Peeka 的全部 15 个 CLI 命令，包含完整的参数说明、jq 解析方法、条件表达式语法、以及安全协议。
 
 ---
 
@@ -45,6 +45,7 @@ nav_order: 7
 | 内存增长 / 泄漏 | `memory` 系列命令 | 找到内存分配和持有者 |
 | CPU 高 | `top` → `trace` | 找到 CPU 热点路径 |
 | 死锁 / 卡住 | `thread` → `stack` | 找到锁竞争点 |
+| gevent/eventlet 或 monkey patch 异常 | `patch-status` → `attach` / `watch` | 确认 runtime patch 状态和 RPL 完整性 |
 
 ### 4 个诊断 Playbook
 

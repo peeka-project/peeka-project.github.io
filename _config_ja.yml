@@ -1,6 +1,6 @@
 title: Peeka
 description: "Peeka - PEP 768 ベースの非侵入型関数オブザベーションによる Python ランタイム診断ツール"
-peeka_version: "0.1.13"
+peeka_version: "0.1.14"
 baseurl: "/ja"
 url: "https://peeka-project.github.io"
 theme: just-the-docs

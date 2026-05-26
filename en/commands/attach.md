@@ -50,6 +50,7 @@ The `attach` command is the first step in using Peeka. It injects Peeka Agent co
 - Display process PID, command line, CPU/memory usage
 - Support search/filter (type keywords to filter)
 - Auto-validate permissions (show PEP 768, GDB, or LLDB availability)
+- Since v0.1.14, the attach flow shows `Progress` and `Attach Log` areas, displays the real failure inline, resets the panel with Esc on error, ignores Esc while attach is in progress, and exits with Esc when idle
 
 **CLI Equivalent Commands**: All examples below use CLI commands for demonstration. TUI provides the same functionality with a graphical interface.
 
@@ -328,7 +329,9 @@ ps -p 12345 -o stat=
 
 ## Reliability Improvements
 
-Peeka v0.1.9–v0.1.12 introduced several reliability enhancements for attachment:
+Peeka v0.1.9–v0.1.14 introduced several reliability enhancements for attachment:
+- TUI attach panel gained progress, log, elapsed time, and inline error display (v0.1.14: `56fa814`, `4a300f9`)
+- Native `_socket.socket` accept handling was fixed for a more stable notify server in monkey-patched runtimes (v0.1.14: `5617058`)
 - Connection error messages are more descriptive (v0.1.11: `88da13e`)
 - Streaming client identification improved to reduce connection failures (v0.1.9: `a90d080`)
 - Socket handling and connection validation strengthened (v0.1.11–v0.1.12: `9ef3222`)
@@ -340,6 +343,7 @@ Peeka v0.1.9–v0.1.12 introduced several reliability enhancements for attachmen
 
 | Version | Release Date | Changes |
 |---------|--------------|---------|
+| 0.1.14 | 2026-05-24 | TUI attach progress/log/inline error display; fixed native socket accept for notify server |
 | 0.1.12 | 2026-05-08 | Socket handling enhancements (`9ef3222`), broadcast frame skip (`9c90675`) |
 | 0.1.11 | 2026-05-07 | Attach reliability fix, error surfacing improvements (`88da13e`) |
 | 0.1.9 | 2026-05-04 | Streaming client identification improvements (`a90d080`) |
@@ -349,6 +353,7 @@ Peeka v0.1.9–v0.1.12 introduced several reliability enhancements for attachmen
 ## Related Commands
 
 - [detach]({% link commands/detach.md %}) - Detach from process
+- [patch-status]({% link commands/patch-status.md %}) - Check target runtime patch status
 - [watch]({% link commands/watch.md %}) - Observe function calls
 - [reset]({% link commands/reset.md %}) - Reset enhancements
 

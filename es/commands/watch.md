@@ -149,6 +149,35 @@ peeka-cli watch "calculator.Calculator.add" -n 5
 | `thread_id` | ID de hilo | `140234567890` |
 | `thread_name` | Nombre de hilo | `"MainThread"` |
 
+#### Perfil de ejecución async (v0.1.14)
+
+Al observar funciones de corutina o generadores asíncronos, v0.1.14 emite una línea JSON adicional `execution_profile` que separa tiempo wall, tiempo CPU, cambios de contexto, terminación de la corutina y cantidad de yields del generador asíncrono. En Windows, `cpu_cost` y `context_switches` pueden ser `null`.
+
+```json
+{
+  "type": "execution_profile",
+  "func_name": "service.fetch_user",
+  "mode": "coroutine",
+  "scheduler": "asyncio",
+  "yields": null,
+  "wall_cost": 0.023,
+  "cpu_cost": 0.002,
+  "context_switches": 4,
+  "marker": "executor",
+  "termination": "returned"
+}
+```
+
+| Campo | Descripción |
+|-------|-------------|
+| `mode` | `coroutine` o `async_generator` |
+| `wall_cost` | Duración de reloj de pared en segundos |
+| `cpu_cost` | Tiempo CPU del proceso en segundos, o `null` cuando no está disponible |
+| `context_switches` | Cantidad de cambios de contexto durante la observación, o `null` cuando no está disponible |
+| `marker` | Marcador de espera de corutina, por ejemplo `executor`; se omite para generadores asíncronos |
+| `termination` | `returned`, `cancelled`, `errored`, `exhausted` o `closed` |
+| `yields` | Cantidad de yields del generador asíncrono; `null` para corutinas |
+
 ### 2. Ajustar Profundidad de Salida
 
 ```bash
@@ -825,6 +854,7 @@ for line in sys.stdin:
 
 | Versión | Fecha       | Actualizaciones |
 |---------|------------|-------------------|
+| 0.1.14  | 2026-05-24 | Emite `execution_profile` para corutinas y generadores asíncronos con tiempo wall/CPU, cambios de contexto y estado de terminación |
 | 0.1.13  | 2026-05-16 | Añadido soporte para funciones de corutina y generadores asíncronos (commit 9e67e01); `--times` movido al conteo de observaciones del lado del cliente |
 | 0.1.12  | 2026-05-08 | Mejoras internas de estabilidad |
 | 0.1.11  | 2026-05-07 | Corregida detección de generadores asíncronos y perfilado de ejecución |

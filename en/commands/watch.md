@@ -152,6 +152,35 @@ peeka-cli watch "calculator.Calculator.add" -n 5
 | `thread_id` | Thread ID | `140234567890` |
 | `thread_name` | Thread name | `"MainThread"` |
 
+#### Async Execution Profile (v0.1.14)
+
+When observing coroutine functions or async generators, v0.1.14 emits an extra `execution_profile` JSON line that separates wall time, CPU time, context switches, coroutine termination, and async generator yield count. On Windows, `cpu_cost` and `context_switches` may be `null`.
+
+```json
+{
+  "type": "execution_profile",
+  "func_name": "service.fetch_user",
+  "mode": "coroutine",
+  "scheduler": "asyncio",
+  "yields": null,
+  "wall_cost": 0.023,
+  "cpu_cost": 0.002,
+  "context_switches": 4,
+  "marker": "executor",
+  "termination": "returned"
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `mode` | `coroutine` or `async_generator` |
+| `wall_cost` | Wall-clock duration in seconds |
+| `cpu_cost` | Process CPU time in seconds, or `null` when unavailable |
+| `context_switches` | Context switch count during observation, or `null` when unavailable |
+| `marker` | Coroutine wait marker, such as `executor`; omitted for async generators |
+| `termination` | `returned`, `cancelled`, `errored`, `exhausted`, or `closed` |
+| `yields` | Async generator yield count; `null` for coroutines |
+
 ### 2. Adjust Output Depth
 
 ```bash
@@ -829,6 +858,7 @@ for line in sys.stdin:
 
 | Version | Date       | Updates |
 |---------|------------|-------------------|
+| 0.1.14  | 2026-05-24 | Emit `execution_profile` for coroutines and async generators with wall/CPU time, context switches, and termination state |
 | 0.1.13  | 2026-05-16 | Added coroutine function and async generator support (commit 9e67e01); `--times` moved to client-side observation counting |
 | 0.1.12  | 2026-05-08 | Internal stability improvements |
 | 0.1.11  | 2026-05-07 | Fixed async-generator detection and execution profiling |

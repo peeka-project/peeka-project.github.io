@@ -47,6 +47,7 @@ El comando `attach` es el primer paso para usar Peeka, inyecta el código del Ag
 - Muestra PID del proceso, línea de comandos, uso de CPU/memoria
 - Soporta filtrado de búsqueda (ingresa palabras clave para filtrar)
 - Verifica permisos automáticamente (muestra disponibilidad de PEP 768, GDB o LLDB)
+- Desde v0.1.14, el flujo de adjunte muestra áreas `Progress` y `Attach Log`, presenta el error real dentro del panel, reinicia el panel con Esc en estado de error, ignora Esc durante el adjunte y sale con Esc cuando está inactivo
 
 **Equivalente CLI**: Todos los ejemplos a continuación usan comandos CLI para demostrar, TUI proporciona una interfaz gráfica con la misma funcionalidad.
 
@@ -327,7 +328,9 @@ ps -p 12345 -o stat=
 
 ## Mejoras de Fiabilidad
 
-Peeka v0.1.9–v0.1.12 introdujo varias mejoras de fiabilidad para el adjunte:
+Peeka v0.1.9–v0.1.14 introdujo varias mejoras de fiabilidad para el adjunte:
+- El panel de adjunte TUI añadió progreso, registro, tiempo transcurrido y errores inline (v0.1.14: `56fa814`, `4a300f9`)
+- Se corrigió el manejo de accept en `_socket.socket` nativo para un notify server más estable en runtimes con monkey patching (v0.1.14: `5617058`)
 - Los mensajes de error de conexión son más descriptivos (v0.1.11: `88da13e`)
 - Identificación de clientes de streaming mejorada para reducir fallos de conexión (v0.1.9: `a90d080`)
 - Manejo de Socket y validación de conexión reforzados (v0.1.11–v0.1.12: `9ef3222`)
@@ -339,6 +342,7 @@ Peeka v0.1.9–v0.1.12 introdujo varias mejoras de fiabilidad para el adjunte:
 
 | Versión | Fecha de Lanzamiento | Cambios |
 |---------|----------------------|---------|
+| 0.1.14 | 2026-05-24 | Progreso/registro/error inline en adjunte TUI; corrección de accept con socket nativo en notify server |
 | 0.1.12 | 2026-05-08 | Mejoras en manejo de Socket (`9ef3222`), omisión de tramas de broadcast (`9c90675`) |
 | 0.1.11 | 2026-05-07 | Corrección de fiabilidad de adjunte, mejoras en visualización de errores (`88da13e`) |
 | 0.1.9 | 2026-05-04 | Mejoras en identificación de clientes de streaming (`a90d080`) |
@@ -348,6 +352,7 @@ Peeka v0.1.9–v0.1.12 introdujo varias mejoras de fiabilidad para el adjunte:
 ## Comandos Relacionados
 
 - [detach]({% link commands/detach.md %}) - Desadjuntar del proceso
+- [patch-status]({% link commands/patch-status.md %}) - Comprobar estado de parches del runtime objetivo
 - [watch]({% link commands/watch.md %}) - Observar llamadas a funciones
 - [reset]({% link commands/reset.md %}) - Restablecer inyección
 

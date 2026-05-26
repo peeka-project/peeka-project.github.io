@@ -9,7 +9,7 @@ permalink: /commands
 # Command Reference
 {: .no_toc }
 
-Peeka provides a series of powerful diagnostic commands, each focused on specific diagnostic scenarios. This documentation covers 14 core commands.
+Peeka provides a series of powerful diagnostic commands, each focused on specific diagnostic scenarios. This documentation covers 15 core commands.
 {: .fs-6 .fw-300 }
 
 ## Table of Contents
@@ -36,6 +36,7 @@ Peeka provides a series of powerful diagnostic commands, each focused on specifi
 | reset | Reset enhancements | Restore observed functions |
 | thread | Thread analysis | Enumerate threads and view thread stacks |
 | top | Function profiling | Function-level performance hotspot analysis |
+| patch-status | Runtime patch diagnostics | Check gevent/eventlet, stdlib primitives, and RPL integrity |
 | detach | Disconnect | Safely exit diagnostic session |
 | run | Launch and attach | Start a Python program and automatically enter a diagnostic session |
 
@@ -191,6 +192,7 @@ Conditional expressions use `simpleeval` library for safe evaluation, not suppor
 | `monitor` | < 1% | Periodic statistics |
 | `logger` | 0% | No performance impact |
 | `memory` | Configurable | Depends on sampling frequency |
+| `patch-status` | Near 0% | Reads runtime state only; does not modify the target process |
 
 ---
 
@@ -211,6 +213,7 @@ Select the command you need for detailed documentation:
 - [reset - Reset enhancements]({% link commands/reset.md %})
 - [thread - Thread analysis]({% link commands/thread.md %})
 - [top - Function profiling]({% link commands/top.md %})
+- [patch-status - Runtime patch diagnostics]({% link commands/patch-status.md %})
 - [detach - Disconnect]({% link commands/detach.md %})
 - [run - Launch and attach]({% link commands/run.md %})
 

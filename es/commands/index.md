@@ -9,7 +9,7 @@ permalink: /commands
 # Referencia de Comandos
 {: .no_toc }
 
-Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando se centra en un escenario de diagnóstico específico. Este documento cubre los 14 comandos centrales.
+Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando se centra en un escenario de diagnóstico específico. Este documento cubre los 15 comandos centrales.
 {: .fs-6 .fw-300 }
 
 ## Tabla de Contenidos
@@ -35,6 +35,7 @@ Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando s
 | [search]({% link commands/search.md %}) | Buscar clases y métodos (sc/sm) | Exploración y descubrimiento de código |
 | [thread]({% link commands/thread.md %}) | Análisis de hilos | Enumerar hilos y ver pila de hilos |
 | [top]({% link commands/top.md %}) | Muestreo de rendimiento de funciones | Análisis de puntos calientes de rendimiento a nivel de función |
+| [patch-status]({% link commands/patch-status.md %}) | Diagnóstico de parches en runtime | Revisar gevent/eventlet, primitivas stdlib e integridad RPL |
 | [detach]({% link commands/detach.md %}) | Desconectar conexión | Salir de forma segura de la sesión de diagnóstico |
 | [reset]({% link commands/reset.md %}) | Restablecer inyección | Restaurar funciones observadas |
 | [run]({% link commands/run.md %}) | Iniciar y adjuntar | Iniciar un programa Python y entrar automáticamente en una sesión de diagnóstico |
@@ -190,6 +191,7 @@ La expresión condicional usa la biblioteca `simpleeval` para evaluación segura
 | `monitor` | < 1% | Estadísticas periódicas |
 | `logger` | 0% | No afecta el rendimiento |
 | `memory` | Configurable | Depende de la frecuencia de muestreo |
+| `patch-status` | Casi 0% | Solo lee estado de runtime; no modifica el proceso objetivo |
 
 ---
 
@@ -209,6 +211,7 @@ Selecciona el comando que necesitas para ver la documentación detallada:
 - [reset - Restablecer inyección]({% link commands/reset.md %})
 - [thread - Análisis de hilos]({% link commands/thread.md %})
 - [top - Muestreo de rendimiento de funciones]({% link commands/top.md %})
+- [patch-status - Diagnóstico de parches en runtime]({% link commands/patch-status.md %})
 - [detach - Desconectar conexión]({% link commands/detach.md %})
 - [run - Iniciar y adjuntar]({% link commands/run.md %})
 

@@ -9,7 +9,7 @@ permalink: /commands
 # Command Reference
 {: .no_toc }
 
-Peeka provides a series of powerful diagnostic commands, each focused on specific diagnostic scenarios. This documentation covers 15 core commands.
+Peeka provides a series of powerful diagnostic commands, each focused on specific diagnostic scenarios. This documentation covers 21 top-level CLI commands.
 {: .fs-6 .fw-300 }
 
 ## Table of Contents
@@ -39,6 +39,14 @@ Peeka provides a series of powerful diagnostic commands, each focused on specifi
 | patch-status | Runtime patch diagnostics | Check gevent/eventlet, stdlib primitives, and RPL integrity |
 | detach | Disconnect | Safely exit diagnostic session |
 | run | Launch and attach | Start a Python program and automatically enter a diagnostic session |
+| target | Target management | Discover, inspect, clean up, and detach Peeka target agents |
+| client | Client session management | Create, list, inspect, and close diagnostic clients |
+| job | Command job management | List, inspect, interrupt, and clean up asynchronous command jobs |
+| probe | Probe run management | List, inspect, stop, and clean up watch/trace-style probes |
+| consumer | Result consumer management | Create and drain buffered result streams for jobs, probes, or targets |
+| dx | Diagnostic case bundles | Create, summarize, and export diagnostic cases |
+
+`session` remains as a deprecated compatibility alias for `target`; use `peeka-cli target ...` for new workflows.
 
 ---
 
@@ -193,6 +201,7 @@ Conditional expressions use `simpleeval` library for safe evaluation, not suppor
 | `logger` | 0% | No performance impact |
 | `memory` | Configurable | Depends on sampling frequency |
 | `patch-status` | Near 0% | Reads runtime state only; does not modify the target process |
+| `target` / `client` / `job` / `probe` / `consumer` / `dx` | Low | Control-plane queries or metadata operations; cost depends on the amount of data read or exported |
 
 ---
 
@@ -216,5 +225,11 @@ Select the command you need for detailed documentation:
 - [patch-status - Runtime patch diagnostics]({% link commands/patch-status.md %})
 - [detach - Disconnect]({% link commands/detach.md %})
 - [run - Launch and attach]({% link commands/run.md %})
+- [target - Target management]({% link commands/target.md %})
+- [client - Client session management]({% link commands/client.md %})
+- [job - Command job management]({% link commands/job.md %})
+- [probe - Probe run management]({% link commands/probe.md %})
+- [consumer - Result consumer management]({% link commands/consumer.md %})
+- [dx - Diagnostic case bundles]({% link commands/dx.md %})
 
 Or view [Quick Start]({% link quickstart.md %}) to learn basic usage methods.

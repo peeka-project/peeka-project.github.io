@@ -216,6 +216,20 @@ peeka-cli top --no-filter-peeka
 | `own_count`  | 独占サンプリング回数             | `453`                |
 | `total_count` | 総サンプリング回数（重複排除）          | `587`                |
 
+## gevent ランタイムメタデータ
+
+v0.1.16 以降、`top_snapshot` には現在のランタイム互換性ポリシーを表す `meta` オブジェクトが含まれます：
+
+| フィールド | 説明 |
+|------------|------|
+| `meta.gevent_state` | gevent 状態：`none`、`imported`、`patched`、`active_hub` |
+| `meta.backend` | サンプリングバックエンド。通常は `frame_walk`。gevent patched/active hub では `greenlet_aware_sampling` になる場合があります |
+| `meta.greenlet_blind` | frame sampling で停止中 greenlet が見えなくなる可能性があるか |
+| `meta.degraded_reason` | 退化理由。退化していない場合は `null` |
+| `greenlet_events` | `greenlet_aware_sampling` で存在し、greenlet の switch/throw カウンタを含みます |
+
+greenlet trace hook が利用できない場合、`top` は `frame_walk` にフォールバックし、その理由を `degraded_reason` に出力します。
+
 ## リアルタイム監視の例
 
 ### jq を使用してトップ 5 のホットスポット関数をフィルタリング
@@ -338,3 +352,9 @@ total_time = total_count * sample_interval
 7. **権限要件**：
    - 事前に `attach` コマンドでターゲットプロセスにアタッチする必要があります
    - アタッチ権限要件は [attach コマンドドキュメント](attach.md) を参照してください
+
+## バージョン履歴
+
+| バージョン | リリース日 | 変更 |
+|------------|------------|------|
+| 0.1.16 | 2026-06-07 | `top_snapshot` にランタイム互換性 `meta` を追加。gevent patched/active hub では greenlet-aware sampling と退化理由をサポート |

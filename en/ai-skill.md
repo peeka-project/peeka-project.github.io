@@ -28,7 +28,7 @@ Teach your AI coding assistant to diagnose Python applications using Peeka.
 - **Parse results**: Analyze structured JSONL output using `jq` pipelines
 - **Follow playbooks**: Apply built-in diagnostic workflows (performance, exceptions, memory, threads)
 
-The skill covers all 15 Peeka CLI commands with complete flag references, jq recipes, condition expression syntax, and safety protocols.
+The skill covers all 21 top-level Peeka CLI commands with complete flag references, jq recipes, condition expression syntax, and safety protocols.
 
 ---
 

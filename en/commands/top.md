@@ -217,6 +217,20 @@ peeka-cli top --no-filter-peeka
 | `own_count`   | Own sample count                        | `453`                |
 | `total_count` | Total sample count (deduplicated)       | `587`                |
 
+## gevent Runtime Metadata
+
+Since v0.1.16, `top_snapshot` includes a `meta` object that describes the active runtime compatibility policy:
+
+| Field | Description |
+|-------|-------------|
+| `meta.gevent_state` | gevent state: `none`, `imported`, `patched`, or `active_hub` |
+| `meta.backend` | Sampling backend: usually `frame_walk`; may be `greenlet_aware_sampling` under gevent patched/active hub runtimes |
+| `meta.greenlet_blind` | Whether greenlets can hide suspended execution from frame sampling |
+| `meta.degraded_reason` | Degradation reason, or `null` when not degraded |
+| `greenlet_events` | Present with `greenlet_aware_sampling`; contains greenlet switch/throw counters |
+
+When greenlet trace hooks are unavailable, `top` falls back to `frame_walk` and reports the reason in `degraded_reason`.
+
 ## Real-time Monitoring Examples
 
 ### Filter Top 5 Hot Functions with jq
@@ -339,3 +353,9 @@ total_time = total_count * sample_interval
 7. **Permission Requirements**:
    - Must use `attach` command to attach to the target process first
    - For attach permission requirements, see [attach command documentation](attach.html)
+
+## Version History
+
+| Version | Release Date | Changes |
+|---------|--------------|---------|
+| 0.1.16 | 2026-06-07 | Added runtime compatibility `meta` to `top_snapshot`; gevent patched/active hub runtimes support greenlet-aware sampling and degradation reasons |

@@ -65,6 +65,7 @@ peeka-cli watch <pattern> [options]
 | `-x, --depth` | Output object depth | `2` | `-x 3` |
 | `-n, --times` | Number of observations (-1 for infinite) | `-1` | `-n 10` |
 | `--condition` | Condition expression (supports `cost` variable) | None | `--condition "params[0] > 100"` |
+| `--client` | Existing client session ID; auto-creates an ephemeral client when omitted | Auto | `--client client_123` |
 | `-b, --before` | Observe before function call (AtEnter) | `false` | `-b` |
 | `-e, --exception` | Only observe when exception thrown (AtExceptionExit) | `false` | `-e` |
 | `-s, --success` | Only observe on successful return (AtExit) | `false` | `-s` |
@@ -858,6 +859,7 @@ for line in sys.stdin:
 
 | Version | Date       | Updates |
 |---------|------------|-------------------|
+| 0.1.16  | 2026-06-07 | Support `--client` to reuse an existing client session; auto-create an ephemeral client when omitted |
 | 0.1.14  | 2026-05-24 | Emit `execution_profile` for coroutines and async generators with wall/CPU time, context switches, and termination state |
 | 0.1.13  | 2026-05-16 | Added coroutine function and async generator support (commit 9e67e01); `--times` moved to client-side observation counting |
 | 0.1.12  | 2026-05-08 | Internal stability improvements |

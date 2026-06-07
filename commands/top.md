@@ -216,6 +216,20 @@ peeka-cli top --no-filter-peeka
 | `own_count`  | 独占采样次数             | `453`                |
 | `total_count` | 总采样次数（去重）          | `587`                |
 
+## gevent 运行时元数据
+
+v0.1.16 起，`top_snapshot` 包含 `meta` 字段，用于说明当前运行时兼容性策略：
+
+| 字段 | 说明 |
+|------|------|
+| `meta.gevent_state` | gevent 状态：`none`、`imported`、`patched` 或 `active_hub` |
+| `meta.backend` | 采样后端：通常为 `frame_walk`；gevent patched/active hub 下可为 `greenlet_aware_sampling` |
+| `meta.greenlet_blind` | 是否存在 greenlet 盲区 |
+| `meta.degraded_reason` | 退化原因；未退化时为 `null` |
+| `greenlet_events` | 使用 `greenlet_aware_sampling` 时包含 greenlet switch/throw 计数 |
+
+当 greenlet trace hook 不可用时，`top` 会回退到 `frame_walk` 并在 `degraded_reason` 中说明原因。
+
 ## 实时监控示例
 
 ### 使用 jq 过滤 top 5 热点函数
@@ -338,3 +352,9 @@ total_time = total_count * sample_interval
 7. **权限要求**：
    - 需要先使用 `attach` 命令附加到目标进程
    - 附加权限要求请参考 [attach 命令文档](attach.html)
+
+## 版本历史
+
+| 版本 | 发布日期 | 变更说明 |
+|------|----------|----------|
+| 0.1.16 | 2026-06-07 | `top_snapshot` 增加运行时兼容性 `meta`；gevent patched/active hub 下支持 greenlet-aware 采样与退化说明 |

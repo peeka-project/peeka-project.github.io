@@ -46,7 +46,7 @@ peeka-cli run <script> [script_args] -- <command> [command_options]
 | `script`           | Path to the Python script to run               | —       |
 | `script_args`      | Arguments passed to the script (optional)      | —       |
 | `--`               | Required separator                             | —       |
-| `command`          | Peeka command (watch / trace / stack)          | —       |
+| `command`          | Peeka command (watch / trace / stack / monitor / top) | —       |
 | `command_options`  | Options for the Peeka command                  | —       |
 | `--output-file`    | Write JSONL output to file instead of stdout   | —       |
 
@@ -59,6 +59,8 @@ The Peeka command after `--` supports all the same options as when used standalo
 | `watch`     | Observe function calls (args, return value, timing)|
 | `trace`     | Trace call tree with timing breakdown              |
 | `stack`     | Capture call stack at function entry               |
+| `monitor`   | Periodically report function call metrics          |
+| `top`       | Start the function-level sampling profiler         |
 
 ## Examples
 
@@ -97,7 +99,7 @@ Only captures calls where the first argument is greater than 100.
 ### Example 5: Output to file
 
 ```bash
-peeka-cli run myscript.py -- watch "mymodule.func" --output-file observations.jsonl
+peeka-cli run --output-file observations.jsonl myscript.py -- watch "mymodule.func"
 ```
 
 Writes all observation data to `observations.jsonl`. The script's own stdout is unaffected.
@@ -117,6 +119,22 @@ peeka-cli run myscript.py -- stack "mymodule.func" -n 3
 ```
 
 Captures the call stack at `mymodule.func` entry, 3 times.
+
+### Example 8: Start monitor
+
+```bash
+peeka-cli run myscript.py -- monitor "service.process" --interval 5 -c 12
+```
+
+Outputs function statistics every 5 seconds and stops after 12 cycles.
+
+### Example 9: Start top
+
+```bash
+peeka-cli run myscript.py -- top -i 0.02 -c 10 --sort total
+```
+
+Samples the script at function level and emits 10 snapshots.
 
 ## Output Format
 
@@ -149,7 +167,7 @@ peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observ
 peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observation" and .data.duration_ms > 100)'
 
 # Save and analyze
-peeka-cli run myscript.py -- watch "mymodule.func" --output-file out.jsonl
+peeka-cli run --output-file out.jsonl myscript.py -- watch "mymodule.func"
 jq '.args' out.jsonl
 ```
 
@@ -183,13 +201,13 @@ peeka-cli run myscript.py arg1 watch "mymodule.func"
 
 When the script finishes (normally or with an error), observation stops automatically. For continuous observation, use `attach` with a long-running process.
 
-### ⚠️ --output-file only affects Peeka output
+### --output-file only affects Peeka output
 
-`--output-file` redirects Peeka's JSONL diagnostic data to the specified file. The script's own stdout/stderr is unaffected.
+`--output-file` redirects Peeka's JSONL diagnostic data to the specified file. The script's own stdout/stderr is unaffected. It is a run-level option and should be placed before the script path.
 
 ```bash
 # Script's print() goes to terminal; Peeka data goes to file
-peeka-cli run myscript.py -- watch "mymodule.func" --output-file peeka.jsonl
+peeka-cli run --output-file peeka.jsonl myscript.py -- watch "mymodule.func"
 ```
 
 ## Typical Workflows
@@ -198,7 +216,7 @@ peeka-cli run myscript.py -- watch "mymodule.func" --output-file peeka.jsonl
 
 ```bash
 # 1. Run script and observe key functions
-peeka-cli run batch_job.py --date 2024-01-15 -- watch "etl.transform" --output-file etl_obs.jsonl
+peeka-cli run --output-file etl_obs.jsonl batch_job.py --date 2024-01-15 -- watch "etl.transform"
 
 # 2. Analyze results
 jq 'select(.type == "observation")' etl_obs.jsonl | jq -s 'sort_by(.data.duration_ms) | reverse | .[0:5]'
@@ -228,4 +246,5 @@ peeka-cli run app.py -- trace "config.load_settings" -d 4
 
 | Version | Date       | Changes              |
 |---------|------------|----------------------|
+| 0.1.16  | 2026-06-07 | `run` supports `monitor` and `top`; corrected `--output-file` as a run-level option before the script path |
 | 0.1.8   | 2025-04-28 | Added run command documentation |

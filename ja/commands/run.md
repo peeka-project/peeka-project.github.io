@@ -45,7 +45,7 @@ peeka-cli run <script> [script_args] -- <command> [command_options]
 | `script`           | 実行する Python スクリプトのパス              | —         |
 | `script_args`      | スクリプトに渡す引数（任意）                  | —         |
 | `--`               | 必須のセパレーター                            | —         |
-| `command`          | Peeka コマンド（watch / trace / stack）       | —         |
+| `command`          | Peeka コマンド（watch / trace / stack / monitor / top） | —         |
 | `command_options`  | Peeka コマンドのオプション                    | —         |
 | `--output-file`    | JSONL 出力をファイルに書き込む（stdout の代わり）| —      |
 
@@ -56,6 +56,8 @@ peeka-cli run <script> [script_args] -- <command> [command_options]
 | `watch`     | 関数呼び出しを観測（引数・戻り値・時間）|
 | `trace`     | タイミング付きコールツリーを追跡        |
 | `stack`     | 関数エントリ時にコールスタックを捕捉    |
+| `monitor`   | 関数呼び出し指標を定期的に出力          |
+| `top`       | 関数レベルのサンプリング profiler を開始 |
 
 ## 使用例
 
@@ -94,7 +96,7 @@ peeka-cli run myscript.py -- watch "mymodule.func" --condition "params[0] > 100"
 ### 例 5: ファイルへ出力
 
 ```bash
-peeka-cli run myscript.py -- watch "mymodule.func" --output-file observations.jsonl
+peeka-cli run --output-file observations.jsonl myscript.py -- watch "mymodule.func"
 ```
 
 全観測データを `observations.jsonl` に書き込みます。スクリプト自体の stdout には影響しません。
@@ -114,6 +116,22 @@ peeka-cli run myscript.py -- stack "mymodule.func" -n 3
 ```
 
 `mymodule.func` のエントリ時にコールスタックを 3 回捕捉します。
+
+### 例 8: monitor を開始
+
+```bash
+peeka-cli run myscript.py -- monitor "service.process" --interval 5 -c 12
+```
+
+5 秒ごとに関数統計を出力し、12 サイクル後に停止します。
+
+### 例 9: top を開始
+
+```bash
+peeka-cli run myscript.py -- top -i 0.02 -c 10 --sort total
+```
+
+スクリプトを関数レベルでサンプリングし、10 個の snapshot を出力します。
 
 ## run と attach の違い
 
@@ -141,9 +159,9 @@ peeka-cli run myscript.py arg1 watch "mymodule.func"
 
 スクリプトが終了（正常・異常いずれも）すると、観測は自動的に停止します。継続的な観測には、長期稼動プロセスへの `attach` を使用してください。
 
-### ⚠️ --output-file は Peeka の出力のみに影響
+### --output-file は Peeka の出力のみに影響
 
-`--output-file` は Peeka の JSONL 診断データのみを指定ファイルに書き込みます。スクリプト自身の stdout/stderr は影響を受けません。
+`--output-file` は Peeka の JSONL 診断データのみを指定ファイルに書き込みます。スクリプト自身の stdout/stderr は影響を受けません。これは `run` レベルのオプションなので、スクリプトパスの前に置いてください。
 
 ## 関連コマンド
 
@@ -156,4 +174,5 @@ peeka-cli run myscript.py arg1 watch "mymodule.func"
 
 | バージョン | 日付       | 更新内容           |
 |-----------|------------|-------------------|
+| 0.1.16    | 2026-06-07 | `run` が `monitor` と `top` をサポート。`--output-file` はスクリプトパス前の `run` レベルオプションとして修正 |
 | 0.1.8     | 2025-04-28 | run コマンドのドキュメント追加 |

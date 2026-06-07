@@ -45,7 +45,7 @@ peeka-cli run <script> [script_args] -- <command> [command_options]
 | `script`           | Ruta al script Python a ejecutar                     | —           |
 | `script_args`      | Argumentos que se pasan al script (opcional)         | —           |
 | `--`               | Separador obligatorio                                | —           |
-| `command`          | Comando Peeka (watch / trace / stack)                | —           |
+| `command`          | Comando Peeka (watch / trace / stack / monitor / top)| —           |
 | `command_options`  | Opciones del comando Peeka                           | —           |
 | `--output-file`    | Escribir salida JSONL en archivo en vez de stdout    | —           |
 
@@ -56,6 +56,8 @@ peeka-cli run <script> [script_args] -- <command> [command_options]
 | `watch`    | Observar llamadas a funciones (args, retorno, duración) |
 | `trace`    | Trazar árbol de llamadas con desglose temporal          |
 | `stack`    | Capturar la pila de llamadas en la entrada de la función|
+| `monitor`  | Reportar métricas de llamadas de función periódicamente |
+| `top`      | Iniciar el profiler de muestreo a nivel de función      |
 
 ## Ejemplos
 
@@ -94,7 +96,7 @@ Solo captura las llamadas cuyo primer argumento es mayor que 100.
 ### Ejemplo 5: Salida a archivo
 
 ```bash
-peeka-cli run myscript.py -- watch "mymodule.func" --output-file observations.jsonl
+peeka-cli run --output-file observations.jsonl myscript.py -- watch "mymodule.func"
 ```
 
 Escribe todos los datos de observación en `observations.jsonl`. El stdout del script no se ve afectado.
@@ -114,6 +116,22 @@ peeka-cli run myscript.py -- stack "mymodule.func" -n 3
 ```
 
 Captura la pila de llamadas en la entrada de `mymodule.func`, 3 veces.
+
+### Ejemplo 8: Iniciar monitor
+
+```bash
+peeka-cli run myscript.py -- monitor "service.process" --interval 5 -c 12
+```
+
+Emite estadísticas de función cada 5 segundos y se detiene tras 12 ciclos.
+
+### Ejemplo 9: Iniciar top
+
+```bash
+peeka-cli run myscript.py -- top -i 0.02 -c 10 --sort total
+```
+
+Muestrea el script a nivel de función y emite 10 snapshots.
 
 ## run vs attach
 
@@ -145,9 +163,9 @@ peeka-cli run myscript.py arg1 watch "mymodule.func"
 
 Cuando el script termina (normalmente o con error), la observación se detiene automáticamente. Para observación continua, use `attach` con un proceso de larga duración.
 
-### ⚠️ --output-file solo afecta la salida de Peeka
+### --output-file solo afecta la salida de Peeka
 
-`--output-file` redirige los datos de diagnóstico JSONL de Peeka al archivo especificado. El stdout/stderr del propio script no se ve afectado.
+`--output-file` redirige los datos de diagnóstico JSONL de Peeka al archivo especificado. El stdout/stderr del propio script no se ve afectado. Es una opción de nivel `run` y debe colocarse antes de la ruta del script.
 
 ## Comandos relacionados
 
@@ -160,4 +178,5 @@ Cuando el script termina (normalmente o con error), la observación se detiene a
 
 | Versión | Fecha      | Cambios                           |
 |---------|------------|-----------------------------------|
+| 0.1.16  | 2026-06-07 | `run` soporta `monitor` y `top`; `--output-file` se documenta como opción de nivel `run` antes de la ruta del script |
 | 0.1.8   | 2025-04-28 | Documentación del comando run añadida |

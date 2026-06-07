@@ -9,7 +9,7 @@ permalink: /commands
 # Referencia de Comandos
 {: .no_toc }
 
-Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando se centra en un escenario de diagnóstico específico. Este documento cubre los 15 comandos centrales.
+Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando se centra en un escenario de diagnóstico específico. Este documento cubre los 21 comandos CLI de nivel superior.
 {: .fs-6 .fw-300 }
 
 ## Tabla de Contenidos
@@ -39,6 +39,14 @@ Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando s
 | [detach]({% link commands/detach.md %}) | Desconectar conexión | Salir de forma segura de la sesión de diagnóstico |
 | [reset]({% link commands/reset.md %}) | Restablecer inyección | Restaurar funciones observadas |
 | [run]({% link commands/run.md %}) | Iniciar y adjuntar | Iniciar un programa Python y entrar automáticamente en una sesión de diagnóstico |
+| [target]({% link commands/target.md %}) | Gestión de targets | Descubrir, inspeccionar, limpiar y separar agentes target de Peeka |
+| [client]({% link commands/client.md %}) | Gestión de sesiones cliente | Crear, listar, inspeccionar y cerrar clientes de diagnóstico |
+| [job]({% link commands/job.md %}) | Gestión de jobs de comando | Listar, inspeccionar, interrumpir y limpiar jobs asíncronos |
+| [probe]({% link commands/probe.md %}) | Gestión de probes | Listar, inspeccionar, detener y limpiar probes como watch/trace |
+| [consumer]({% link commands/consumer.md %}) | Gestión de consumidores | Crear y drenar flujos de resultados para jobs, probes o targets |
+| [dx]({% link commands/dx.md %}) | Casos de diagnóstico | Crear, resumir y exportar casos de diagnóstico |
+
+`session` sigue disponible como alias compatible y obsoleto de `target`; usa `peeka-cli target ...` para flujos nuevos.
 
 ---
 
@@ -192,6 +200,7 @@ La expresión condicional usa la biblioteca `simpleeval` para evaluación segura
 | `logger` | 0% | No afecta el rendimiento |
 | `memory` | Configurable | Depende de la frecuencia de muestreo |
 | `patch-status` | Casi 0% | Solo lee estado de runtime; no modifica el proceso objetivo |
+| `target` / `client` / `job` / `probe` / `consumer` / `dx` | Bajo | Consultas de plano de control u operaciones de metadatos; el coste depende de la cantidad de datos leídos o exportados |
 
 ---
 
@@ -214,5 +223,11 @@ Selecciona el comando que necesitas para ver la documentación detallada:
 - [patch-status - Diagnóstico de parches en runtime]({% link commands/patch-status.md %})
 - [detach - Desconectar conexión]({% link commands/detach.md %})
 - [run - Iniciar y adjuntar]({% link commands/run.md %})
+- [target - Gestión de targets]({% link commands/target.md %})
+- [client - Gestión de sesiones cliente]({% link commands/client.md %})
+- [job - Gestión de jobs de comando]({% link commands/job.md %})
+- [probe - Gestión de probes]({% link commands/probe.md %})
+- [consumer - Gestión de consumidores]({% link commands/consumer.md %})
+- [dx - Casos de diagnóstico]({% link commands/dx.md %})
 
 O consulta [Inicio Rápido]({% link quickstart.md %}) para conocer el método de uso básico.

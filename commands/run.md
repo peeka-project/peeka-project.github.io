@@ -45,7 +45,7 @@ peeka-cli run <script> [script_args] -- <command> [command_options]
 | `script`           | 要运行的 Python 脚本路径           | —      |
 | `script_args`      | 传递给脚本的参数（可选）           | —      |
 | `--`               | 必须的分隔符                       | —      |
-| `command`          | Peeka 命令（watch / trace / stack）| —      |
+| `command`          | Peeka 命令（watch / trace / stack / monitor / top）| —      |
 | `command_options`  | 该命令的选项                       | —      |
 | `--output-file`    | 将 JSONL 输出写入文件而非 stdout   | —      |
 
@@ -58,6 +58,8 @@ peeka-cli run <script> [script_args] -- <command> [command_options]
 | `watch` | 观测函数调用（入参、返回值、耗时） |
 | `trace` | 追踪调用树及时序               |
 | `stack` | 在函数入口捕获调用栈           |
+| `monitor` | 周期性统计函数调用指标 |
+| `top` | 启动函数级采样 profiler |
 
 ## 使用示例
 
@@ -96,7 +98,7 @@ peeka-cli run myscript.py -- watch "mymodule.func" --condition "params[0] > 100"
 ### 示例 5：输出到文件
 
 ```bash
-peeka-cli run myscript.py -- watch "mymodule.func" --output-file observations.jsonl
+peeka-cli run --output-file observations.jsonl myscript.py -- watch "mymodule.func"
 ```
 
 将所有观测数据写入 `observations.jsonl`，脚本的 stdout 不受影响。
@@ -116,6 +118,22 @@ peeka-cli run myscript.py -- stack "mymodule.func" -n 3
 ```
 
 在 `mymodule.func` 入口处捕获调用栈，共 3 次。
+
+### 示例 8：启动 monitor
+
+```bash
+peeka-cli run myscript.py -- monitor "service.process" --interval 5 -c 12
+```
+
+每 5 秒输出一次函数统计，执行 12 个周期后自动结束。
+
+### 示例 9：启动 top
+
+```bash
+peeka-cli run myscript.py -- top -i 0.02 -c 10 --sort total
+```
+
+对脚本运行过程进行函数级采样，输出 10 个快照。
 
 ## 输出格式
 
@@ -148,7 +166,7 @@ peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observ
 peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observation" and .data.duration_ms > 100)'
 
 # 保存并分析
-peeka-cli run myscript.py -- watch "mymodule.func" --output-file out.jsonl
+peeka-cli run --output-file out.jsonl myscript.py -- watch "mymodule.func"
 jq '.args' out.jsonl
 ```
 
@@ -182,13 +200,13 @@ peeka-cli run myscript.py arg1 watch "mymodule.func"
 
 当脚本正常退出或异常退出时，观测自动停止。如需持续观测，请使用 `attach` 模式连接长期运行的进程。
 
-### ⚠️ --output-file 只影响 Peeka 输出
+### --output-file 只影响 Peeka 输出
 
-`--output-file` 将 Peeka 的 JSONL 诊断数据写入指定文件，不影响脚本本身的 stdout/stderr。
+`--output-file` 将 Peeka 的 JSONL 诊断数据写入指定文件，不影响脚本本身的 stdout/stderr。它是 `run` 级别选项，应放在脚本路径之前。
 
 ```bash
 # 脚本的 print() 输出到终端，Peeka 数据写到文件
-peeka-cli run myscript.py -- watch "mymodule.func" --output-file peeka.jsonl
+peeka-cli run --output-file peeka.jsonl myscript.py -- watch "mymodule.func"
 ```
 
 ## 典型工作流程
@@ -197,7 +215,7 @@ peeka-cli run myscript.py -- watch "mymodule.func" --output-file peeka.jsonl
 
 ```bash
 # 1. 运行脚本并观测关键函数
-peeka-cli run batch_job.py --date 2024-01-15 -- watch "etl.transform" --output-file etl_obs.jsonl
+peeka-cli run --output-file etl_obs.jsonl batch_job.py --date 2024-01-15 -- watch "etl.transform"
 
 # 2. 分析结果
 jq 'select(.type == "observation")' etl_obs.jsonl | jq -s 'sort_by(.data.duration_ms) | reverse | .[0:5]'
@@ -227,4 +245,5 @@ peeka-cli run app.py -- trace "config.load_settings" -d 4
 
 | 版本    | 日期         | 更新内容        |
 |-------|------------|---------------|
+| 0.1.16 | 2026-06-07 | `run` 支持 `monitor` 和 `top`；修正 `--output-file` 为脚本路径前的 run 级选项 |
 | 0.1.8 | 2025-04-28 | 新增 run 命令文档 |

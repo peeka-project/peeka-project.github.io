@@ -65,6 +65,7 @@ peeka-cli watch <pattern> [options]
 | `-x, --depth`         | 输出对象深度                     | `2`     | `-x 3`                                  |
 | `-n, --times`         | 观测次数（-1 表示无限）              | `-1`    | `-n 10`                                 |
 | `--condition` | 条件表达式（支持 `cost` 变量）        | 无       | `--condition "params[0] > 100"` |
+| `--client`            | 使用已有客户端会话 ID；不提供时自动创建临时客户端 | 自动     | `--client client_123`                  |
 | `-b, --before`        | 在函数调用前观测（AtEnter）          | `false` | `-b`                                    |
 | `-e, --exception`     | 仅在抛出异常时观测（AtExceptionExit） | `false` | `-e`                                    |
 | `-s, --success`       | 仅在成功返回时观测（AtExit）          | `false` | `-s`                                    |
@@ -857,6 +858,7 @@ for line in sys.stdin:
 
 | 版本    | 日期         | 更新内容               |
 |-------|------------|--------------------|
+| 0.1.16 | 2026-06-07 | 支持通过 `--client` 复用已有客户端会话；未指定时自动创建临时客户端 |
 | 0.1.14 | 2026-05-24 | 为协程和异步生成器输出 `execution_profile`，包含 wall/CPU 耗时、上下文切换和终止状态 |
 | 0.1.13 | 2026-05-16 | 增加协程函数和异步生成器支持（commit 9e67e01）；`--times` 改为客户端侧计数观测次数 |
 | 0.1.12 | 2026-05-08 | 内部稳定性改进 |

@@ -1,7 +1,7 @@
 # GitHub Pages Configuration for Peeka
 title: Peeka
 description: Python 运行时诊断工具 - 基于 PEP 768 的非侵入式函数观测
-peeka_version: "0.1.14"
+peeka_version: "0.1.16"
 baseurl: ""
 url: "https://peeka-project.github.io"
 theme: just-the-docs

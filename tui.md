@@ -57,6 +57,16 @@ peeka --list-themes
 - `solarized-light` - Solarized Light
 - `solarized-dark` - Solarized Dark
 
+## 进程选择器
+
+v0.1.16 起，启动 TUI 后的进程选择器同时展示已经被 Peeka 管理的 target agent 和当前可附加的 Python 进程：
+
+- `alive` target 使用 target ID 展示，普通 Python 进程显示为 `attachable`
+- 宽终端显示 Name、PID、State、Python、Command、Created；窄终端保留 Name、State、Created
+- 过滤框支持按名称、命令、PID 或状态筛选
+- `r` 刷新列表，`Enter` 选择当前行，`y` 复制 attach log，`escape` / `q` 退出
+- stale、failed、detached 和 unknown 行只用于状态确认，不作为可附加目标
+
 ## TUI 界面布局
 
 启动 TUI 后，界面分为以下几个区域：
@@ -116,6 +126,11 @@ Dashboard 的 Activity Log 组件在 v0.1.13 中新增以下改进：
 - **换行状态保留**（`86aad2e`）：活动日志自动换行设置在重连后保持不变
 - **快捷键前清除焦点**（`7677e29`）：按下 Tab 快捷键前清除输入焦点，防止输入干扰
 - **隐藏标签延迟初始化**（`59dbe4d`）：未显示的标签不执行刷新，降低 CPU 占用
+
+#### Attach 活动日志（v0.1.16）
+
+- 进程选择器的 attach log 可用 `y` 复制，便于保存失败诊断信息
+- 成功进入 Dashboard 后会回放 attach 活动摘要，保留连接建立过程的上下文
 
 ---
 

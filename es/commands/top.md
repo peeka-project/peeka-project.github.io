@@ -215,6 +215,20 @@ peeka-cli top --no-filter-peeka
 | `own_count`   | Cantidad de muestreos exclusivos             | `453`                  |
 | `total_count` | Cantidad total de muestreos (sin duplicados)| `587`                  |
 
+## Metadatos de runtime gevent
+
+Desde v0.1.16, `top_snapshot` incluye un objeto `meta` que describe la política de compatibilidad de runtime activa:
+
+| Campo | Descripción |
+|-------|-------------|
+| `meta.gevent_state` | Estado de gevent: `none`, `imported`, `patched` o `active_hub` |
+| `meta.backend` | Backend de muestreo: normalmente `frame_walk`; puede ser `greenlet_aware_sampling` en runtimes gevent patched/active hub |
+| `meta.greenlet_blind` | Indica si greenlet puede ocultar ejecución suspendida al muestreo de frames |
+| `meta.degraded_reason` | Motivo de degradación, o `null` si no hay degradación |
+| `greenlet_events` | Presente con `greenlet_aware_sampling`; contiene contadores de switch/throw de greenlet |
+
+Cuando los trace hooks de greenlet no están disponibles, `top` vuelve a `frame_walk` y reporta el motivo en `degraded_reason`.
+
 ## Ejemplos de Monitoreo en Tiempo Real
 
 ### Usar jq para filtrar las 5 funciones punto caliente principales
@@ -337,3 +351,9 @@ total_time = total_count * sample_interval
 7. **Requisitos de permisos**:
    - Necesitas usar primero el comando `attach` para adjuntar al proceso objetivo
    - Los requisitos de permisos para adjuntar se describen en la [documentación del comando attach](attach)
+
+## Historial de Versiones
+
+| Versión | Fecha de lanzamiento | Cambios |
+|---------|----------------------|---------|
+| 0.1.16 | 2026-06-07 | Añadido `meta` de compatibilidad runtime a `top_snapshot`; runtimes gevent patched/active hub soportan muestreo greenlet-aware y motivos de degradación |

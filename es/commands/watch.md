@@ -62,6 +62,7 @@ peeka-cli watch <pattern> [options]
 | `-x, --depth` | Profundidad de salida de objeto | `2` | `-x 3` |
 | `-n, --times` | Número de observaciones (-1 para infinito) | `-1` | `-n 10` |
 | `--condition` | Expresión de condición (soporta variable `cost`) | Ninguno | `--condition "params[0] > 100"` |
+| `--client` | ID de sesión cliente existente; si se omite, se crea un cliente efímero automáticamente | Automático | `--client client_123` |
 | `-b, --before` | Observar antes de la llamada a la función (AtEnter) | `false` | `-b` |
 | `-e, --exception` | Solo observar cuando se lanza una excepción (AtExceptionExit) | `false` | `-e` |
 | `-s, --success` | Solo observar en retorno exitoso (AtExit) | `false` | `-s` |
@@ -854,6 +855,7 @@ for line in sys.stdin:
 
 | Versión | Fecha       | Actualizaciones |
 |---------|------------|-------------------|
+| 0.1.16  | 2026-06-07 | Soporte para `--client` reutilizando una sesión cliente existente; si se omite, se crea un cliente efímero |
 | 0.1.14  | 2026-05-24 | Emite `execution_profile` para corutinas y generadores asíncronos con tiempo wall/CPU, cambios de contexto y estado de terminación |
 | 0.1.13  | 2026-05-16 | Añadido soporte para funciones de corutina y generadores asíncronos (commit 9e67e01); `--times` movido al conteo de observaciones del lado del cliente |
 | 0.1.12  | 2026-05-08 | Mejoras internas de estabilidad |

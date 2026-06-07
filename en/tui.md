@@ -57,6 +57,16 @@ peeka --list-themes
 - `solarized-light` - Solarized Light
 - `solarized-dark` - Solarized Dark
 
+## Process Selector
+
+Since v0.1.16, the startup process selector shows both Peeka-managed target agents and attachable Python processes:
+
+- `alive` targets are shown by target ID; regular Python processes appear as `attachable`
+- Wide terminals show Name, PID, State, Python, Command, and Created; narrow terminals keep Name, State, and Created
+- The filter input matches name, command, PID, or state
+- `r` refreshes the list, `Enter` selects the current row, `y` copies the attach log, and `escape` / `q` exits
+- stale, failed, detached, and unknown rows are shown for status awareness but are not selectable attach targets
+
 ## TUI Interface Layout
 
 After starting TUI, the interface is divided into the following areas:
@@ -116,6 +126,11 @@ The Dashboard Activity Log component received the following improvements in v0.1
 - **Wrapping preserved** (`86aad2e`): Activity log wrapping setting survives reconnects
 - **Focus cleared before tab shortcuts** (`7677e29`): Input focus is cleared before tab shortcuts to prevent interference
 - **Lazy-initialize hidden tabs** (`59dbe4d`): Hidden tabs skip refresh operations, reducing CPU usage
+
+#### Attach Activity Log (v0.1.16)
+
+- The process selector attach log can be copied with `y`, which helps preserve failure diagnostics
+- After a successful attach, Dashboard replays the attach activity summary so the connection setup context remains visible
 
 ---
 

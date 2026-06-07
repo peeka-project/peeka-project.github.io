@@ -64,6 +64,7 @@ peeka-cli trace <pattern> [options]
 | `-d, --depth`         | 追踪深度（最大调用层数）          | `3`     | `-d 5`                                  |
 | `-n, --times`         | 观测次数（-1 表示无限）         | `-1`    | `-n 10`                                 |
 | `--condition` | 条件表达式（支持 `cost` 变量）   | 无       | `--condition "cost > 50"`       |
+| `--client`            | 使用已有客户端会话 ID；不提供时自动创建临时客户端 | 自动 | `--client client_123`                  |
 | `--skip-builtin`      | 跳过内置函数和标准库函数          | `true`  | `--skip-builtin=false`                  |
 | `--min-duration`      | 最小耗时过滤（毫秒）            | `0`     | `--min-duration 10`                     |
 
@@ -260,6 +261,8 @@ Peeka 的 `trace` 命令根据 Python 版本自动选择最优实现方案：
 |-----------|-----------------|-------|-------------------|
 | 3.12+     | sys.monitoring  | < 5%  | 官方 PEP 669 API，最优性能         |
 | 3.8.1-3.11  | sys.settrace | < 20% | 兼容性好，自动启用         |
+
+**gevent 兼容性（v0.1.16+）**：当目标进程已启用 gevent monkey patch 或 active hub 时，`trace` 会退化为 `wrapper_only` 后端，避免 `sys.settrace` 破坏 frame stack 不变量。此模式仍报告目标函数观测结果，但不提供递归调用树。
 
 **sys.monitoring 实现 (Python 3.12+)**:
 
@@ -693,6 +696,7 @@ for line in proc.stdout:
 
 | 版本 | 发布日期 | 更新内容 |
 |------|---------|---------|
+| 0.1.16 | 2026-06-07 | 支持 `--client`；gevent patched/active hub 运行时退化为 `wrapper_only` trace 后端 |
 | 0.1.12 | 2026-05-08 | TUI 面板系统统一，布局优化（commit 50c4af4） |
 | 0.1.11 | 2026-05-07 | 客户端稳定来源标签化（commit 965ff22），活动诊断数据增强（commit b1b0412） |
 | 0.1.10 | 2026-05-04 | TUI 按钮颜色规范化（commit fd6a0a1），活动日志折行可读性改进（commit 5f46ae8） |

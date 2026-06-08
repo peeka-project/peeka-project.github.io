@@ -217,7 +217,7 @@ peeka-cli top --no-filter-peeka
 
 ## Metadatos de runtime gevent
 
-Desde v0.1.16, `top_snapshot` incluye un objeto `meta` que describe la política de compatibilidad de runtime activa:
+Desde v0.1.15, `top_snapshot` incluye un objeto `meta` que describe la política de compatibilidad de runtime activa:
 
 | Campo | Descripción |
 |-------|-------------|
@@ -356,4 +356,4 @@ total_time = total_count * sample_interval
 
 | Versión | Fecha de lanzamiento | Cambios |
 |---------|----------------------|---------|
-| 0.1.16 | 2026-06-07 | Añadido `meta` de compatibilidad runtime a `top_snapshot`; runtimes gevent patched/active hub soportan muestreo greenlet-aware y motivos de degradación |
+| 0.1.15 | 2026-05-27 | Añadido `meta` de compatibilidad runtime a `top_snapshot`; runtimes gevent patched/active hub soportan muestreo greenlet-aware y motivos de degradación |

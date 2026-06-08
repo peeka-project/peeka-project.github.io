@@ -218,7 +218,7 @@ peeka-cli top --no-filter-peeka
 
 ## gevent 运行时元数据
 
-v0.1.16 起，`top_snapshot` 包含 `meta` 字段，用于说明当前运行时兼容性策略：
+v0.1.15 起，`top_snapshot` 包含 `meta` 字段，用于说明当前运行时兼容性策略：
 
 | 字段 | 说明 |
 |------|------|
@@ -357,4 +357,4 @@ total_time = total_count * sample_interval
 
 | 版本 | 发布日期 | 变更说明 |
 |------|----------|----------|
-| 0.1.16 | 2026-06-07 | `top_snapshot` 增加运行时兼容性 `meta`；gevent patched/active hub 下支持 greenlet-aware 采样与退化说明 |
+| 0.1.15 | 2026-05-27 | `top_snapshot` 增加运行时兼容性 `meta`；gevent patched/active hub 下支持 greenlet-aware 采样与退化说明 |

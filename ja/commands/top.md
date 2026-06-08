@@ -218,7 +218,7 @@ peeka-cli top --no-filter-peeka
 
 ## gevent ランタイムメタデータ
 
-v0.1.16 以降、`top_snapshot` には現在のランタイム互換性ポリシーを表す `meta` オブジェクトが含まれます：
+v0.1.15 以降、`top_snapshot` には現在のランタイム互換性ポリシーを表す `meta` オブジェクトが含まれます：
 
 | フィールド | 説明 |
 |------------|------|
@@ -357,4 +357,4 @@ total_time = total_count * sample_interval
 
 | バージョン | リリース日 | 変更 |
 |------------|------------|------|
-| 0.1.16 | 2026-06-07 | `top_snapshot` にランタイム互換性 `meta` を追加。gevent patched/active hub では greenlet-aware sampling と退化理由をサポート |
+| 0.1.15 | 2026-05-27 | `top_snapshot` にランタイム互換性 `meta` を追加。gevent patched/active hub では greenlet-aware sampling と退化理由をサポート |

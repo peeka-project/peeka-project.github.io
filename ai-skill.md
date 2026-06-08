@@ -27,7 +27,7 @@ nav_order: 7
 - **解析结果**：利用 JSONL 输出和 `jq` 进行结构化分析
 - **按流程排查**：遵循内置的诊断 Playbook（性能分析、异常排查、内存分析、线程分析）
 
-技能文件覆盖了 Peeka 的全部 21 个顶层 CLI 命令，包含完整的参数说明、jq 解析方法、条件表达式语法、以及安全协议。
+技能文件聚焦 Peeka 的核心诊断工作流，覆盖 `watch`、`trace`、`stack`、`monitor`、`top`、`sc`、`sm`、`memory`、`inspect`、`logger`、`thread` 和 `run`，并包含参数说明、jq 解析方法、条件表达式语法和安全协议。
 
 ---
 

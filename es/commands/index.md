@@ -9,7 +9,7 @@ permalink: /commands
 # Referencia de Comandos
 {: .no_toc }
 
-Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando se centra en un escenario de diagnóstico específico. Este documento cubre los 21 comandos CLI de nivel superior.
+Peeka proporciona una serie de potentes comandos de diagnóstico, cada comando se centra en un escenario de diagnóstico específico. Esta documentación cubre 21 temas de referencia de comandos.
 {: .fs-6 .fw-300 }
 
 ## Tabla de Contenidos

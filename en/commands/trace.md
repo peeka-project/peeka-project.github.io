@@ -265,7 +265,7 @@ Peeka's `trace` command automatically selects the optimal implementation based o
 | 3.12+ | sys.monitoring | < 5% | Official PEP 669 API, optimal performance |
 | 3.8.1-3.11 | sys.settrace | < 20% | Good compatibility, auto-enabled |
 
-**gevent compatibility (v0.1.16+)**: when the target has gevent monkey patching or an active hub, `trace` degrades to the `wrapper_only` backend to avoid violating frame stack invariants with `sys.settrace`. This mode still reports target function observations, but it does not provide a recursive call tree.
+**gevent compatibility (v0.1.15+)**: when the target has gevent monkey patching or an active hub, `trace` degrades to the `wrapper_only` backend to avoid violating frame stack invariants with `sys.settrace`. This mode still reports target function observations, but it does not provide a recursive call tree.
 
 **sys.monitoring Implementation (Python 3.12+)**:
 
@@ -700,7 +700,8 @@ for line in proc.stdout:
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
-| 0.1.16 | 2026-06-07 | Added `--client`; gevent patched/active hub runtimes degrade to the `wrapper_only` trace backend |
+| 0.1.16 | 2026-06-07 | Added `--client` |
+| 0.1.15 | 2026-05-27 | gevent patched/active hub runtimes degrade to the `wrapper_only` trace backend |
 | 0.1.12 | 2026-05-08 | Unified TUI panel system, refined responsive layouts (commit 50c4af4) |
 | 0.1.11 | 2026-05-07 | Client labeling with stable sources (commit 965ff22), enriched activity diagnostics (commit b1b0412) |
 | 0.1.10 | 2026-05-04 | TUI button color normalization (commit fd6a0a1), improved activity log wrapping readability (commit 5f46ae8) |

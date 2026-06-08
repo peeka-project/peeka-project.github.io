@@ -264,7 +264,7 @@ El comando `trace` de Peeka selecciona automáticamente la implementación ópti
 | 3.12+ | sys.monitoring | < 5% | API oficial de PEP 669, rendimiento óptimo |
 | 3.8.1-3.11 | sys.settrace | < 20% | Buena compatibilidad, habilitado automáticamente |
 
-**Compatibilidad con gevent (v0.1.16+)**: cuando el proceso objetivo tiene monkey patching de gevent o un hub activo, `trace` se degrada al backend `wrapper_only` para evitar que `sys.settrace` rompa invariantes de la pila de frames. Este modo sigue reportando observaciones de la función objetivo, pero no proporciona un árbol de llamadas recursivo.
+**Compatibilidad con gevent (v0.1.15+)**: cuando el proceso objetivo tiene monkey patching de gevent o un hub activo, `trace` se degrada al backend `wrapper_only` para evitar que `sys.settrace` rompa invariantes de la pila de frames. Este modo sigue reportando observaciones de la función objetivo, pero no proporciona un árbol de llamadas recursivo.
 
 **Implementación sys.monitoring (Python 3.12+)**:
 
@@ -698,7 +698,8 @@ for line in proc.stdout:
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
-| 0.1.16 | 2026-06-07 | Añadido `--client`; runtimes gevent patched/active hub se degradan al backend `wrapper_only` de trace |
+| 0.1.16 | 2026-06-07 | Añadido `--client` |
+| 0.1.15 | 2026-05-27 | Runtimes gevent patched/active hub se degradan al backend `wrapper_only` de trace |
 | 0.1.12 | 2026-05-08 | Sistema de paneles TUI unificado, diseños responsivos refinados (commit 50c4af4) |
 | 0.1.11 | 2026-05-07 | Etiquetado de clientes con fuentes estables (commit 965ff22), diagnósticos de actividad enriquecidos (commit b1b0412) |
 | 0.1.10 | 2026-05-04 | Normalización de colores de botones en TUI (commit fd6a0a1), mejora de legibilidad del ajuste de línea del registro de actividad (commit 5f46ae8) |

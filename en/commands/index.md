@@ -9,7 +9,7 @@ permalink: /commands
 # Command Reference
 {: .no_toc }
 
-Peeka provides a series of powerful diagnostic commands, each focused on specific diagnostic scenarios. This documentation covers 21 top-level CLI commands.
+Peeka provides a series of powerful diagnostic commands, each focused on specific diagnostic scenarios. This documentation covers 21 command reference topics.
 {: .fs-6 .fw-300 }
 
 ## Table of Contents

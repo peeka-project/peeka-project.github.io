@@ -8,9 +8,6 @@ nav_order: 21
 # dx Command
 {: .no_toc }
 
-Create, organize, and export diagnostic case bundles. A DX case collects target, client, job, probe, consumer, error, note, and summary sections into one exportable context.
-{: .fs-6 .fw-300 }
-
 ## Table of Contents
 {: .no_toc .text-delta }
 

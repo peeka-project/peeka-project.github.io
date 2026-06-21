@@ -8,9 +8,6 @@ nav_order: 20
 # consumer 命令
 {: .no_toc }
 
-管理结果消费者。consumer 为 job、probe 或 target 建立有界缓冲区，供 CLI、TUI、MCP 或 API 客户端读取诊断结果流。
-{: .fs-6 .fw-300 }
-
 ## 目录
 {: .no_toc .text-delta }
 

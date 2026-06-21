@@ -8,9 +8,6 @@ nav_order: 17
 # client 命令
 {: .no_toc }
 
-创建和管理绑定到 target agent 的客户端会话。客户端会话用于区分 CLI、TUI、MCP、API 或内部调用方。
-{: .fs-6 .fw-300 }
-
 ## 目录
 {: .no_toc .text-delta }
 

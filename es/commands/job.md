@@ -8,9 +8,6 @@ nav_order: 18
 # Comando job
 {: .no_toc }
 
-Gestiona jobs de comando asíncronos: revisa su ciclo de vida, inspecciona metadatos de resultados, interrumpe trabajo en ejecución y limpia jobs antiguos.
-{: .fs-6 .fw-300 }
-
 ## Tabla de Contenidos
 {: .no_toc .text-delta }
 

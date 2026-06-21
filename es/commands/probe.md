@@ -8,9 +8,6 @@ nav_order: 19
 # Comando probe
 {: .no_toc }
 
-Gestiona ejecuciones de probe. Comandos de observación como `watch`, `trace`, `monitor` y `top` pueden registrar probes dentro de un target; `probe` lista, inspecciona, detiene y limpia esas ejecuciones.
-{: .fs-6 .fw-300 }
-
 ## Tabla de Contenidos
 {: .no_toc .text-delta }
 

@@ -8,9 +8,6 @@ nav_order: 18
 # job Command
 {: .no_toc }
 
-Manage asynchronous command jobs: view lifecycle state, inspect result metadata, interrupt running work, and clean old jobs.
-{: .fs-6 .fw-300 }
-
 ## Table of Contents
 {: .no_toc .text-delta }
 

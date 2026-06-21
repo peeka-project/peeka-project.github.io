@@ -8,9 +8,6 @@ nav_order: 20
 # Comando consumer
 {: .no_toc }
 
-Gestiona consumidores de resultados. Un consumer crea un buffer acotado para salida de job, probe o target, de modo que clientes CLI, TUI, MCP o API puedan leer flujos de resultados de diagnóstico.
-{: .fs-6 .fw-300 }
-
 ## Tabla de Contenidos
 {: .no_toc .text-delta }
 

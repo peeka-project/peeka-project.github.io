@@ -8,9 +8,6 @@ nav_order: 20
 # consumer コマンド
 {: .no_toc }
 
-結果コンシューマを管理します。consumer は job、probe、target の出力に有界バッファを作成し、CLI、TUI、MCP、API クライアントが診断結果ストリームを読み取れるようにします。
-{: .fs-6 .fw-300 }
-
 ## 目次
 {: .no_toc .text-delta }
 

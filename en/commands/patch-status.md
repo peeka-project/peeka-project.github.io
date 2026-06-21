@@ -8,9 +8,6 @@ nav_order: 15
 # patch-status Command
 {: .no_toc }
 
-Inspect monkey patching, stdlib primitive origins, asyncio loop state, thread model, and RPL integrity in the target process.
-{: .fs-6 .fw-300 }
-
 ## Table of Contents
 {: .no_toc .text-delta }
 

@@ -8,9 +8,6 @@ nav_order: 16
 # target Command
 {: .no_toc }
 
-Manage Peeka target agents: discover targets on the current host, inspect their state, clean stale markers, and detach by target ID.
-{: .fs-6 .fw-300 }
-
 ## Table of Contents
 {: .no_toc .text-delta }
 

@@ -8,9 +8,6 @@ nav_order: 21
 # dx コマンド
 {: .no_toc }
 
-診断ケースバンドルを作成、整理、エクスポートします。DX case は target、client、job、probe、consumer、error、note、summary の section を 1 つのエクスポート可能なコンテキストに集約します。
-{: .fs-6 .fw-300 }
-
 ## 目次
 {: .no_toc .text-delta }
 

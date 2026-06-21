@@ -8,9 +8,6 @@ nav_order: 21
 # dx 命令
 {: .no_toc }
 
-创建、组织和导出诊断案例包。DX case 用于把 target、client、job、probe、consumer、错误、备注和摘要收集到同一个可导出的上下文中。
-{: .fs-6 .fw-300 }
-
 ## 目录
 {: .no_toc .text-delta }
 

@@ -9,9 +9,6 @@ permalink: /commands/attach
 # attach Command
 {: .no_toc }
 
-Inject Peeka Agent into a target Python process and establish a diagnostic channel.
-{: .fs-6 .fw-300 }
-
 ## Table of Contents
 {: .no_toc .text-delta }
 

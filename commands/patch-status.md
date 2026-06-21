@@ -8,9 +8,6 @@ nav_order: 15
 # patch-status 命令
 {: .no_toc }
 
-检查目标进程的 monkey patch、stdlib 原语来源、asyncio loop、线程模型和 RPL 完整性。
-{: .fs-6 .fw-300 }
-
 ## 目录
 {: .no_toc .text-delta }
 

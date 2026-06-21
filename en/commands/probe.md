@@ -8,9 +8,6 @@ nav_order: 19
 # probe Command
 {: .no_toc }
 
-Manage probe runs. Observation commands such as `watch`, `trace`, `monitor`, and `top` can register probes inside a target; `probe` lists, inspects, stops, and cleans those runs.
-{: .fs-6 .fw-300 }
-
 ## Table of Contents
 {: .no_toc .text-delta }
 

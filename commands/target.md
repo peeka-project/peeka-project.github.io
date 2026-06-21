@@ -8,9 +8,6 @@ nav_order: 16
 # target 命令
 {: .no_toc }
 
-管理 Peeka target agent：发现当前主机上的 Peeka 目标、查看状态、清理 stale marker，并按 target ID 分离目标。
-{: .fs-6 .fw-300 }
-
 ## 目录
 {: .no_toc .text-delta }
 

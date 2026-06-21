@@ -8,9 +8,6 @@ nav_order: 19
 # probe 命令
 {: .no_toc }
 
-管理探针运行。`watch`、`trace`、`monitor`、`top` 等观测命令可以在 target 内注册 probe，`probe` 命令用于查看、检查、停止和清理这些运行。
-{: .fs-6 .fw-300 }
-
 ## 目录
 {: .no_toc .text-delta }
 

@@ -8,9 +8,6 @@ nav_order: 1
 # attach 命令
 {: .no_toc }
 
-将 Peeka Agent 注入到目标 Python 进程，建立诊断通道。
-{: .fs-6 .fw-300 }
-
 ## 目录
 {: .no_toc .text-delta }
 

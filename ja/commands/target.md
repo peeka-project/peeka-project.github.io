@@ -8,9 +8,6 @@ nav_order: 16
 # target コマンド
 {: .no_toc }
 
-Peeka target agent を管理します。現在のホスト上の target を検出し、状態を確認し、stale marker を削除し、target ID でデタッチできます。
-{: .fs-6 .fw-300 }
-
 ## 目次
 {: .no_toc .text-delta }
 

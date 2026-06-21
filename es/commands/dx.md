@@ -8,9 +8,6 @@ nav_order: 21
 # Comando dx
 {: .no_toc }
 
-Crea, organiza y exporta paquetes de casos de diagnóstico. Un caso DX reúne secciones de target, client, job, probe, consumer, error, nota y resumen en un contexto exportable.
-{: .fs-6 .fw-300 }
-
 ## Tabla de Contenidos
 {: .no_toc .text-delta }
 

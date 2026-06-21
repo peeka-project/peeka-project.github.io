@@ -8,9 +8,6 @@ nav_order: 20
 # consumer Command
 {: .no_toc }
 
-Manage result consumers. A consumer creates a bounded buffer for job, probe, or target output so CLI, TUI, MCP, or API clients can read diagnostic result streams.
-{: .fs-6 .fw-300 }
-
 ## Table of Contents
 {: .no_toc .text-delta }
 

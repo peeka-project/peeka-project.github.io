@@ -8,9 +8,6 @@ nav_order: 17
 # Comando client
 {: .no_toc }
 
-Crea y gestiona sesiones cliente vinculadas a agentes target. Las sesiones cliente distinguen llamadas desde CLI, TUI, MCP, API o componentes internos.
-{: .fs-6 .fw-300 }
-
 ## Tabla de Contenidos
 {: .no_toc .text-delta }
 

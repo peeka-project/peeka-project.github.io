@@ -8,9 +8,6 @@ nav_order: 15
 # patch-status コマンド
 {: .no_toc }
 
-対象プロセスの monkey patch、stdlib プリミティブの由来、asyncio loop、スレッドモデル、RPL 整合性を検査します。
-{: .fs-6 .fw-300 }
-
 ## 目次
 {: .no_toc .text-delta }
 

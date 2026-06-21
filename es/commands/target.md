@@ -8,9 +8,6 @@ nav_order: 16
 # Comando target
 {: .no_toc }
 
-Gestiona agentes target de Peeka: descubre targets en el host actual, inspecciona su estado, limpia marcadores stale y separa por target ID.
-{: .fs-6 .fw-300 }
-
 ## Tabla de Contenidos
 {: .no_toc .text-delta }
 

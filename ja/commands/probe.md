@@ -8,9 +8,6 @@ nav_order: 19
 # probe コマンド
 {: .no_toc }
 
-probe 実行を管理します。`watch`、`trace`、`monitor`、`top` などの観測コマンドは target 内に probe を登録できます。`probe` はそれらを一覧、検査、停止、クリーンアップします。
-{: .fs-6 .fw-300 }
-
 ## 目次
 {: .no_toc .text-delta }
 

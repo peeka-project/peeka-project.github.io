@@ -8,9 +8,6 @@ nav_order: 17
 # client コマンド
 {: .no_toc }
 
-target agent に紐づくクライアントセッションを作成・管理します。クライアントセッションは CLI、TUI、MCP、API、内部呼び出しを区別するために使います。
-{: .fs-6 .fw-300 }
-
 ## 目次
 {: .no_toc .text-delta }
 

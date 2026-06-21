@@ -8,9 +8,6 @@ nav_order: 1
 # Comando attach
 {: .no_toc }
 
-Inyecta el Agente Peeka en el proceso Python objetivo y establece un canal de diagnóstico.
-{: .fs-6 .fw-300 }
-
 ## Tabla de Contenidos
 {: .no_toc .text-delta }
 

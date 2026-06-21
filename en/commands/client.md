@@ -8,9 +8,6 @@ nav_order: 17
 # client Command
 {: .no_toc }
 
-Create and manage client sessions bound to target agents. Client sessions distinguish CLI, TUI, MCP, API, or internal callers.
-{: .fs-6 .fw-300 }
-
 ## Table of Contents
 {: .no_toc .text-delta }
 

@@ -9,9 +9,6 @@ permalink: /commands/attach
 # attach コマンド
 {: .no_toc }
 
-ターゲットの Python プロセスに Peeka Agent を注入し、診断チャネルを確立します。
-{: .fs-6 .fw-300 }
-
 ## 目次
 {: .no_toc .text-delta }
 

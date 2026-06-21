@@ -8,9 +8,6 @@ nav_order: 15
 # Comando patch-status
 {: .no_toc }
 
-Inspecciona monkey patching, origen de primitivas stdlib, estado del loop asyncio, modelo de hilos e integridad RPL en el proceso objetivo.
-{: .fs-6 .fw-300 }
-
 ## Tabla de Contenidos
 {: .no_toc .text-delta }
 

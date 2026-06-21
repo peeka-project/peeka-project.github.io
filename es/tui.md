@@ -131,6 +131,16 @@ El componente Activity Log del Dashboard recibió las siguientes mejoras en v0.1
 - El attach log del selector de procesos se puede copiar con `y`, útil para conservar diagnósticos de fallos
 - Tras un attach correcto, Dashboard reproduce el resumen de actividad de attach para mantener visible el contexto de conexión
 
+#### Metadatos de runtime (v0.1.17)
+
+El panel de información de runtime del Dashboard ahora añade tres filas extra obtenidas del comando [`patch-status`]({% link commands/patch-status.md %}):
+
+- `Gevent`: estado de gevent en el proceso objetivo (`patched` / `imported` / `none`, etc.)
+- `Backend`: backend de trace activo (por ejemplo `profiler` o `wrapper_only`)
+- `Downgraded`: indica si se activó una degradación de runtime (p. ej. por gevent); el motivo se añade entre paréntesis cuando está disponible
+
+Estas filas se actualizan en cada refresco del Dashboard, permitiendo identificar - sin cambiar de vista - si el comportamiento de trace/watch está afectado por monkey patching.
+
 ---
 
 ### 2. Vista Watch (tecla `2`)
@@ -156,6 +166,16 @@ El componente Activity Log del Dashboard recibió las siguientes mejoras en v0.1
 **Formato de salida**:
 - Vista de tabla: muestra campos clave (params, returnObj, cost, success)
 - Vista detallada: formato JSON muestra datos completos
+
+#### Banner de metadatos de runtime (v0.1.17)
+
+Al abrir la vista Watch se invoca automáticamente [`patch-status`]({% link commands/patch-status.md %}) para obtener el estado de runtime del proceso objetivo. Cuando se detecta gevent, un backend no estándar o una degradación, se muestra un banner compacto debajo de los controles, por ejemplo:
+
+```
+Gevent: patched  Backend: wrapper_only (downgraded: gevent_patched_runtime)
+```
+
+El banner permanece oculto cuando no hay señal que mostrar (CPython por defecto, sin gevent). La información proviene del campo `runtime_meta` añadido al evento `watch_started`, lo que facilita detectar diferencias de comportamiento en entornos con gevent.
 
 ---
 
@@ -184,6 +204,15 @@ El componente Activity Log del Dashboard recibió las siguientes mejoras en v0.1
 - Clic en el nodo para expandir/colapsar (soporte de ratón)
 
 **Ejemplo de salida**: La vista Trace muestra cadenas de llamadas y el tiempo de cada nodo como un árbol expandible.
+
+#### Estado de backend y gevent (v0.1.17)
+
+El panel de estadísticas de cada observación de trace ahora añade una línea `Backend: ... Gevent: ...` después de `Node Count` / `Function`:
+
+- Cuando trace se ejecuta sobre el backend `profiler` completo, muestra `Backend: profiler (full)`.
+- Cuando el objetivo tiene gevent activo y trace se degradó a `wrapper_only`, muestra `Backend: wrapper_only  Gevent: patched`, coincidiendo con la nota de compatibilidad gevent en la documentación del [comando trace]({% link commands/trace.md %}).
+
+Esta información proviene del nuevo campo `runtime_meta` en las respuestas de trace, lo que ayuda a explicar por qué trace ya no reporta un árbol de llamadas recursivo completo en algunos runtimes.
 
 ---
 

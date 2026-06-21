@@ -855,6 +855,7 @@ for line in sys.stdin:
 
 | Versión | Fecha       | Actualizaciones |
 |---------|------------|-------------------|
+| 0.1.17  | 2026-06-13 | El evento `watch_started` ahora incluye `runtime_meta` (estado de gevent, backend, indicador de degradación), lo que permite mostrar información de runtime en la salida CLI y en el banner de la vista Watch de la TUI; el texto de ayuda de `--times` se actualizó a "Print N observations then stop" |
 | 0.1.16  | 2026-06-07 | Soporte para `--client` reutilizando una sesión cliente existente; si se omite, se crea un cliente efímero |
 | 0.1.14  | 2026-05-24 | Emite `execution_profile` para corutinas y generadores asíncronos con tiempo wall/CPU, cambios de contexto y estado de terminación |
 | 0.1.13  | 2026-05-16 | Añadido soporte para funciones de corutina y generadores asíncronos (commit 9e67e01); `--times` movido al conteo de observaciones del lado del cliente |

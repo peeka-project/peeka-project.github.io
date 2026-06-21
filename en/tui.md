@@ -132,6 +132,16 @@ The Dashboard Activity Log component received the following improvements in v0.1
 - The process selector attach log can be copied with `y`, which helps preserve failure diagnostics
 - After a successful attach, Dashboard replays the attach activity summary so the connection setup context remains visible
 
+#### Runtime metadata (v0.1.17)
+
+The Dashboard runtime info panel now appends three extra rows sourced from the [`patch-status`]({% link commands/patch-status.md %}) command:
+
+- `Gevent`: gevent state inside the target process (`patched` / `imported` / `none`, etc.)
+- `Backend`: active trace backend (e.g. `profiler` or `wrapper_only`)
+- `Downgraded`: whether a runtime downgrade was triggered (e.g. by gevent); the reason is appended in parentheses when present
+
+These rows update on every Dashboard refresh, making it easy to tell - without switching views - whether trace/watch behavior is affected by monkey patching.
+
 ---
 
 ### 2. Watch View (`2` key)
@@ -157,6 +167,16 @@ The Dashboard Activity Log component received the following improvements in v0.1
 **Output Format**:
 - Table view: Display key fields (params, returnObj, cost, success)
 - Detailed view: JSON format showing complete data
+
+#### Runtime metadata banner (v0.1.17)
+
+When the Watch view opens it automatically calls [`patch-status`]({% link commands/patch-status.md %}) to fetch the target process runtime state. When gevent, a non-default backend, or a downgrade is detected, a compact banner is rendered just below the controls, for example:
+
+```
+Gevent: patched  Backend: wrapper_only (downgraded: gevent_patched_runtime)
+```
+
+The banner stays hidden when there is no signal to display (default CPython, no gevent). The information is derived from the `runtime_meta` field added to the `watch_started` event, which makes it easy to spot behavioral differences in gevent-style environments.
 
 ---
 
@@ -185,6 +205,15 @@ The Dashboard Activity Log component received the following improvements in v0.1
 - Click nodes to expand/collapse (mouse support)
 
 **Output Example**: The Trace view displays call chains and each node's timing as an expandable tree.
+
+#### Backend and gevent state (v0.1.17)
+
+Each trace observation's stats panel now appends a `Backend: ... Gevent: ...` line after `Node Count` / `Function`:
+
+- When trace runs on the full `profiler` backend it shows `Backend: profiler (full)`.
+- When the target is gevent-patched and trace has degraded to `wrapper_only` it shows `Backend: wrapper_only  Gevent: patched`, matching the gevent compatibility note in the [trace command]({% link commands/trace.md %}) docs.
+
+This information is sourced from the new `runtime_meta` field on trace responses, helping explain why trace no longer reports a full recursive call tree in some runtimes.
 
 ---
 

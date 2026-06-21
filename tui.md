@@ -132,6 +132,16 @@ Dashboard 的 Activity Log 组件在 v0.1.13 中新增以下改进：
 - 进程选择器的 attach log 可用 `y` 复制，便于保存失败诊断信息
 - 成功进入 Dashboard 后会回放 attach 活动摘要，保留连接建立过程的上下文
 
+#### 运行时元数据（v0.1.17）
+
+Dashboard 在运行时信息面板末尾新增三行字段，数据来源为 [`patch-status`]({% link commands/patch-status.md %}) 命令：
+
+- `Gevent`：目标进程中 gevent 的状态（`patched` / `imported` / `none` 等）
+- `Backend`：当前 trace 后端（如 `profiler` 或 `wrapper_only`）
+- `Downgraded`：是否因 gevent 等运行时条件触发降级；为 `yes` 时附带降级原因
+
+这些字段在每次 Dashboard 刷新时同步更新，便于在不切换视图的情况下快速判断 trace/watch 行为是否会受到 monkey patch 影响。
+
 ---
 
 ### 2. Watch 视图（`2` 键）
@@ -157,6 +167,16 @@ Dashboard 的 Activity Log 组件在 v0.1.13 中新增以下改进：
 **输出格式**：
 - 表格视图：显示关键字段（params, returnObj, cost, success）
 - 详细视图：JSON 格式展示完整数据
+
+#### 运行时元数据横幅（v0.1.17）
+
+Watch 视图打开时会自动调用 [`patch-status`]({% link commands/patch-status.md %}) 拉取目标进程的运行时状态。如果检测到 gevent、特殊后端或降级状态，会在控件区下方显示一行紧凑横幅，例如：
+
+```
+Gevent: patched  Backend: wrapper_only (downgraded: gevent_patched_runtime)
+```
+
+当运行时没有可显示的信号时（默认 CPython、无 gevent），横幅保持隐藏。该信息基于 `watch_started` 事件返回的 `runtime_meta` 字段，便于在 gevent 等场景下及时识别行为差异。
 
 ---
 
@@ -185,6 +205,15 @@ Dashboard 的 Activity Log 组件在 v0.1.13 中新增以下改进：
 - 点击节点展开/折叠（鼠标支持）
 
 **输出示例**：Trace 视图会以可展开的树形结构展示调用链和每个节点的耗时。
+
+#### 后端与 gevent 状态（v0.1.17）
+
+每条 trace 观测的统计面板会在 `Node Count` / `Function` 之后追加一行 `Backend: ... Gevent: ...`：
+
+- 当 trace 以完整 `profiler` 后端运行时显示 `Backend: profiler (full)`。
+- 当目标进程被 gevent monkey patch、trace 自动降级为 `wrapper_only` 时显示 `Backend: wrapper_only  Gevent: patched`，对应 [trace 命令]({% link commands/trace.md %}) 文档中的 gevent 兼容性说明。
+
+该信息来自 trace 响应新增的 `runtime_meta` 字段，可用于解释为何 trace 在某些环境下不再展示完整递归调用树。
 
 ---
 

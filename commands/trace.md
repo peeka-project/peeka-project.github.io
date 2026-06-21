@@ -696,6 +696,7 @@ for line in proc.stdout:
 
 | 版本 | 发布日期 | 更新内容 |
 |------|---------|---------|
+| 0.1.17 | 2026-06-13 | trace 响应在被退化为 `wrapper_only` 后端时附带 `runtime_meta`（包含 `startup_backend`、`effective_backend`、`downgrade_reason`），TUI Trace 视图据此在统计面板显示 Backend / Gevent 状态 |
 | 0.1.16 | 2026-06-07 | 支持 `--client` |
 | 0.1.15 | 2026-05-27 | gevent patched/active hub 运行时退化为 `wrapper_only` trace 后端 |
 | 0.1.12 | 2026-05-08 | TUI 面板系统统一，布局优化（commit 50c4af4） |

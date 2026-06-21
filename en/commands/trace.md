@@ -700,6 +700,7 @@ for line in proc.stdout:
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
+| 0.1.17 | 2026-06-13 | Trace responses now carry `runtime_meta` (`startup_backend`, `effective_backend`, `downgrade_reason`) when degraded to the `wrapper_only` backend; the TUI Trace view surfaces Backend / Gevent state in the stats panel |
 | 0.1.16 | 2026-06-07 | Added `--client` |
 | 0.1.15 | 2026-05-27 | gevent patched/active hub runtimes degrade to the `wrapper_only` trace backend |
 | 0.1.12 | 2026-05-08 | Unified TUI panel system, refined responsive layouts (commit 50c4af4) |

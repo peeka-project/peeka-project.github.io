@@ -19,6 +19,12 @@ Manage probe runs. Observation commands such as `watch`, `trace`, `monitor`, and
 
 ---
 
+## Overview
+
+The `probe` command **manages probe runs**. Observation commands such as `watch`, `trace`, `monitor`, and `top` register probes inside the target when they execute, and `probe` is the unified control entry point for those probes: list registrations, inspect recent events, stop running probes, and clean up old ones.
+
+Use `list`, `status`, `inspect`, `stop`, and `cleanup` to filter probes by target, type (`watch`, `trace`, etc.), or status - useful for reclaiming observations that were forgotten about so they do not keep weighing on the target.
+
 ## Syntax
 
 ```bash

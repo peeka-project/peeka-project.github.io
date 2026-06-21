@@ -19,6 +19,12 @@ nav_order: 21
 
 ---
 
+## 简介
+
+`dx` 命令用于**创建、组织和导出诊断案例包**（DX case）：把 target、client、job、probe、consumer、错误、备注和摘要收集到同一个可导出的上下文中，便于排障复盘和团队协作。
+
+通过 `create`、`add`、`summary`、`export` 等子命令可以把一次诊断过程的所有线索沉淀为一个独立的工件，避免散落在不同终端和会话之间。导出后的 DX case 也方便附在 issue / PR 中作为复现凭据。
+
 ## 命令格式
 
 ```bash

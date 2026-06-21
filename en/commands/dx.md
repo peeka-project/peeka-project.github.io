@@ -19,6 +19,12 @@ Create, organize, and export diagnostic case bundles. A DX case collects target,
 
 ---
 
+## Overview
+
+The `dx` command **creates, organizes, and exports diagnostic case bundles** (DX cases): it gathers target, client, job, probe, consumer, errors, notes, and summaries into a single exportable context, making post-mortem analysis and team collaboration straightforward.
+
+Use `create`, `add`, `summary`, and `export` to consolidate every clue from a diagnostic session into a self-contained artifact instead of letting it scatter across terminals and sessions. The exported DX case is also easy to attach to issues or PRs as a reproducible piece of evidence.
+
 ## Syntax
 
 ```bash

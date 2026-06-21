@@ -19,6 +19,12 @@ probe 実行を管理します。`watch`、`trace`、`monitor`、`top` などの
 
 ---
 
+## 概要
+
+`probe` コマンドは **プローブ実行を管理** します。`watch`、`trace`、`monitor`、`top` などの観測コマンドは実行時に target 内に probe を登録し、`probe` コマンドはそれら probe の統一コントロール窓口として機能します：登録状況の確認、直近イベントの調査、実行中 probe の停止、古い probe のクリーンアップが行えます。
+
+`list`、`status`、`inspect`、`stop`、`cleanup` サブコマンドを使うと、target、タイプ（`watch`、`trace` など）、ステータスで probe をフィルタでき、閉じ忘れた観測をタイムリーに回収して target への継続的なオーバーヘッドを避けられます。
+
 ## 構文
 
 ```bash

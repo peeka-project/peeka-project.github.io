@@ -19,6 +19,12 @@ nav_order: 19
 
 ---
 
+## 简介
+
+`probe` 命令用于**管理探针运行**。`watch`、`trace`、`monitor`、`top` 等观测命令在执行时会在 target 内注册 probe，`probe` 命令是这些 probe 的统一控制入口：查看注册情况、检查最近事件、停止运行中的 probe 并清理旧 probe。
+
+通过 `list`、`status`、`inspect`、`stop`、`cleanup` 子命令可以按 target、类型（`watch`、`trace` 等）或状态过滤 probe，及时回收忘记关闭的观测，避免对 target 造成持续开销。
+
 ## 命令格式
 
 ```bash

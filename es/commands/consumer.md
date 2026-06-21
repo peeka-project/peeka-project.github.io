@@ -19,6 +19,12 @@ Gestiona consumidores de resultados. Un consumer crea un buffer acotado para sal
 
 ---
 
+## Introducción
+
+El comando `consumer` **gestiona consumidores de resultados**: aprovisiona búferes acotados para [job]({% link commands/job.md %}), [probe]({% link commands/probe.md %}) o [target]({% link commands/target.md %}), de modo que los clientes CLI, TUI, MCP o API puedan leer flujos de eventos de diagnóstico a su propio ritmo.
+
+Con `create`, `drain`, `status` y `close` se desacopla el productor (comandos de observación que escriben en el búfer) del consumidor (clientes que extraen a su ritmo), evitando bloquear el target y sin perder los eventos aún no consumidos.
+
 ## Sintaxis
 
 ```bash

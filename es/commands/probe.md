@@ -19,6 +19,12 @@ Gestiona ejecuciones de probe. Comandos de observación como `watch`, `trace`, `
 
 ---
 
+## Introducción
+
+El comando `probe` **gestiona las ejecuciones de probes**. Los comandos de observación como `watch`, `trace`, `monitor` y `top` registran probes dentro del target cuando se ejecutan, y `probe` es el punto de control unificado para esas probes: listar registros, inspeccionar eventos recientes, detener probes en ejecución y limpiar las antiguas.
+
+Con `list`, `status`, `inspect`, `stop` y `cleanup` se pueden filtrar las probes por target, tipo (`watch`, `trace`, etc.) o estado, lo cual es útil para recuperar observaciones que se hayan olvidado y que de otro modo seguirían generando carga en el target.
+
 ## Sintaxis
 
 ```bash

@@ -19,6 +19,12 @@ Gestiona jobs de comando asíncronos: revisa su ciclo de vida, inspecciona metad
 
 ---
 
+## Introducción
+
+El comando `job` **gestiona tareas de comandos asíncronas**: ver el ciclo de vida del comando, inspeccionar metadatos de resultado, interrumpir tareas en ejecución y limpiar tareas históricas. Los comandos de observación de larga duración como `watch`, `trace`, `monitor` y `top` se ejecutan típicamente como jobs en segundo plano, y `job` es su punto de control unificado.
+
+Con `list`, `status`, `inspect`, `interrupt` y `cleanup` se pueden recuperar recursos, localizar tareas atascadas y filtrar el historial por múltiples dimensiones (target / client / estado) sin necesidad de tocar directamente el estado interno del target.
+
 ## Sintaxis
 
 ```bash

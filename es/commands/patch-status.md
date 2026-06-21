@@ -19,7 +19,7 @@ Inspecciona monkey patching, origen de primitivas stdlib, estado del loop asynci
 
 ---
 
-## Resumen
+## Introducción
 
 `patch-status` es un comando de diagnóstico de solo lectura para comprobar si el proceso objetivo está parcheado por gevent/eventlet, si primitivas stdlib como socket/thread/time todavía coinciden con las implementaciones nativas capturadas por Runtime Primitive Layer (RPL), y qué loop asyncio y modelo de hilos están activos.
 

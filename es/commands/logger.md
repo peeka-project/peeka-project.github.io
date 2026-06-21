@@ -16,7 +16,7 @@ nav_order: 6
 
 ---
 
-## Introducción del Comando
+## Introducción
 
 El comando `logger` se usa para ver y ajustar dinámicamente el nivel de registro de aplicaciones Python en tiempo de ejecución, no necesita reiniciar el proceso ni modificar archivos de configuración. Es una herramienta potente para resolver problemas en entornos de producción.
 

@@ -19,7 +19,7 @@ Inyecta el Agente Peeka en el proceso Python objetivo y establece un canal de di
 
 ---
 
-## Descripción General
+## Introducción
 
 El comando `attach` es el primer paso para usar Peeka, inyecta el código del Agente Peeka en el proceso objetivo y inicia el servidor Unix Domain Socket, estableciendo un canal de comunicación para los comandos de diagnóstico posteriores.
 

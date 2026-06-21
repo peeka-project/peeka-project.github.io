@@ -17,7 +17,7 @@ permalink: /commands/stack
 
 ---
 
-## Command Overview
+## Overview
 
 The `stack` command captures the complete call stack when a function is invoked, helping developers trace the function's call path. This is a powerful debugging tool, especially useful for analyzing complex call chains and locating the root cause of issues.
 

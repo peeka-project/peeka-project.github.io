@@ -15,7 +15,7 @@ nav_order: 14
 {:toc}
 
 
-## Descripción
+## Introducción
 
 El comando `run` **ejecuta un script Python con Peeka inyectado desde el inicio**, sin necesidad de que el proceso esté en ejecución previamente. Ideal para observar **código en tiempo de importación**, **lógica de inicialización** o **scripts de corta duración** donde no es posible hacer `attach` una vez iniciado.
 

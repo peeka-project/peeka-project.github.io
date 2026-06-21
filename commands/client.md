@@ -19,6 +19,12 @@ nav_order: 17
 
 ---
 
+## 简介
+
+`client` 命令用于**创建和管理绑定到 target agent 的客户端会话**，把 CLI、TUI、MCP、API 或内部调用方区分开。每个会话都有独立的 ID，便于 [job]({% link commands/job.md %}) 与 [consumer]({% link commands/consumer.md %}) 按客户端归属隔离结果。
+
+通过 `--source` 标记调用来源，再配合 `list`、`status`、`close` 子命令查看会话生命周期，可在多客户端并发诊断的场景下保持上下文清晰。
+
 ## 命令格式
 
 ```bash

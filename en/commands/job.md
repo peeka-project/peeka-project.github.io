@@ -19,6 +19,12 @@ Manage asynchronous command jobs: view lifecycle state, inspect result metadata,
 
 ---
 
+## Overview
+
+The `job` command **manages asynchronous command jobs**: view command lifecycle, inspect result metadata, interrupt running jobs, and clean up historical jobs. Long-running observation commands such as `watch`, `trace`, `monitor`, and `top` are typically executed as jobs in the background, and `job` is their unified control entry point.
+
+Use `list`, `status`, `inspect`, `interrupt`, and `cleanup` to reclaim resources, locate stuck jobs, and filter history across multiple dimensions (target / client / status) without touching the target's internal state directly.
+
 ## Syntax
 
 ```bash

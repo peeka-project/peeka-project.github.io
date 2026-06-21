@@ -19,6 +19,12 @@ Create and manage client sessions bound to target agents. Client sessions distin
 
 ---
 
+## Overview
+
+The `client` command **creates and manages client sessions bound to a target agent**, distinguishing CLI, TUI, MCP, API, and internal callers. Each session has its own ID so that [job]({% link commands/job.md %}) and [consumer]({% link commands/consumer.md %}) results can be isolated per client.
+
+Mark the caller with `--source`, then use `list`, `status`, and `close` to follow session lifecycle - useful when multiple clients are running diagnostics concurrently against the same target.
+
 ## Syntax
 
 ```bash

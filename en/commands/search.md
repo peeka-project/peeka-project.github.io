@@ -17,7 +17,7 @@ permalink: /commands/search
 
 ---
 
-## Command Overview
+## Overview
 
 The `sc` (Search Class) and `sm` (Search Method) commands search for classes and methods in running Python processes, helping developers quickly understand code structure, discover available APIs, and locate target functions.
 

@@ -19,6 +19,12 @@ Crea, organiza y exporta paquetes de casos de diagnóstico. Un caso DX reúne se
 
 ---
 
+## Introducción
+
+El comando `dx` **crea, organiza y exporta paquetes de casos de diagnóstico** (DX cases): recopila target, client, job, probe, consumer, errores, notas y resúmenes en un mismo contexto exportable, lo que facilita el análisis posterior y la colaboración en equipo.
+
+Con `create`, `add`, `summary` y `export` se consolida en un único artefacto autocontenido toda la información de una sesión de diagnóstico, en lugar de dejarla dispersa entre terminales y sesiones. El DX case exportado también es fácil de adjuntar a issues o PRs como evidencia reproducible.
+
 ## Sintaxis
 
 ```bash

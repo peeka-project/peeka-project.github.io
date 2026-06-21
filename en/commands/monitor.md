@@ -17,7 +17,7 @@ permalink: /commands/monitor
 
 ---
 
-## Command Overview
+## Overview
 
 The `monitor` command periodically collects and outputs function performance statistics, including call counts, success/failure rates, response times, and other key metrics. This is a lightweight performance monitoring tool suitable for long-term production environment operation.
 

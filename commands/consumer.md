@@ -19,6 +19,12 @@ nav_order: 20
 
 ---
 
+## 简介
+
+`consumer` 命令用于**管理结果消费者**：为 [job]({% link commands/job.md %})、[probe]({% link commands/probe.md %}) 或 [target]({% link commands/target.md %}) 建立有界缓冲区，让 CLI、TUI、MCP 或 API 客户端按需读取诊断事件流。
+
+通过 `create`、`drain`、`status`、`close` 等子命令可以解耦观测产生侧与读取侧：观测命令把事件写入消费者缓冲，客户端按节奏拉取并处理，避免阻塞 target 或丢失尚未消费的数据。
+
 ## 命令格式
 
 ```bash

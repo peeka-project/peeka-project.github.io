@@ -16,7 +16,7 @@ nav_order: 8
 
 ---
 
-## Introducción del Comando
+## Introducción
 
 El comando `inspect` proporciona la función de **inspección de objetos en tiempo de ejecución**, permite ver el estado de objetos de un proceso Python en ejecución sin modificar el código. Soporta tres operaciones:
 

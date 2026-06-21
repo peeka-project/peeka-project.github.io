@@ -19,7 +19,7 @@ nav_order: 1
 
 ---
 
-## 概述
+## 简介
 
 `attach` 命令是使用 Peeka 的第一步，它将 Peeka Agent 代码注入到目标进程中，并启动 Unix Domain Socket 服务器，为后续的诊断命令建立通信通道。
 

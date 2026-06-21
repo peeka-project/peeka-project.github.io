@@ -19,7 +19,7 @@ nav_order: 15
 
 ---
 
-## 概述
+## 简介
 
 `patch-status` 是只读诊断命令，用于确认目标进程是否被 gevent/eventlet monkey patch、当前 socket/thread/time 等 stdlib 原语是否仍与 Runtime Primitive Layer（RPL）捕获的原生实现一致，以及当前 asyncio loop 和线程模型状态。
 

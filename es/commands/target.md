@@ -19,6 +19,12 @@ Gestiona agentes target de Peeka: descubre targets en el host actual, inspeccion
 
 ---
 
+## Introducción
+
+El comando `target` **gestiona los target agents de Peeka**: descubre targets de Peeka en el host actual, consulta su estado, limpia marcadores obsoletos y desvincula targets por ID. Es la puerta de entrada al resto de comandos de diagnóstico: solo cuando un target está confirmado como `alive`, comandos como `watch`, `trace` o `inspect` pueden enrutarse correctamente al proceso objetivo.
+
+Con `list`, `current`, `status`, `inspect`, `cleanup` y `detach` se puede indicar con precisión el target sobre el que operar cuando varios coexisten en el mismo host, y recuperar a tiempo los targets obsoletos cuyos marcadores de socket quedaron tras la salida del proceso.
+
 ## Sintaxis
 
 ```bash

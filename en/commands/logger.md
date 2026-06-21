@@ -17,7 +17,7 @@ permalink: /commands/logger
 
 ---
 
-## Command Overview
+## Overview
 
 The `logger` command allows you to dynamically view and adjust Python application log levels at runtime, without restarting the process or modifying configuration files. This is a powerful tool for troubleshooting issues in production environments.
 

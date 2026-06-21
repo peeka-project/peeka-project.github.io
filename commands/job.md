@@ -19,6 +19,12 @@ nav_order: 18
 
 ---
 
+## 简介
+
+`job` 命令用于**管理异步命令任务**：查看命令生命周期、检查结果元数据、中断运行中的任务并清理历史任务。`watch`、`trace`、`monitor`、`top` 等长生命周期观测命令通常在后台以 job 形式运行，`job` 命令是它们的统一控制入口。
+
+通过 `list`、`status`、`inspect`、`interrupt`、`cleanup` 子命令可以在不直接接触 target 内部状态的前提下回收资源、定位卡顿任务，并按 target / client / 状态多维度过滤历史记录。
+
 ## 命令格式
 
 ```bash

@@ -19,6 +19,12 @@ nav_order: 20
 
 ---
 
+## 概要
+
+`consumer` コマンドは **結果コンシューマを管理** します：[job]({% link commands/job.md %})、[probe]({% link commands/probe.md %})、[target]({% link commands/target.md %}) 向けに有界バッファを用意し、CLI、TUI、MCP、API クライアントが自分のペースで診断イベントストリームを取り出せるようにします。
+
+`create`、`drain`、`status`、`close` などのサブコマンドを使うことで、生産側（バッファに書き込む観測コマンド）と消費側（自分のペースで読み出すクライアント）を分離でき、target をブロックすることなく、未消費のイベントを失うこともありません。
+
 ## 構文
 
 ```bash

@@ -19,6 +19,12 @@ Crea y gestiona sesiones cliente vinculadas a agentes target. Las sesiones clien
 
 ---
 
+## Introducción
+
+El comando `client` **crea y gestiona sesiones de cliente vinculadas a un target agent**, distinguiendo a los llamadores CLI, TUI, MCP, API e internos. Cada sesión tiene su propio ID, lo que permite aislar por cliente los resultados de [job]({% link commands/job.md %}) y [consumer]({% link commands/consumer.md %}).
+
+Identifica al llamador con `--source` y usa `list`, `status` y `close` para seguir el ciclo de vida de la sesión, lo cual resulta útil cuando varios clientes ejecutan diagnósticos simultáneamente sobre el mismo target.
+
 ## Sintaxis
 
 ```bash

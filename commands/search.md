@@ -16,7 +16,7 @@ nav_order: 9
 
 ---
 
-## 命令简介
+## 简介
 
 `sc` (Search Class) 和 `sm` (Search Method) 命令用于在运行中的 Python 进程中搜索类和方法，帮助开发者快速了解代码结构、发现可用API、定位目标函数。
 

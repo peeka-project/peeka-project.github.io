@@ -19,6 +19,12 @@ nav_order: 16
 
 ---
 
+## 简介
+
+`target` 命令用于**管理 Peeka target agent**：发现当前主机上的 Peeka 目标、查看状态、清理 stale marker，并按 target ID 分离目标。它是其他诊断命令的前置入口——只有先确认 target 处于 `alive` 状态，`watch`、`trace`、`inspect` 等命令才能正确路由到目标进程。
+
+通过 `list`、`current`、`status`、`inspect`、`cleanup`、`detach` 子命令可以在多 target 共存的场景中精确指定操作对象，并及时回收已退出但 socket marker 仍残留的 stale target。
+
 ## 命令格式
 
 ```bash

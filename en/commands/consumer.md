@@ -19,6 +19,12 @@ Manage result consumers. A consumer creates a bounded buffer for job, probe, or 
 
 ---
 
+## Overview
+
+The `consumer` command **manages result consumers**: it provisions bounded buffers for [job]({% link commands/job.md %}), [probe]({% link commands/probe.md %}), or [target]({% link commands/target.md %}) so CLI, TUI, MCP, or API clients can pull diagnostic event streams on their own schedule.
+
+Use `create`, `drain`, `status`, and `close` to decouple the producer (observation commands writing into the buffer) from the consumer (clients pulling at their own pace), so the target is never blocked and unread events are not lost.
+
 ## Syntax
 
 ```bash

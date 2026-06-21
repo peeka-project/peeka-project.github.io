@@ -48,28 +48,24 @@ Peeka is designed specifically to solve these production environment diagnostic 
 ## Core Features
 
 ### 🔍 Non-Invasive Observation
-{: .text-delta }
 
 - No need to modify target code
 - Runtime dynamic injection of observation logic
 - Complete restoration after diagnosis
 
 ### ⚡ Real-Time Diagnosis
-{: .text-delta }
 
 - Millisecond-level data transmission latency
 - Streaming observation data push
 - JSON format output for easy integration with other tools
 
 ### 🛡️ Production-Ready
-{: .text-delta }
 
 - Performance overhead < 5%
 - Complete exception capture and recovery mechanisms
 - Fixed memory buffer to prevent memory expansion
 
 ### 🎯 Conditional Filtering
-{: .text-delta }
 
 - Safe expression filtering (based on simpleeval)
 - Flexible filtering syntax (parameters, return values, execution time, etc.)
@@ -140,7 +136,6 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 [View Complete Command Reference]({% link commands/index.md %}){: .btn .btn-outline }
 
 ### 🎨 Interactive TUI Interface
-{: .text-delta }
 
 In addition to CLI commands, Peeka also provides a feature-complete TUI (Text User Interface):
 

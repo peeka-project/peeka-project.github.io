@@ -46,28 +46,24 @@ Peeka está diseñado específicamente para resolver estos desafíos de diagnós
 ## Características principales
 
 ### 🔍 Observación no intrusiva
-{: .text-delta }
 
 - No necesitas modificar el código objetivo
 - Inyección dinámica de lógica de observación en tiempo de ejecución
 - Restauración completa después del diagnóstico
 
 ### ⚡ Diagnóstico en tiempo real
-{: .text-delta }
 
 - Latencia de transmisión de datos a nivel de milisegundos
 - Transmisión en streaming de datos de observación
 - Salida en formato JSON fácil de integrar con otras herramientas
 
 ### 🛡️ Listo para producción
-{: .text-delta }
 
 - Sobrecarga de rendimiento < 5%
 - Captura completa de excepciones y mecanismo de recuperación
 - Búfer de memoria fijo para prevenir la expansión de memoria
 
 ### 🎯 Filtrado condicional
-{: .text-delta }
 
 - Filtrado seguro de expresiones (basado en simpleeval)
 - Sintaxis flexible de filtrado (parámetros, valores de retorno, tiempo de ejecución, etc.)
@@ -138,7 +134,6 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 [Ver referencia completa de comandos]({% link commands/index.md %}){: .btn .btn-outline }
 
 ### 🎨 Interfaz TUI interactiva
-{: .text-delta }
 
 Además de los comandos CLI, Peeka también proporciona una rica interfaz TUI (interfaz de usuario de texto):
 

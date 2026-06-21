@@ -48,28 +48,24 @@ Peeka 专为解决这些生产环境诊断难题而设计。
 ## 核心特性
 
 ### 🔍 非侵入式观测
-{: .text-delta }
 
 - 无需修改目标代码
 - 运行时动态注入观测逻辑
 - 诊断结束后完全恢复原状
 
 ### ⚡ 实时诊断
-{: .text-delta }
 
 - 毫秒级数据传输延迟
 - 流式观测数据推送
 - 支持 JSON 格式输出，便于与其他工具集成
 
 ### 🛡️ 生产可用
-{: .text-delta }
 
 - 性能开销 < 5%
 - 完善的异常捕获和恢复机制
 - 固定内存缓冲，防止内存膨胀
 
 ### 🎯 条件过滤
-{: .text-delta }
 
 - 支持安全的表达式过滤（基于 simpleeval）
 - 灵活的过滤语法（参数、返回值、执行时间等）
@@ -140,7 +136,6 @@ peeka-cli watch "module.func" | jq 'select(.type == "observation" and .data.dura
 [查看完整命令参考]({% link commands/index.md %}){: .btn .btn-outline }
 
 ### 🎨 TUI 交互式界面
-{: .text-delta }
 
 除了 CLI 命令行工具，Peeka 还提供功能完整的 TUI（文本用户界面）：
 

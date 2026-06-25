@@ -178,5 +178,6 @@ Cuando el script termina (normalmente o con error), la observación se detiene a
 
 | Versión | Fecha      | Cambios                           |
 |---------|------------|-----------------------------------|
+| 0.1.18  | 2026-06-24 | `run` aplica límites locales por flujo para todos los comandos de observación en streaming (watch/trace/stack/monitor/top) y detiene el flujo correspondiente al alcanzar el límite |
 | 0.1.16  | 2026-06-07 | `run` soporta `monitor` y `top`; `--output-file` se documenta como opción de nivel `run` antes de la ruta del script |
 | 0.1.8   | 2025-04-28 | Documentación del comando run añadida |

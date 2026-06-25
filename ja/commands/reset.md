@@ -17,7 +17,7 @@ nav_order: 10
 
 ## 概要
 
-`reset` コマンドは、**拡張されたメソッドを元の状態に回復**するために使用されます。`watch`、`stack` などのコマンドによって注入された観測ロジックを削除します。これはクリーンアップコマンドで、すべての拡張を選択的にリセットしたり、特定のパターンに一致する拡張のみをリセットしたりできます。
+`reset` コマンドは、**拡張されたメソッドを元の状態に回復**するために使用されます。`watch`、`stack`、`monitor` などのコマンドによって注入された観測ロジックを削除します。これはクリーンアップコマンドで、すべての拡張を選択的にリセットしたり、特定のパターンに一致する拡張のみをリセットしたりできます。
 
 
 ## 使用場面
@@ -101,14 +101,24 @@ peeka-cli reset [pattern] [options]
 | `action`   | string | 操作タイプ（`reset`）           |
 | `affected` | array  | リセットされた拡張のリスト                |
 | `count`    | int    | 正常にリセットされた数                 |
+| `cleanup_summary`| object | レイヤーごとのクリーンアップ結果（v0.1.18+） |
 
 **affected 配列の要素**：
 
 | フィールド         | 型     | 説明           |
 |------------|--------|--------------|
-| `watch_id` | string | 観測セッション ID      |
+| `watch_id` | string | 観測セッション ID（`watch`/`stack`） |
+| `stream_id`| string | ストリーム ID（`monitor` など probe-only リソース） |
 | `pattern`  | string | 元の関数マッチングパターン    |
 | `error`    | string | （オプション）リセット失敗時のエラー |
+
+**cleanup_summary フィールド**（v0.1.18+）：
+
+| フィールド         | 型     | 説明                              |
+|-------------------|--------|-----------------------------------|
+| `resource_owners` | object | リソース所有者コマンド（例: `monitor`）の停止結果。`stopped` と `errors` を含む |
+| `probe_contexts`  | object | probe コンテキストのクリーンアップ結果。`stopped_count` と `errors` を含む |
+| `injector`        | object | インジェクタ reset 結果。`errors` を含む |
 
 ### list 操作レスポンス
 
@@ -128,9 +138,14 @@ peeka-cli reset [pattern] [options]
       "pattern": "myapp.handler.process",
       "command": "stack",
       "count": 15
+    },
+    {
+      "stream_id": "monitor_a3b4c5d6",
+      "pattern": "myapp.service.query",
+      "command": "monitor"
     }
   ],
-  "total": 2
+  "total": 3
 }
 ```
 
@@ -147,10 +162,11 @@ peeka-cli reset [pattern] [options]
 
 | フィールド         | 型     | 説明                       |
 |------------|--------|--------------------------|
-| `watch_id` | string | 観測セッション ID                  |
+| `watch_id` | string | 観測セッション ID（`watch`/`stack`） |
+| `stream_id`| string | ストリーム ID（`monitor` など probe-only リソース） |
 | `pattern`  | string | 関数マッチングパターン                   |
-| `command`  | string | 拡張を作成したコマンド（`watch`/`stack`） |
-| `count`    | int    | キャプチャされた観測回数                 |
+| `command`  | string | 拡張を作成したコマンド（`watch`/`stack`/`monitor`） |
+| `count`    | int    | キャプチャされた観測回数（オプション） |
 
 ## 使用例
 
@@ -170,9 +186,15 @@ peeka-cli reset
   "affected": [
     {"watch_id": "watch_001", "pattern": "myapp.service.query"},
     {"watch_id": "watch_002", "pattern": "myapp.handler.process"},
-    {"watch_id": "stack_003", "pattern": "myapp.api.handle"}
+    {"watch_id": "stack_003", "pattern": "myapp.api.handle"},
+    {"stream_id": "monitor_004", "pattern": "myapp.service.query"}
   ],
-  "count": 3
+  "count": 4,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": ["monitor_004"], "errors": []},
+    "probe_contexts": {"stopped_count": 4, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -205,7 +227,12 @@ peeka-cli reset "myapp.service.UserService.query"
     {"watch_id": "watch_001", "pattern": "myapp.service.UserService.query"},
     {"watch_id": "watch_002", "pattern": "myapp.service.UserService.update"}
   ],
-  "count": 2
+  "count": 2,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": [], "errors": []},
+    "probe_contexts": {"stopped_count": 2, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -229,7 +256,12 @@ peeka-cli reset "nonexistent.*"
   "status": "success",
   "action": "reset",
   "affected": [],
-  "count": 0
+  "count": 0,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": [], "errors": []},
+    "probe_contexts": {"stopped_count": 0, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -383,18 +415,18 @@ done
 
 ## 注意点
 
-### ⚠️ Monitor コマンドは影響を受けない
+### ⚠️ リソース所有者コマンド
 
-`reset` コマンドは**`watch` と `stack` コマンドによって作成された拡張のみに影響**します。`monitor` コマンドは独立した追跡メカニズムを使用しているため、reset でクリーンアップされません。
+`reset` コマンドは、`watch`、`stack`、およびリソース所有者として登録された `monitor` コマンドが作成した拡張を停止・クリーンアップします。`top` コマンドは `DETACH_ONLY` のクリーンアップスコープを持つため、`reset` では**停止されず**、`detach` 時にのみクリーンアップされます。
 
 ```bash
-# monitor は影響を受けない
-peeka-cli monitor "myapp.service.query"  # 監視を開始
+# monitor は reset で停止されるようになった
+peeka-cli monitor "myapp.service.query" --interval 1  # 監視を開始
 
-peeka-cli reset                        # リセットしても monitor は停止しない
+peeka-cli reset                        # monitor もクリーンアップされる
 
-# monitor を停止するには個別に処理が必要
-peeka-cli reset "myapp.service.*"
+# monitor を残したまま watch/stack のみリセットする場合は正確なパターンを指定
+peeka-cli reset "myapp.handler.*"
 ```
 
 ### ⚠️ パターンマッチングルール
@@ -650,13 +682,13 @@ jq '.enhanced[] | {pattern, count}' enhancements_backup.json
     - メモリ占有が増加する
     - ビジネスに影響を与える可能性がある
 
-2. **monitor のリセットを忘れる**
+2. **cleanup_summary の確認を忘れる**
    ```bash
-   # ❌ reset は monitor を停止しない
+   # ❌ クリーンアップエラーを確認しない
    peeka-cli reset
 
-   # ✅ monitor も個別に停止する必要がある
-   peeka-cli reset "myapp.service.*"
+   # ✅ 各レイヤーのクリーンアップ結果を確認する
+   peeka-cli reset | jq '.cleanup_summary'
    ```
 
 3. **過度に正確なパターンを使用**
@@ -689,4 +721,5 @@ jq '.enhanced[] | {pattern, count}' enhancements_backup.json
 
 | バージョン    | 日付         | 更新内容                    |
 |-------|------------|-------------------------|
+| 0.1.18 | 2026-06-24 | reset がリソース所有者コマンド（例: `monitor`）を先に停止し、その後 probe コンテキストとインジェクタをクリーンアップ；レスポンスに `cleanup_summary` を追加；`--list` が重複を除去し probe-only リソース（例: `monitor`）を含める |
 | 0.1.0 | 2025-01-31 | 初期バージョン、reset と list 機能をサポート |

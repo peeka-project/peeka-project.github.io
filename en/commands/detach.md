@@ -217,3 +217,9 @@ The `detach` command requires:
 - Maintained connection with the target process (socket available)
 
 **No additional permissions** are needed because cleanup operations execute within the target process.
+
+## Version History
+
+| Version | Release Date | Changes |
+|---------|-------------|---------|
+| 0.1.18 | 2026-06-24 | `detach` cleans up resources through the `agent.stop()` lifecycle (including monitor/top) and returns `cleanup_summary` |

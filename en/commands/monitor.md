@@ -964,6 +964,7 @@ The `monitor` command is a powerful tool for production environment performance 
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
+| 0.1.18 | 2026-06-24 | `monitor` migrated to `ResourceOwningCommand`; `reset` stops monitor resources and `detach` cleans them up; the `run` wrapper respects `-c/--cycles`; `--list` output includes monitor entries |
 | 0.1.12 | 2026-05-08 | Unified TUI panel system, refined responsive layouts (commit 50c4af4) |
 | 0.1.11 | 2026-05-07 | Client labeling with stable sources (commit 965ff22), enriched activity diagnostics (commit b1b0412) |
 | 0.1.10 | 2026-05-04 | TUI button color normalization (commit fd6a0a1) |

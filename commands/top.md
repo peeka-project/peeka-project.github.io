@@ -357,4 +357,5 @@ total_time = total_count * sample_interval
 
 | 版本 | 发布日期 | 变更说明 |
 |------|----------|----------|
+| 0.1.18 | 2026-06-24 | `top` 迁移为 `ResourceOwningCommand`（`DETACH_ONLY` 清理范围），`detach` 会清理 top 采样器；`run` 命令中的 top 流现在会尊重 `-c/--cycles` 限制 |
 | 0.1.15 | 2026-05-27 | `top_snapshot` 增加运行时兼容性 `meta`；gevent patched/active hub 下支持 greenlet-aware 采样与退化说明 |

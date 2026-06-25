@@ -246,5 +246,6 @@ peeka-cli run app.py -- trace "config.load_settings" -d 4
 
 | Version | Date       | Changes              |
 |---------|------------|----------------------|
+| 0.1.18  | 2026-06-24 | `run` applies local stream-scoped limits for all streaming observation commands (watch/trace/stack/monitor/top) and stops the corresponding stream when the limit is reached |
 | 0.1.16  | 2026-06-07 | `run` supports `monitor` and `top`; corrected `--output-file` as a run-level option before the script path |
 | 0.1.8   | 2025-04-28 | Added run command documentation |

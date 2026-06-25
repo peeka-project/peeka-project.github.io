@@ -357,4 +357,5 @@ total_time = total_count * sample_interval
 
 | バージョン | リリース日 | 変更 |
 |------------|------------|------|
+| 0.1.18 | 2026-06-24 | `top` を `ResourceOwningCommand`（`DETACH_ONLY` クリーンアップスコープ）に移行。`detach` が top サンプラーをクリーンアップ。`run` ラッパーは `-c/--cycles` を尊重 |
 | 0.1.15 | 2026-05-27 | `top_snapshot` にランタイム互換性 `meta` を追加。gevent patched/active hub では greenlet-aware sampling と退化理由をサポート |

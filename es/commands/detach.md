@@ -215,3 +215,9 @@ El comando `detach` requiere:
 - Mantienes conexión con el proceso objetivo (socket disponible)
 
 **No necesita** permisos adicionales, porque la operación de limpieza se ejecuta dentro del proceso objetivo.
+
+## Historial de Versiones
+
+| Versión | Fecha | Cambios |
+|---------|-------|---------|
+| 0.1.18 | 2026-06-24 | `detach` limpia recursos a través del ciclo de vida `agent.stop()` (incluyendo monitor/top) y devuelve `cleanup_summary` |

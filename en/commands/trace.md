@@ -700,6 +700,7 @@ for line in proc.stdout:
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
+| 0.1.18 | 2026-06-24 | CLI `--times` now counts only observations matching the active stream_id, so concurrent streams no longer count toward the current trace limit; the `run` wrapper stops the trace stream when the limit is reached |
 | 0.1.17 | 2026-06-13 | Trace responses now carry `runtime_meta` (`startup_backend`, `effective_backend`, `downgrade_reason`) when degraded to the `wrapper_only` backend; the TUI Trace view surfaces Backend / Gevent state in the stats panel |
 | 0.1.16 | 2026-06-07 | Added `--client` |
 | 0.1.15 | 2026-05-27 | gevent patched/active hub runtimes degrade to the `wrapper_only` trace backend |

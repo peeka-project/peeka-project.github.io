@@ -356,4 +356,5 @@ total_time = total_count * sample_interval
 
 | Versión | Fecha de lanzamiento | Cambios |
 |---------|----------------------|---------|
+| 0.1.18 | 2026-06-24 | `top` migrado a `ResourceOwningCommand` con alcance de limpieza `DETACH_ONLY`; `detach` limpia el sampler de top; el wrapper `run` respeta `-c/--cycles` |
 | 0.1.15 | 2026-05-27 | Añadido `meta` de compatibilidad runtime a `top_snapshot`; runtimes gevent patched/active hub soportan muestreo greenlet-aware y motivos de degradación |

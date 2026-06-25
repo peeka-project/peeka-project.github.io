@@ -18,7 +18,7 @@ permalink: /commands/reset
 
 ## Overview
 
-The `reset` command is used to **restore enhanced methods to their original state**, removing observation logic injected by commands like `watch` and `stack`. This is a cleanup command that can selectively reset all enhancements or only those matching specific patterns.
+The `reset` command is used to **restore enhanced methods to their original state**, removing observation logic injected by commands like `watch`, `stack`, and `monitor`. This is a cleanup command that can selectively reset all enhancements or only those matching specific patterns.
 
 
 
@@ -102,14 +102,24 @@ The `pattern` parameter supports Unix shell-style wildcards (based on fnmatch):
 | `action` | string | Operation type (`reset`) |
 | `affected` | array | List of reset enhancements |
 | `count` | int | Number of successful resets |
+| `cleanup_summary` | object | Cleanup results by layer (v0.1.18+) |
 
 **affected Array Elements**:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `watch_id` | string | Observation session ID |
+| `watch_id` | string | Observation session ID (`watch`/`stack`) |
+| `stream_id` | string | Stream ID for probe-only resources such as `monitor` |
 | `pattern` | string | Original function matching pattern |
 | `error` | string | (Optional) Error on reset failure |
+
+**cleanup_summary Fields** (v0.1.18+):
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `resource_owners` | object | Stop results for resource-owner commands (e.g. `monitor`), with `stopped` and `errors` |
+| `probe_contexts` | object | Probe-context cleanup results, with `stopped_count` and `errors` |
+| `injector` | object | Injector reset results, with `errors` |
 
 ### list Operation Response
 
@@ -129,9 +139,14 @@ The `pattern` parameter supports Unix shell-style wildcards (based on fnmatch):
       "pattern": "myapp.handler.process",
       "command": "stack",
       "count": 15
+    },
+    {
+      "stream_id": "monitor_a3b4c5d6",
+      "pattern": "myapp.service.query",
+      "command": "monitor"
     }
   ],
-  "total": 2
+  "total": 3
 }
 ```
 
@@ -148,10 +163,11 @@ The `pattern` parameter supports Unix shell-style wildcards (based on fnmatch):
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `watch_id` | string | Observation session ID |
+| `watch_id` | string | Observation session ID (`watch`/`stack`) |
+| `stream_id` | string | Stream ID for probe-only resources such as `monitor` |
 | `pattern` | string | Function matching pattern |
-| `command` | string | Command that created enhancement (`watch`/`stack`) |
-| `count` | int | Number of observations captured |
+| `command` | string | Command that created enhancement (`watch`/`stack`/`monitor`) |
+| `count` | int | Number of observations captured (optional) |
 
 ## Usage Examples
 
@@ -171,9 +187,15 @@ peeka-cli reset
   "affected": [
     {"watch_id": "watch_001", "pattern": "myapp.service.query"},
     {"watch_id": "watch_002", "pattern": "myapp.handler.process"},
-    {"watch_id": "stack_003", "pattern": "myapp.api.handle"}
+    {"watch_id": "stack_003", "pattern": "myapp.api.handle"},
+    {"stream_id": "monitor_004", "pattern": "myapp.service.query"}
   ],
-  "count": 3
+  "count": 4,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": ["monitor_004"], "errors": []},
+    "probe_contexts": {"stopped_count": 4, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -205,7 +227,12 @@ peeka-cli reset "myapp.service.UserService.query"
     {"watch_id": "watch_001", "pattern": "myapp.service.UserService.query"},
     {"watch_id": "watch_002", "pattern": "myapp.service.UserService.update"}
   ],
-  "count": 2
+  "count": 2,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": [], "errors": []},
+    "probe_contexts": {"stopped_count": 2, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -228,7 +255,12 @@ peeka-cli reset "nonexistent.*"
   "status": "success",
   "action": "reset",
   "affected": [],
-  "count": 0
+  "count": 0,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": [], "errors": []},
+    "probe_contexts": {"stopped_count": 0, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -381,18 +413,18 @@ done
 
 ## Important Notes
 
-### ⚠️ Monitor Command Not Affected
+### ⚠️ Resource-Owner Commands
 
-The `reset` command **only affects enhancements created by `watch` and `stack` commands**. The `monitor` command uses an independent tracking mechanism and won't be cleared by reset.
+The `reset` command stops and clears enhancements created by `watch`, `stack`, and `monitor` (registered as a resource owner). `top` has `DETACH_ONLY` cleanup scope, so it is **not** stopped by `reset`; it is cleaned up only during `detach`.
 
 ```bash
-# monitor is not affected
-peeka-cli monitor 12345 "myapp.service.query"  # Start monitoring
+# monitor is now stopped by reset
+peeka-cli monitor "myapp.service.query" --interval 1
 
-peeka-cli reset                        # Reset won't stop monitor
+peeka-cli reset                        # monitor is cleaned up too
 
-# Need to stop monitor separately
-peeka-cli reset "myapp.service.*"
+# To reset only watch/stack while keeping monitor, use an exact pattern
+peeka-cli reset "myapp.handler.*"
 ```
 
 ### ⚠️ Pattern Matching Rules
@@ -557,3 +589,9 @@ The `reset` command is a powerful tool for production environment enhancement ma
 - Learn [`stack`](stack.md) command (trace call stacks)
 - Learn [`monitor`](monitor.md) command (performance monitoring)
 - Reference [AGENTS.md](../AGENTS.md) (developer guide)
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 0.1.18 | 2026-06-24 | Reset now stops resource-owner commands (e.g. `monitor`) before injector teardown; response includes `cleanup_summary`; `--list` deduplicates and includes probe-only resources such as `monitor` |

@@ -696,6 +696,7 @@ for line in proc.stdout:
 
 | 版本 | 发布日期 | 更新内容 |
 |------|---------|---------|
+| 0.1.18 | 2026-06-24 | CLI `--times` 改为按活动 stream_id 计数，避免并发流的观测被误计入当前 trace 的限制；`run` 命令中的 trace 流现在会在达到限制后正确停止 |
 | 0.1.17 | 2026-06-13 | trace 响应在被退化为 `wrapper_only` 后端时附带 `runtime_meta`（包含 `startup_backend`、`effective_backend`、`downgrade_reason`），TUI Trace 视图据此在统计面板显示 Backend / Gevent 状态 |
 | 0.1.16 | 2026-06-07 | 支持 `--client` |
 | 0.1.15 | 2026-05-27 | gevent patched/active hub 运行时退化为 `wrapper_only` trace 后端 |

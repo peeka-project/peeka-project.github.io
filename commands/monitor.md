@@ -965,6 +965,7 @@ done
 
 | 版本 | 发布日期 | 更新内容 |
 |------|---------|---------|
+| 0.1.18 | 2026-06-24 | `monitor` 迁移为 `ResourceOwningCommand`，`reset` 会停止 monitor 资源，`detach` 也会清理 monitor；`run` 命令中的 monitor 流现在会尊重 `-c/--cycles` 限制；`--list` 输出包含 monitor 条目 |
 | 0.1.12 | 2026-05-08 | TUI 面板系统统一，布局优化（commit 50c4af4） |
 | 0.1.11 | 2026-05-07 | 客户端稳定来源标签化（commit 965ff22），活动诊断数据增强（commit b1b0412） |
 | 0.1.10 | 2026-05-04 | TUI 按钮颜色规范化（commit fd6a0a1） |

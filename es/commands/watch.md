@@ -20,7 +20,7 @@ El comando `watch` se usa para observar la ejecución de funciones Python especi
 
 **Soporte de corutinas** (v0.1.13+): Peeka detecta automáticamente funciones de corutina (`async def`) y generadores asíncronos en tiempo de inyección, preserva la semántica AtEnter/AtExit/AtExceptionExit con envoltura asíncrona.
 
-**Aviso** ⚠️ **Cambio de comportamiento de `--times`** (v0.1.13+): Este parámetro ahora cuenta observaciones en el **lado del cliente** (después de recibirlas) en lugar del lado del agente (antes de enviarlas). Si el agente envía más observaciones que el límite de `--times`, el cliente dejará de recibir y descartará los datos restantes. Si sus scripts dependen del control preciso del recuento de observaciones, consulte [solución de problemas](../troubleshooting.md#times-semantics).
+**Aviso** ⚠️ **Cambio de comportamiento de `--times`** (v0.1.13+, refinado en v0.1.18): Este parámetro ahora cuenta observaciones en el **lado del cliente por `stream_id` activo** (después de recibirlas) en lugar del lado del agente (antes de enviarlas). Desde v0.1.18, solo las observaciones que pertenecen al flujo de watch actual se cuentan hacia `--times`; las observaciones de flujos concurrentes ya no afectan el límite. Si el agente envía más observaciones que el límite de `--times`, el cliente dejará de recibir y descartará los datos restantes. Si sus scripts dependen del control preciso del recuento de observaciones, consulte [solución de problemas](../troubleshooting.md#times-semantics).
 
 ## Uso en TUI
 
@@ -855,6 +855,7 @@ for line in sys.stdin:
 
 | Versión | Fecha       | Actualizaciones |
 |---------|------------|-------------------|
+| 0.1.18  | 2026-06-24 | CLI `--times` ahora cuenta solo observaciones cuyo `stream_id` coincida con el flujo activo, evitando que flujos concurrentes se sumen al límite del watch actual; el wrapper `run` detiene el flujo de watch al alcanzar el límite |
 | 0.1.17  | 2026-06-13 | El evento `watch_started` ahora incluye `runtime_meta` (estado de gevent, backend, indicador de degradación), lo que permite mostrar información de runtime en la salida CLI y en el banner de la vista Watch de la TUI; el texto de ayuda de `--times` se actualizó a "Print N observations then stop" |
 | 0.1.16  | 2026-06-07 | Soporte para `--client` reutilizando una sesión cliente existente; si se omite, se crea un cliente efímero |
 | 0.1.14  | 2026-05-24 | Emite `execution_profile` para corutinas y generadores asíncronos con tiempo wall/CPU, cambios de contexto y estado de terminación |

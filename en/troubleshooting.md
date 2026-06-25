@@ -188,15 +188,16 @@ uptime
 
 ## v0.1.13 Version Issues
 
-### watch --times Counting Behavior Changed in v0.1.13
+### watch --times Counting Behavior Changed in v0.1.13 (Refined in v0.1.18)
 
-**Symptom**: After upgrading to v0.1.13, `watch --times N` counting behavior differs from previous versions.
+**Symptom**: After upgrading to v0.1.13, `watch --times N` counting behavior differs from previous versions. After upgrading to v0.1.18, if multiple watch/trace/stack streams run concurrently, `--times` counting may be more stable than before.
 
-**Cause**: v0.1.13 moved `--times` counting logic from agent-side to client-side. Previous versions counted inside the target process, the new version counts observations on the client side.
+**Cause**: v0.1.13 moved `--times` counting logic from agent-side to client-side. Previous versions counted inside the target process, the new version counts observations on the client side. v0.1.18 further filters client-side counting **by active stream_id**: only observations belonging to the current command stream are counted toward `--times`, so concurrent streams no longer affect the limit.
 
 **Impact**:
 - Count resets after client disconnect and reconnect
 - Multiple clients can independently set their own `--times` limits
+- v0.1.18+: Concurrent watch/trace/stack/monitor/top streams within the same client do not interfere with each other's counts
 
 **Solution**:
 

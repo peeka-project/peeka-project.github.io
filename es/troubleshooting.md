@@ -187,15 +187,16 @@ uptime
 
 ## Problemas relacionados con la versión v0.1.13
 
-### Cambio de comportamiento del conteo de watch --times en v0.1.13
+### Cambio de comportamiento del conteo de watch --times en v0.1.13 (refinado en v0.1.18)
 
-**Síntomas**: Después de actualizar a v0.1.13, el comportamiento de conteo de `watch --times N` es diferente al de versiones anteriores.
+**Síntomas**: Después de actualizar a v0.1.13, el comportamiento de conteo de `watch --times N` es diferente al de versiones anteriores. Después de actualizar a v0.1.18, si múltiples flujos watch/trace/stack se ejecutan concurrentemente, el conteo de `--times` puede ser más estable que antes.
 
-**Causa**: v0.1.13 movió la lógica de conteo de `--times` del lado del agente al lado del cliente. Las versiones anteriores contaban dentro del proceso objetivo, la nueva versión cuenta las observaciones en el lado del cliente.
+**Causa**: v0.1.13 movió la lógica de conteo de `--times` del lado del agente al lado del cliente. Las versiones anteriores contaban dentro del proceso objetivo, la nueva versión cuenta las observaciones en el lado del cliente. v0.1.18 filtra además el conteo del lado del cliente **por `stream_id` activo**: solo las observaciones que pertenecen al flujo de comando actual se cuentan hacia `--times`, por lo que los flujos concurrentes ya no afectan el límite.
 
 **Impacto**:
 - El conteo se restablece después de desconectar y reconectar el cliente
 - Múltiples clientes pueden establecer sus propios límites de `--times` de forma independiente
+- v0.1.18+: Los flujos concurrentes watch/trace/stack/monitor/top dentro del mismo cliente no interfieren entre sí
 
 **Solución**:
 

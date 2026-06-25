@@ -16,7 +16,7 @@ nav_order: 10
 
 ## Introducción
 
-El comando `reset` se usa para **restaurar métodos mejorados a su estado original**, eliminando la lógica de observación inyectada por comandos como `watch` y `stack`. Este es un comando de limpieza que puede restablecer selectivamente todas las mejoras o solo aquellas que coincidan con patrones específicos.
+El comando `reset` se usa para **restaurar métodos mejorados a su estado original**, eliminando la lógica de observación inyectada por comandos como `watch`, `stack` y `monitor`. Este es un comando de limpieza que puede restablecer selectivamente todas las mejoras o solo aquellas que coincidan con patrones específicos.
 
 ## Uso en TUI
 
@@ -100,14 +100,24 @@ El parámetro `pattern` soporta comodines de estilo shell de Unix (basado en fnm
 | `action` | string | Tipo de operación (`reset`) |
 | `affected` | array | Lista de mejoras restablecidas |
 | `count` | int | Cantidad de restablecimientos exitosos |
+| `cleanup_summary` | object | Resultados de limpieza por capa (v0.1.18+) |
 
 **Elementos del Arreglo affected**:
 
 | Campo | Tipo | Descripción |
 |-------|------|-------------|
-| `watch_id` | string | ID de sesión de observación |
+| `watch_id` | string | ID de sesión de observación (`watch`/`stack`) |
+| `stream_id` | string | ID de flujo para recursos solo-probe como `monitor` |
 | `pattern` | string | Patrón de coincidencia de función original |
 | `error` | string | (Opcional) Error en fallo de restablecimiento |
+
+**Campos de cleanup_summary** (v0.1.18+):
+
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| `resource_owners` | object | Resultado de detener comandos propietarios de recursos (p. ej. `monitor`), con `stopped` y `errors` |
+| `probe_contexts` | object | Resultado de limpieza de contextos de probe, con `stopped_count` y `errors` |
+| `injector` | object | Resultado de reset del inyector, con `errors` |
 
 ### Respuesta de Operación list
 
@@ -127,9 +137,14 @@ El parámetro `pattern` soporta comodines de estilo shell de Unix (basado en fnm
       "pattern": "myapp.handler.process",
       "command": "stack",
       "count": 15
+    },
+    {
+      "stream_id": "monitor_a3b4c5d6",
+      "pattern": "myapp.service.query",
+      "command": "monitor"
     }
   ],
-  "total": 2
+  "total": 3
 }
 ```
 
@@ -146,10 +161,11 @@ El parámetro `pattern` soporta comodines de estilo shell de Unix (basado en fnm
 
 | Campo | Tipo | Descripción |
 |-------|------|-------------|
-| `watch_id` | string | ID de sesión de observación |
+| `watch_id` | string | ID de sesión de observación (`watch`/`stack`) |
+| `stream_id` | string | ID de flujo para recursos solo-probe como `monitor` |
 | `pattern` | string | Patrón de coincidencia de función |
-| `command` | string | Comando que creó la mejora (`watch`/`stack`) |
-| `count` | int | Cantidad de observaciones capturadas |
+| `command` | string | Comando que creó la mejora (`watch`/`stack`/`monitor`) |
+| `count` | int | Cantidad de observaciones capturadas (opcional) |
 
 ## Ejemplos de Uso
 
@@ -169,9 +185,15 @@ peeka-cli reset
   "affected": [
     {"watch_id": "watch_001", "pattern": "myapp.service.query"},
     {"watch_id": "watch_002", "pattern": "myapp.handler.process"},
-    {"watch_id": "stack_003", "pattern": "myapp.api.handle"}
+    {"watch_id": "stack_003", "pattern": "myapp.api.handle"},
+    {"stream_id": "monitor_004", "pattern": "myapp.service.query"}
   ],
-  "count": 3
+  "count": 4,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": ["monitor_004"], "errors": []},
+    "probe_contexts": {"stopped_count": 4, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -203,7 +225,12 @@ peeka-cli reset "myapp.service.UserService.query"
     {"watch_id": "watch_001", "pattern": "myapp.service.UserService.query"},
     {"watch_id": "watch_002", "pattern": "myapp.service.UserService.update"}
   ],
-  "count": 2
+  "count": 2,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": [], "errors": []},
+    "probe_contexts": {"stopped_count": 2, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -226,7 +253,12 @@ peeka-cli reset "nonexistent.*"
   "status": "success",
   "action": "reset",
   "affected": [],
-  "count": 0
+  "count": 0,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": [], "errors": []},
+    "probe_contexts": {"stopped_count": 0, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -379,17 +411,18 @@ done
 
 ## Notas Importantes
 
-### ⚠️ Comando monitor No Afectado
+### ⚠️ Comandos Propietarios de Recursos
 
-El comando `reset` **solo afecta las mejoras creadas por los comandos `watch` y `stack`**. El comando `monitor` usa un mecanismo de rastreo independiente y no será limpiado por reset.
+El comando `reset` detiene y limpia las mejoras creadas por `watch`, `stack` y `monitor` (registrado como propietario de recursos). `top` tiene alcance de limpieza `DETACH_ONLY`, por lo que **no** se detiene con `reset`; solo se limpia durante `detach`.
 
 ```bash
-# monitor no se ve afectado
-peeka-cli monitor "myapp.service.query" --interval 60  # Iniciar monitoreo
+# monitor ahora se detiene con reset
+peeka-cli monitor "myapp.service.query" --interval 1  # Iniciar monitoreo
 
-peeka-cli reset                        # Reset no detiene el monitor
+peeka-cli reset                        # monitor también se limpia
 
-# Necesitas detener monitor por separado (Ctrl+C)
+# Para restablecer solo watch/stack manteniendo monitor, use un patrón exacto
+peeka-cli reset "myapp.handler.*"
 ```
 
 ### ⚠️ Reglas de Coincidencia de Patrones
@@ -554,3 +587,9 @@ El comando `reset` es una herramienta potente para la gestión de mejoras en ent
 - Conoce el comando [`stack`](stack) (rastrear pilas de llamadas)
 - Conoce el comando [`monitor`](monitor) (monitoreo de rendimiento)
 - Referente a [Guía para Desarrolladores de Agentes de IA](../ai-skill.md)
+
+## Historial de Versiones
+
+| Versión | Fecha | Cambios |
+|---------|-------|---------|
+| 0.1.18 | 2026-06-24 | `reset` ahora detiene comandos propietarios de recursos (p. ej. `monitor`) antes del desmontaje del inyector; la respuesta incluye `cleanup_summary`; `--list` deduplica e incluye recursos solo-probe como `monitor` |

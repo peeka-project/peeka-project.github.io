@@ -17,7 +17,7 @@ nav_order: 10
 
 ## 简介
 
-`reset` 命令用于**恢复被增强的方法到原始状态**，移除 `watch`、`stack` 等命令注入的观测逻辑。这是一个清理命令，可以选择性地重置所有增强或仅重置匹配特定模式的增强。
+`reset` 命令用于**恢复被增强的方法到原始状态**，移除 `watch`、`stack`、`monitor` 等命令注入的观测逻辑。这是一个清理命令，可以选择性地重置所有增强或仅重置匹配特定模式的增强。
 
 
 
@@ -95,20 +95,30 @@ peeka-cli reset [pattern] [options]
 
 **字段说明**：
 
-| 字段         | 类型     | 说明                      |
-|------------|--------|-------------------------|
-| `status`   | string | 操作状态（`success`/`error`） |
-| `action`   | string | 操作类型（`reset`）           |
-| `affected` | array  | 被重置的增强列表                |
-| `count`    | int    | 成功重置的数量                 |
+| 字段              | 类型     | 说明                      |
+|-----------------|--------|-------------------------|
+| `status`        | string | 操作状态（`success`/`error`） |
+| `action`        | string | 操作类型（`reset`）           |
+| `affected`      | array  | 被重置的增强列表                |
+| `count`         | int    | 成功重置的数量                 |
+| `cleanup_summary`| object | 各层清理结果汇总（v0.1.18+）    |
 
 **affected 数组元素**：
 
 | 字段         | 类型     | 说明           |
 |------------|--------|--------------|
-| `watch_id` | string | 观测会话 ID      |
+| `watch_id` | string | 观测会话 ID（`watch`/`stack`） |
+| `stream_id`| string | 流 ID（`monitor` 等 probe-only 资源） |
 | `pattern`  | string | 原始的函数匹配模式    |
 | `error`    | string | （可选）重置失败时的错误 |
+
+**cleanup_summary 字段**（v0.1.18+）：
+
+| 字段              | 类型   | 说明                              |
+|-------------------|--------|-----------------------------------|
+| `resource_owners` | object | 资源所有者命令（如 `monitor`）的停止结果，包含 `stopped` 和 `errors` |
+| `probe_contexts`  | object | probe 上下文清理结果，包含 `stopped_count` 和 `errors` |
+| `injector`        | object | 注入器 reset 结果，包含 `errors` |
 
 ### list 操作响应
 
@@ -128,9 +138,14 @@ peeka-cli reset [pattern] [options]
       "pattern": "myapp.handler.process",
       "command": "stack",
       "count": 15
+    },
+    {
+      "stream_id": "monitor_a3b4c5d6",
+      "pattern": "myapp.service.query",
+      "command": "monitor"
     }
   ],
-  "total": 2
+  "total": 3
 }
 ```
 
@@ -147,10 +162,11 @@ peeka-cli reset [pattern] [options]
 
 | 字段         | 类型     | 说明                       |
 |------------|--------|--------------------------|
-| `watch_id` | string | 观测会话 ID                  |
+| `watch_id` | string | 观测会话 ID（`watch`/`stack`） |
+| `stream_id`| string | 流 ID（`monitor` 等 probe-only 资源） |
 | `pattern`  | string | 函数匹配模式                   |
-| `command`  | string | 创建增强的命令（`watch`/`stack`） |
-| `count`    | int    | 已捕获的观测次数                 |
+| `command`  | string | 创建增强的命令（`watch`/`stack`/`monitor`） |
+| `count`    | int    | 已捕获的观测次数（可选）            |
 
 ## 使用示例
 
@@ -170,9 +186,15 @@ peeka-cli reset
   "affected": [
     {"watch_id": "watch_001", "pattern": "myapp.service.query"},
     {"watch_id": "watch_002", "pattern": "myapp.handler.process"},
-    {"watch_id": "stack_003", "pattern": "myapp.api.handle"}
+    {"watch_id": "stack_003", "pattern": "myapp.api.handle"},
+    {"stream_id": "monitor_004", "pattern": "myapp.service.query"}
   ],
-  "count": 3
+  "count": 4,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": ["monitor_004"], "errors": []},
+    "probe_contexts": {"stopped_count": 4, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -205,7 +227,12 @@ peeka-cli reset "myapp.service.UserService.query"
     {"watch_id": "watch_001", "pattern": "myapp.service.UserService.query"},
     {"watch_id": "watch_002", "pattern": "myapp.service.UserService.update"}
   ],
-  "count": 2
+  "count": 2,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": [], "errors": []},
+    "probe_contexts": {"stopped_count": 2, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -229,7 +256,12 @@ peeka-cli reset "nonexistent.*"
   "status": "success",
   "action": "reset",
   "affected": [],
-  "count": 0
+  "count": 0,
+  "cleanup_summary": {
+    "resource_owners": {"stopped": [], "errors": []},
+    "probe_contexts": {"stopped_count": 0, "errors": []},
+    "injector": {"errors": []}
+  }
 }
 ```
 
@@ -383,18 +415,18 @@ done
 
 ## 注意事项
 
-### ⚠️ Monitor 命令不受影响
+### ⚠️ 资源所有者命令
 
-`reset` 命令**仅影响 `watch` 和 `stack` 命令**创建的增强。`monitor` 命令使用独立的追踪机制，不会被 reset 清理。
+`reset` 命令会停止并清理 `watch`、`stack` 以及作为**资源所有者**注册的 `monitor` 命令创建的增强。`top` 命令属于 `DETACH_ONLY` 清理范围，因此**不会**被 `reset` 停止，只会在 `detach` 时清理。
 
 ```bash
-# monitor 不受影响
-peeka-cli monitor 12345 "myapp.service.query"  # 启动监控
+# monitor 现在会被 reset 停止
+peeka-cli monitor "myapp.service.query" --interval 1
 
-peeka-cli reset                        # 重置不会停止 monitor
+peeka-cli reset                        # monitor 也会被一并清理
 
-# 需要单独停止 monitor
-peeka-cli reset "myapp.service.*"
+# 如果只想重置 watch/stack 而保留 monitor，可用模式精确匹配
+peeka-cli reset "myapp.handler.*"
 ```
 
 ### ⚠️ 模式匹配规则
@@ -651,13 +683,13 @@ jq '.enhanced[] | {pattern, count}' enhancements_backup.json
     - 内存占用增加
     - 可能影响业务
 
-2. **忘记重置 monitor**
+2. **忘记检查 cleanup_summary**
    ```bash
-   # ❌ reset 不会停止 monitor
+   # ❌ 不检查清理错误
    peeka-cli reset
    
-   # ✅ 需要单独停止
-   peeka-cli reset "myapp.service.*"
+   # ✅ 验证各层清理结果
+   peeka-cli reset | jq '.cleanup_summary'
    ```
 
 3. **过度使用精确模式**
@@ -690,5 +722,6 @@ jq '.enhanced[] | {pattern, count}' enhancements_backup.json
 
 | 版本    | 日期         | 更新内容                    |
 |-------|------------|-------------------------|
+| 0.1.18 | 2026-06-24 | reset 会先停止资源所有者命令（如 `monitor`），再清理 probe 上下文和注入器；响应新增 `cleanup_summary`；`--list` 会去重并包含 probe-only 资源（如 `monitor`） |
 | 0.1.0 | 2025-01-31 | 初始版本，支持 reset 和 list 功能 |
 

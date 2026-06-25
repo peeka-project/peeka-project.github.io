@@ -694,6 +694,7 @@ for line in proc.stdout:
 
 | バージョン | リリース日 | 変更内容 |
 |----------|----------|---------|
+| 0.1.18 | 2026-06-24 | CLI `--times` がアクティブな stream_id に一致する観測のみをカウントし、並行するストリームの観測が現在の trace の制限に誤って含まれるのを防止。`run` ラッパーは制限に達すると trace ストリームを停止 |
 | 0.1.17 | 2026-06-13 | trace レスポンスが `wrapper_only` バックエンドに降格された際、`runtime_meta`（`startup_backend`、`effective_backend`、`downgrade_reason`）を含むように。TUI の Trace ビューは統計パネルに Backend / Gevent 状態を表示 |
 | 0.1.16 | 2026-06-07 | `--client` を追加 |
 | 0.1.15 | 2026-05-27 | gevent patched/active hub ランタイムでは `wrapper_only` trace バックエンドに退化 |

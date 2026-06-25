@@ -245,5 +245,6 @@ peeka-cli run app.py -- trace "config.load_settings" -d 4
 
 | 版本    | 日期         | 更新内容        |
 |-------|------------|---------------|
+| 0.1.18 | 2026-06-24 | `run` 对所有流式观测命令（watch/trace/stack/monitor/top）按活动 stream_id 执行本地限制计数，达到限制后主动停止对应流 |
 | 0.1.16 | 2026-06-07 | `run` 支持 `monitor` 和 `top`；修正 `--output-file` 为脚本路径前的 run 级选项 |
 | 0.1.8 | 2025-04-28 | 新增 run 命令文档 |

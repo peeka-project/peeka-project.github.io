@@ -22,7 +22,7 @@ The `watch` command is used to observe the execution of specified Python functio
 
 **Coroutine support** (v0.1.13+): Peeka auto-detects coroutine functions (`async def`) and async generators at inject time, preserves AtEnter/AtExit/AtExceptionExit semantics with async wrapper.
 
-**Notice** ⚠️ **`--times` behavior change** (v0.1.13+): This parameter now counts observations **client-side** (after receiving them) rather than agent-side (before sending them). If the agent sends more observations than the `--times` limit, the client will stop receiving and discard remaining data. If your scripts rely on precise observation count control, see [troubleshooting](../troubleshooting.md#times-semantics).
+**Notice** ⚠️ **`--times` behavior change** (v0.1.13+, refined in v0.1.18): This parameter now counts observations **client-side by active stream_id** (after receiving them) rather than agent-side (before sending them). Since v0.1.18, only observations belonging to the current watch stream are counted toward `--times`; observations from concurrent streams no longer affect the limit. If the agent sends more observations than the `--times` limit, the client will stop receiving and discard remaining data. If your scripts rely on precise observation count control, see [troubleshooting](../troubleshooting.md#times-semantics).
 
 
 
@@ -859,6 +859,7 @@ for line in sys.stdin:
 
 | Version | Date       | Updates |
 |---------|------------|-------------------|
+| 0.1.18  | 2026-06-24 | CLI `--times` now counts only observations matching the active stream_id, so concurrent streams no longer count toward the current watch limit; the `run` wrapper stops the watch stream when the limit is reached |
 | 0.1.17  | 2026-06-13 | `watch_started` event now carries `runtime_meta` (gevent state, backend, downgrade flag), enabling CLI output and the TUI Watch banner to display runtime info; `--times` help text updated to "Print N observations then stop" |
 | 0.1.16  | 2026-06-07 | Support `--client` to reuse an existing client session; auto-create an ephemeral client when omitted |
 | 0.1.14  | 2026-05-24 | Emit `execution_profile` for coroutines and async generators with wall/CPU time, context switches, and termination state |

@@ -823,6 +823,7 @@ El comando `stack` es una herramienta potente para rastrear rutas de llamada de 
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 0.1.18 | 2026-06-24 | CLI `--times` ahora cuenta solo observaciones cuyo `stream_id` coincida con el flujo activo, evitando que flujos concurrentes se sumen al límite del stack actual; el wrapper `run` detiene el flujo de stack al alcanzar el límite |
 | 0.1.12 | 2026-05-08 | Sistema de paneles TUI unificado, diseños responsivos refinados (commit 50c4af4) |
 | 0.1.11 | 2026-05-07 | Etiquetado de clientes con fuentes estables (commit 965ff22), diagnósticos de actividad enriquecidos (commit b1b0412) |
 | 0.1.10 | 2026-05-04 | Normalización de colores de botones en TUI (commit fd6a0a1) |

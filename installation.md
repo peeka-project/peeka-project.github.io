@@ -164,6 +164,13 @@ services:
       - seccomp=unconfined
 ```
 
+### sudo 运行时的字节码缓存（v0.1.19+）
+
+当 Peeka 通过 `sudo` 以 root 身份运行时，会自动将 Python 字节码缓存（`__pycache__`）重定向到 `/tmp/peeka-pycache-root`，避免 root 写入用户拥有的虚拟环境目录导致后续普通用户运行时报权限错误。
+
+- 可通过环境变量 `PEEKA_SUDO_PYCACHE_PREFIX` 自定义缓存目录路径。
+- 可通过设置 `PEEKA_DISABLE_SUDO_PYCACHE_REDIRECT=1` 完全禁用该行为。
+
 ---
 
 ## 验证安装

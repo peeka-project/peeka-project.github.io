@@ -59,7 +59,7 @@ peeka --list-themes
 
 ## Process Selector
 
-Since v0.1.16, the startup process selector shows both Peeka-managed target agents and attachable Python processes:
+Since v0.1.16, the startup process selector shows both Peeka-managed target agents and attachable Python processes. Since v0.1.19, process discovery falls back to the `ps` command on non-`/proc` platforms (such as macOS), so macOS users can also see attachable Python processes in the selector:
 
 - `alive` targets are shown by target ID; regular Python processes appear as `attachable`
 - Wide terminals show Name, PID, State, Python, Command, and Created; narrow terminals keep Name, State, and Created

@@ -217,8 +217,17 @@ rm /tmp/peeka_<pid>.sock
 
 **不需要**额外权限，因为清理操作在目标进程内部执行。
 
+## 退出码
+
+| 退出码 | 含义 | 说明 |
+|--------|------|------|
+| `0`    | 成功 | detach 成功且清理摘要无错误 |
+| `1`    | 失败 | detach 命令执行失败（如未 attach、连接断开、目标进程无响应） |
+| `2`    | 成功但含清理警告 | detach 成功，但 `cleanup_summary` 中某些清理层报告了错误（v0.1.19+）。此时 CLI 会额外输出一行 JSON 警告，包含详细摘要 |
+
 ## 版本历史
 
 | 版本 | 发布日期 | 更新内容 |
 |------|----------|----------|
+| 0.1.19 | 2026-06-25 | CLI `detach` 在 `cleanup_summary` 含错误时返回退出码 `2` 并输出 JSON 警告；lifecycle cleanup_summary 新增 `probe_contexts.exit_errors` |
 | 0.1.18 | 2026-06-24 | `detach` 通过 `agent.stop()` 生命周期统一清理资源（包括 monitor/top），响应新增 `cleanup_summary` |

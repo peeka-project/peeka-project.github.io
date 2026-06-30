@@ -165,6 +165,13 @@ services:
       - seccomp=unconfined
 ```
 
+### sudo 実行時のバイトコードキャッシュ（v0.1.19+）
+
+Peeka が `sudo` 経由で root として実行される場合、Python バイトコードキャッシュ（`__pycache__`）を自動的に `/tmp/peeka-pycache-root` にリダイレクトします。これにより、root がユーザー所有の virtualenv ディレクトリにキャッシュを書き込み、後続の非 root 実行で権限エラーが発生するのを防ぎます。
+
+- キャッシュディレクトリは環境変数 `PEEKA_SUDO_PYCACHE_PREFIX` でカスタマイズ可能。
+- `PEEKA_DISABLE_SUDO_PYCACHE_REDIRECT=1` を設定すると、この動作を完全に無効化できます。
+
 ---
 
 ## インストールの確認

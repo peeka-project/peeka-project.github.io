@@ -340,7 +340,7 @@ Peeka v0.1.9–v0.1.14 introduced several reliability enhancements for attachmen
 
 | Version | Release Date | Changes |
 |---------|--------------|---------|
-| 0.1.14 | 2026-05-24 | TUI attach progress/log/inline error display; fixed native socket accept for notify server |
+| 0.1.19 | 2026-06-25 | Python process discovery falls back to `ps` on non-`/proc` platforms (e.g. macOS), so the TUI process selector can list attachable processes on macOS |
 | 0.1.12 | 2026-05-08 | Socket handling enhancements (`9ef3222`), broadcast frame skip (`9c90675`) |
 | 0.1.11 | 2026-05-07 | Attach reliability fix, error surfacing improvements (`88da13e`) |
 | 0.1.9 | 2026-05-04 | Streaming client identification improvements (`a90d080`) |

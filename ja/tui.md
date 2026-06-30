@@ -60,7 +60,7 @@ peeka --list-themes
 
 ## プロセスセレクター
 
-v0.1.16 以降、起動時のプロセスセレクターは Peeka が管理する target agent とアタッチ可能な Python プロセスの両方を表示します：
+v0.1.16 以降、起動時のプロセスセレクターは Peeka が管理する target agent とアタッチ可能な Python プロセスの両方を表示します。v0.1.19 以降、`/proc` がないプラットフォーム（macOS など）ではプロセス発見が `ps` コマンドにフォールバックするため、macOS ユーザーもセレクターでアタッチ可能な Python プロセスを確認できます：
 
 - `alive` target は target ID で表示され、通常の Python プロセスは `attachable` として表示されます
 - 幅の広い端末では Name、PID、State、Python、Command、Created を表示し、狭い端末では Name、State、Created を残します

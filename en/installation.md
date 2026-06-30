@@ -164,6 +164,13 @@ services:
       - seccomp=unconfined
 ```
 
+### Bytecode Cache When Running Under sudo (v0.1.19+)
+
+When Peeka is run as root through `sudo`, it automatically redirects Python bytecode caches (`__pycache__`) to `/tmp/peeka-pycache-root`. This prevents root from writing cached bytecode into user-owned virtualenv directories, which would cause permission errors on subsequent non-root runs.
+
+- Customize the cache directory with the `PEEKA_SUDO_PYCACHE_PREFIX` environment variable.
+- Disable the redirect entirely by setting `PEEKA_DISABLE_SUDO_PYCACHE_REDIRECT=1`.
+
 ---
 
 ## Verify Installation

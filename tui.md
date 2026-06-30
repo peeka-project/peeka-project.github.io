@@ -59,7 +59,7 @@ peeka --list-themes
 
 ## 进程选择器
 
-v0.1.16 起，启动 TUI 后的进程选择器同时展示已经被 Peeka 管理的 target agent 和当前可附加的 Python 进程：
+v0.1.16 起，启动 TUI 后的进程选择器同时展示已经被 Peeka 管理的 target agent 和当前可附加的 Python 进程。v0.1.19 起，在非 `/proc` 平台（如 macOS）上进程发现会回退到 `ps` 命令，因此 macOS 用户也能在进程选择器中看到可附加的 Python 进程：
 
 - `alive` target 使用 target ID 展示，普通 Python 进程显示为 `attachable`
 - 宽终端显示 Name、PID、State、Python、Command、Created；窄终端保留 Name、State、Created

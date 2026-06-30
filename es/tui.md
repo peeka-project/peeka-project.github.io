@@ -58,7 +58,7 @@ peeka --list-themes
 
 ## Selector de procesos
 
-Desde v0.1.16, el selector inicial muestra tanto agentes target gestionados por Peeka como procesos Python adjuntables:
+Desde v0.1.16, el selector inicial muestra tanto agentes target gestionados por Peeka como procesos Python adjuntables. Desde v0.1.19, el descubrimiento de procesos usa el comando `ps` como respaldo en plataformas sin `/proc` (como macOS), por lo que los usuarios de macOS también pueden ver procesos Python adjuntables en el selector:
 
 - Los targets `alive` se muestran por target ID; los procesos Python normales aparecen como `attachable`
 - En terminales anchas se muestran Name, PID, State, Python, Command y Created; en terminales estrechas se conservan Name, State y Created

@@ -218,8 +218,17 @@ The `detach` command requires:
 
 **No additional permissions** are needed because cleanup operations execute within the target process.
 
+## Exit Codes
+
+| Exit Code | Meaning | Description |
+|-----------|---------|-------------|
+| `0` | Success | detach succeeded and the cleanup summary contains no errors |
+| `1` | Failure | detach command failed (e.g. not attached, connection lost, target process did not respond) |
+| `2` | Success with cleanup warnings | detach succeeded, but some cleanup layer in `cleanup_summary` reported errors (v0.1.19+). The CLI prints an additional JSON warning line with the detailed summary |
+
 ## Version History
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
+| 0.1.19 | 2026-06-25 | CLI `detach` returns exit code `2` and prints a JSON warning when `cleanup_summary` contains errors; lifecycle cleanup_summary now includes `probe_contexts.exit_errors` |
 | 0.1.18 | 2026-06-24 | `detach` cleans up resources through the `agent.stop()` lifecycle (including monitor/top) and returns `cleanup_summary` |

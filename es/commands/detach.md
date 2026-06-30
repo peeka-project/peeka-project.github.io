@@ -216,8 +216,17 @@ El comando `detach` requiere:
 
 **No necesita** permisos adicionales, porque la operación de limpieza se ejecuta dentro del proceso objetivo.
 
+## Códigos de Salida
+
+| Código de Salida | Significado | Descripción |
+|------------------|-------------|-------------|
+| `0` | Éxito | detach tuvo éxito y el resumen de limpieza no contiene errores |
+| `1` | Fallo | El comando detach falló (p. ej. no attachado, conexión perdida, el proceso objetivo no respondió) |
+| `2` | Éxito con advertencias de limpieza | detach tuvo éxito, pero alguna capa de `cleanup_summary` reportó errores (v0.1.19+). El CLI imprime una línea de advertencia JSON adicional con el resumen detallado |
+
 ## Historial de Versiones
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 0.1.19 | 2026-06-25 | CLI `detach` devuelve código de salida `2` e imprime una advertencia JSON cuando `cleanup_summary` contiene errores; el lifecycle `cleanup_summary` ahora incluye `probe_contexts.exit_errors` |
 | 0.1.18 | 2026-06-24 | `detach` limpia recursos a través del ciclo de vida `agent.stop()` (incluyendo monitor/top) y devuelve `cleanup_summary` |

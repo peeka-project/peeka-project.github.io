@@ -230,5 +230,5 @@ rm /tmp/peeka_<pid>.sock
 
 | バージョン | リリース日 | 変更内容 |
 |----------|----------|---------|
-| 0.1.19 | 2026-06-25 | CLI `detach` が `cleanup_summary` にエラーがある場合に終了コード `2` を返し JSON 警告を出力。lifecycle cleanup_summary に `probe_contexts.exit_errors` を追加 |
+| 0.1.19 | 2026-06-25 | CLI `detach` が `cleanup_summary` にエラーがある場合に終了コード `2` を返し JSON 警告を出力。どのクリーンアップレイヤーが手動確認を必要とするかをスクリプトで判別できる |
 | 0.1.18 | 2026-06-24 | `detach` が `agent.stop()` ライフサイクルを通じてリソースを統合クリーンアップ（monitor/top を含み）、`cleanup_summary` を返す |

@@ -229,5 +229,5 @@ rm /tmp/peeka_<pid>.sock
 
 | 版本 | 发布日期 | 更新内容 |
 |------|----------|----------|
-| 0.1.19 | 2026-06-25 | CLI `detach` 在 `cleanup_summary` 含错误时返回退出码 `2` 并输出 JSON 警告；lifecycle cleanup_summary 新增 `probe_contexts.exit_errors` |
+| 0.1.19 | 2026-06-25 | CLI `detach` 在 `cleanup_summary` 含错误时返回退出码 `2` 并输出 JSON 警告，便于脚本识别哪些清理层需要人工复查 |
 | 0.1.18 | 2026-06-24 | `detach` 通过 `agent.stop()` 生命周期统一清理资源（包括 monitor/top），响应新增 `cleanup_summary` |

@@ -228,5 +228,5 @@ El comando `detach` requiere:
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
-| 0.1.19 | 2026-06-25 | CLI `detach` devuelve código de salida `2` e imprime una advertencia JSON cuando `cleanup_summary` contiene errores; el lifecycle `cleanup_summary` ahora incluye `probe_contexts.exit_errors` |
+| 0.1.19 | 2026-06-25 | CLI `detach` devuelve código de salida `2` e imprime una advertencia JSON cuando `cleanup_summary` contiene errores, para que los scripts puedan identificar qué capas de limpieza necesitan revisión manual |
 | 0.1.18 | 2026-06-24 | `detach` limpia recursos a través del ciclo de vida `agent.stop()` (incluyendo monitor/top) y devuelve `cleanup_summary` |

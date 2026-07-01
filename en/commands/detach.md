@@ -230,5 +230,5 @@ The `detach` command requires:
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
-| 0.1.19 | 2026-06-25 | CLI `detach` returns exit code `2` and prints a JSON warning when `cleanup_summary` contains errors; lifecycle cleanup_summary now includes `probe_contexts.exit_errors` |
+| 0.1.19 | 2026-06-25 | CLI `detach` returns exit code `2` and prints a JSON warning when `cleanup_summary` contains errors, so scripts can identify which cleanup layers need manual review |
 | 0.1.18 | 2026-06-24 | `detach` cleans up resources through the `agent.stop()` lifecycle (including monitor/top) and returns `cleanup_summary` |

@@ -184,6 +184,101 @@ top
 uptime
 ```
 
+### Error: Debugger not found in PATH (v0.1.20+)
+
+**Symptom**:
+```
+Error: Debugger not found in PATH: gdb
+```
+
+**Cause**: Python versions below 3.14 require GDB (Linux) or LLDB (macOS) as the fallback attach mechanism, but the debugger is not installed or is not in `PATH`.
+
+**Solutions**:
+
+```bash
+# Debian/Ubuntu
+sudo apt-get install gdb
+
+# RHEL/CentOS
+sudo yum install gdb
+
+# macOS
+xcode-select --install
+
+# Verify
+gdb --version
+lldb --version
+```
+
+### Error: Attach debugger script not found (v0.1.20+)
+
+**Symptom**:
+```
+Error: Attach debugger script not found: _attach.gdb
+```
+
+**Cause**: Peeka package resource resolution failed, usually because the installation is incomplete or a packaging tool such as PyInstaller did not include data files.
+
+**Solutions**:
+
+```bash
+# 1. Reinstall Peeka
+pip install --force-reinstall peeka
+
+# 2. Check whether the script exists inside the package
+python -c "import peeka.core.attach_workflow, pathlib; print(pathlib.Path(peeka.core.attach_workflow.__file__).parent / '_attach.gdb')"
+
+# 3. For custom packaging, include peeka/core/attach_workflow/_attach.gdb and _attach.lldb
+```
+
+### Error: C extension injector not found (v0.1.20+)
+
+**Symptom**:
+```
+Error: C extension injector not found
+```
+
+**Cause**: The C extension such as `peeka_injector` was not compiled or loaded correctly. This is common after a failed source build or missing packaged extension.
+
+**Solutions**:
+
+```bash
+# 1. Reinstall, preferably using a prebuilt wheel
+pip install --force-reinstall peeka
+
+# 2. When installing from source, ensure a compiler toolchain is available
+pip install --no-binary :all: peeka
+
+# 3. Verify that the extension exists
+python -c "import peeka_injector; print(peeka_injector.__file__)"
+```
+
+### Error: GDB/LLDB injection failed: debugger script error detected (v0.1.20+)
+
+**Symptom**:
+```
+Error: GDB injection failed: debugger script error detected
+```
+
+**Cause**: GDB/LLDB failed while loading Peeka's `_attach.gdb` / `_attach.lldb` script. Possible causes include mismatched debugging symbols, incompatible Python versions, or abnormal target process state.
+
+**Solutions**:
+
+```bash
+# 1. Confirm Python debugging symbols are installed (Linux, Python < 3.14)
+sudo apt-get install python3-dbg  # Debian/Ubuntu
+
+# 2. Check whether the target process can be debugged
+ps -p <pid> -o stat=
+
+# 3. Run GDB manually to inspect detailed errors
+gdb -p <pid> -x /path/to/_attach.gdb
+
+# 4. On macOS, use LLDB and check Xcode Command Line Tools
+lldb --version
+xcode-select --install
+```
+
 ---
 
 ## v0.1.13 Version Issues

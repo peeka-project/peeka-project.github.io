@@ -592,4 +592,5 @@ El comando `reset` es una herramienta potente para la gestión de mejoras en ent
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 0.1.20 | 2026-07-05 | `reset` usa un predicado de propietario de recursos seguro ante recargas, evitando omisiones de limpieza cuando cambian objetos de clase tras recargar módulos; durante la limpieza omite handlers con `cleanup_scope == detach_only` (como `logger` y `memory`), que se liberan solo durante `detach` |
 | 0.1.18 | 2026-06-24 | `reset` ahora detiene comandos propietarios de recursos (p. ej. `monitor`) antes del desmontaje del inyector; la respuesta incluye `cleanup_summary`; `--list` deduplica e incluye recursos solo-probe como `monitor` |

@@ -333,12 +333,23 @@ Peeka v0.1.9–v0.1.14 introdujo varias mejoras de fiabilidad para el adjunte:
 - Manejo de Socket y validación de conexión reforzados (v0.1.11–v0.1.12: `9ef3222`)
 - Tramas de broadcast correctamente omitidas para mejorar la estabilidad del cliente de streaming (v0.1.12: `9c90675`)
 
+### Mejoras de fiabilidad de adjunte en v0.1.20
+
+v0.1.20 mejora aún más la estabilidad en escenarios de adjunte repetido y despliegues empaquetados:
+
+- **Limpieza de caché de módulos**: el script bootstrap del agente inyectado limpia de `sys.modules` los módulos `peeka` / `peeka.*` ya cacheados antes de cargar Peeka, reduciendo fallos causados por módulos antiguos después de repetir attach o actualizar el código fuente.
+- **Resolución centralizada de recursos del depurador**: scripts como `_attach.gdb` y `_attach.lldb` se resuelven mediante la API de recursos del paquete core, evitando dependencias de rutas relativas o del layout del sistema de archivos y mejorando la fiabilidad tras empaquetar (por ejemplo con PyInstaller).
+- **Fallo rápido si faltan recursos**: antes de adjuntar se comprueba que existan el ejecutable GDB/LLDB, el script del depurador y el inyector de extensión C; si falta alguno, se devuelve de inmediato un error claro en lugar de fallar dentro del depurador.
+- **Detección precisa de errores de script**: solo los fallos reales al cargar `_attach.gdb` / `_attach.lldb` se tratan como errores fatales, filtrando ruido benigno de salida del depurador.
+- **Restauración de manejadores de señal**: incluso si `stop()` se ejecuta fuera del hilo principal, la limpieza de salida restaura SIGTERM/SIGINT/SIGHUP mediante `Py_AddPendingCall`.
+
 ---
 
 ## Historial de Versiones
 
 | Versión | Fecha de Lanzamiento | Cambios |
 |---------|----------------------|---------|
+| 0.1.20 | 2026-07-05 | El bootstrap del agente limpia módulos peeka cacheados; los scripts del depurador se resuelven como recursos del paquete core; se prevalidan depurador/script/inyector antes de adjuntar con fallo rápido; mejora la restauración de señales y la detección de errores de script |
 | 0.1.14 | 2026-05-24 | Progreso/registro/error inline en adjunte TUI; corrección de accept con socket nativo en notify server |
 | 0.1.12 | 2026-05-08 | Mejoras en manejo de Socket (`9ef3222`), omisión de tramas de broadcast (`9c90675`) |
 | 0.1.11 | 2026-05-07 | Corrección de fiabilidad de adjunte, mejoras en visualización de errores (`88da13e`) |

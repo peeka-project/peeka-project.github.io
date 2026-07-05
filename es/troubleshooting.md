@@ -183,6 +183,101 @@ top
 uptime
 ```
 
+### Error: Debugger not found in PATH (v0.1.20+)
+
+**Síntomas**:
+```
+Error: Debugger not found in PATH: gdb
+```
+
+**Causa**: La versión de Python actual es inferior a 3.14 y requiere GDB (Linux) o LLDB (macOS) como alternativa, pero el depurador no está instalado o no está en `PATH`.
+
+**Solución**:
+
+```bash
+# Debian/Ubuntu
+sudo apt-get install gdb
+
+# RHEL/CentOS
+sudo yum install gdb
+
+# macOS
+xcode-select --install
+
+# Verificar
+gdb --version
+lldb --version
+```
+
+### Error: Attach debugger script not found (v0.1.20+)
+
+**Síntomas**:
+```
+Error: Attach debugger script not found: _attach.gdb
+```
+
+**Causa**: Falló la resolución de recursos empaquetados de Peeka; puede deberse a una instalación incompleta o a que una herramienta de empaquetado como PyInstaller no incluyó los archivos de datos.
+
+**Solución**:
+
+```bash
+# 1. Reinstalar Peeka
+pip install --force-reinstall peeka
+
+# 2. Comprobar que el script existe dentro del paquete
+python -c "import peeka.core.attach_workflow, pathlib; print(pathlib.Path(peeka.core.attach_workflow.__file__).parent / '_attach.gdb')"
+
+# 3. En empaquetados personalizados, incluye peeka/core/attach_workflow/_attach.gdb y _attach.lldb
+```
+
+### Error: C extension injector not found (v0.1.20+)
+
+**Síntomas**:
+```
+Error: C extension injector not found
+```
+
+**Causa**: La extensión C `peeka_injector` no se compiló o no se cargó correctamente; es común en instalaciones desde código fuente con fallo de compilación o empaquetados incompletos.
+
+**Solución**:
+
+```bash
+# 1. Reinstalar, preferiblemente usando un wheel precompilado
+pip install --force-reinstall peeka
+
+# 2. Si instalas desde código fuente, asegúrate de tener toolchain de compilación
+pip install --no-binary :all: peeka
+
+# 3. Verificar que la extensión existe
+python -c "import peeka_injector; print(peeka_injector.__file__)"
+```
+
+### Error: GDB/LLDB injection failed: debugger script error detected (v0.1.20+)
+
+**Síntomas**:
+```
+Error: GDB injection failed: debugger script error detected
+```
+
+**Causa**: GDB/LLDB falló al cargar los scripts `_attach.gdb` / `_attach.lldb` de Peeka. Puede deberse a símbolos de depuración incompatibles, versión de Python no compatible o estado anómalo del proceso objetivo.
+
+**Solución**:
+
+```bash
+# 1. Confirmar que los símbolos de depuración de Python están instalados (Linux, Python < 3.14)
+sudo apt-get install python3-dbg  # Debian/Ubuntu
+
+# 2. Revisar si el proceso objetivo puede depurarse
+ps -p <pid> -o stat=
+
+# 3. Ejecutar GDB manualmente para ver el error detallado
+gdb -p <pid> -x /path/to/_attach.gdb
+
+# 4. En macOS, usar LLDB y verificar Xcode Command Line Tools
+lldb --version
+xcode-select --install
+```
+
 ---
 
 ## Problemas relacionados con la versión v0.1.13

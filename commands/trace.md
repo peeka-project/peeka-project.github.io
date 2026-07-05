@@ -17,7 +17,9 @@ nav_order: 3
 
 ## 简介
 
-`trace` 命令用于追踪 Python 函数的完整调用链和执行耗时，以树形结构展示方法调用的层次关系。这是一个强大的性能分析和问题诊断工具，可以帮助开发者快速定位性能瓶颈和理解代码执行路径。
+`trace` 命令用于追踪 Python 函数的**直接调用者**和执行耗时，以扁平列表展示目标函数下一层子调用的聚合信息。这是一个强大的性能分析工具，可以帮助开发者快速定位性能瓶颈和理解代码执行热点。
+
+**v0.1.20 重要变更**：`trace` 不再支持 `-d/--depth` 选项，也不再输出递归嵌套的调用树。后端只会捕获并聚合目标函数的直接调用者（direct callees），输出更稳定、开销更可预测。
 
 
 ## TUI 使用
@@ -25,17 +27,20 @@ nav_order: 3
 在 TUI 模式下，按 **`3`** 键切换到 **Trace 视图**，提供以下交互式功能：
 
 - **模式输入**：支持函数名自动补全（从目标进程实时获取）
-- **参数配置**：可视化配置深度、次数、条件表达式、skip-builtin
-- **调用树可视化**：以交互式树形结构展示调用链，可展开/折叠
+- **参数配置**：可视化配置最小耗时、次数、条件表达式、skip-builtin
+- **活动追踪列表**：顶部显示当前追踪任务的状态和计数
+- **调用树可视化**：以交互式树形结构展示每次观测的直接调用者，含聚合 callee 节点
+- **详情统计面板**：展示选中观测或 callee 的耗时、次数、占比和异常信息
 - **色彩编码耗时**：
   - 🟢 绿色：< 10ms（快速）
   - 🟡 黄色：10-100ms（中速）
   - 🔴 红色：>= 100ms（慢速）
 - **快捷操作**：
   - 输入模式后按 Enter 开始追踪
-  - 按 Enter 展开/折叠节点
-  - 按 `c` 清空追踪记录
-  - 按 Delete 删除选中记录
+  - 在活动追踪列表选中某行，查看该 pattern 的调用树
+  - 在调用树选中 callee 节点，按 `t` 对该函数发起下钻追踪（Drill Trace）
+  - 按 `c` 清空追踪记录并停止运行中的 trace
+  - 按 Delete 停止所有 trace
 
 ![Peeka Trace 视图]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
@@ -43,11 +48,11 @@ nav_order: 3
 
 ## 使用场景
 
-- **性能瓶颈定位**：通过耗时数据快速找出慢调用
-- **调用链路分析**：理解函数内部的调用关系和执行流程
-- **代码执行路径追踪**：观察不同条件下的代码执行路径
-- **子函数耗时分析**：分析各个子函数的耗时占比
-- **递归调用诊断**：追踪递归调用的深度和耗时分布
+- **性能瓶颈定位**：通过耗时数据快速找出目标函数下最慢的子调用
+- **热点函数识别**：聚合统计直接调用者的总耗时、调用次数、最小/最大耗时
+- **代码执行路径追踪**：观察不同条件下目标函数触发了哪些子调用
+- **子函数耗时分析**：分析各个直接子调用的耗时占比
+- **异常调用诊断**：追踪抛出异常的调用并查看异常类型
 
 ## 命令格式
 
@@ -61,17 +66,16 @@ peeka-cli trace <pattern> [options]
 | 参数                    | 说明                    | 默认值     | 示例                                      |
 |-----------------------|-----------------------|---------|-----------------------------------------|
 | `pattern`             | 函数匹配模式                | -       | `module.Class.method`                   |
-| `-d, --depth`         | 追踪深度（最大调用层数）          | `3`     | `-d 5`                                  |
 | `-n, --times`         | 观测次数（-1 表示无限）         | `-1`    | `-n 10`                                 |
 | `--condition` | 条件表达式（支持 `cost` 变量）   | 无       | `--condition "cost > 50"`       |
 | `--client`            | 使用已有客户端会话 ID；不提供时自动创建临时客户端 | 自动 | `--client client_123`                  |
 | `--skip-builtin`      | 跳过内置函数和标准库函数          | `true`  | `--skip-builtin=false`                  |
-| `--min-duration`      | 最小耗时过滤（毫秒）            | `0`     | `--min-duration 10`                     |
+| `--min-duration`      | 最小耗时过滤（毫秒），只记录大于等于该值的直接调用 | `0`     | `--min-duration 10`                     |
 
 **注意**：
-- 追踪深度建议不超过 5 层，深度过大会显著增加性能开销
 - `--skip-builtin` 默认启用，以减少输出噪音
 - 条件表达式中的 `cost` 变量表示整个调用的总耗时（毫秒）
+- v0.1.20 起不再支持 `-d/--depth`
 
 ### 函数匹配模式 (pattern)
 
@@ -95,7 +99,7 @@ peeka-cli trace <pattern> [options]
 
 ## 基本用法
 
-### 1. 追踪函数调用链
+### 1. 追踪函数调用
 
 ```bash
 # 首先附加到目标进程
@@ -116,45 +120,39 @@ peeka-cli trace "calculator.Calculator.calculate" -n 5
   "location": "AtExit",
   "call_tree": [
     {
-      "depth": 0,
-      "function": "calculator.Calculator.calculate",
+      "function": "calculator.Calculator._validate",
       "filename": "/app/calculator.py",
-      "lineno": 42,
-      "duration_ms": 125.3,
-      "children": [
-        {
-          "depth": 1,
-          "function": "calculator.Calculator._validate",
-          "filename": "/app/calculator.py",
-          "lineno": 18,
-          "duration_ms": 2.1
-        },
-        {
-          "depth": 1,
-          "function": "calculator.Calculator._compute",
-          "filename": "/app/calculator.py",
-          "lineno": 25,
-          "duration_ms": 98.2,
-          "children": [
-            {
-              "depth": 2,
-              "function": "math.sqrt",
-              "duration_ms": 95.1
-            }
-          ]
-        },
-        {
-          "depth": 1,
-          "function": "calculator.Logger.info",
-          "filename": "/app/logger.py",
-          "lineno": 10,
-          "duration_ms": 15.7
-        }
-      ]
+      "lineno": 18,
+      "count": 1,
+      "total_ms": 2.1,
+      "min_ms": 2.1,
+      "max_ms": 2.1
+    },
+    {
+      "function": "calculator.Calculator._compute",
+      "filename": "/app/calculator.py",
+      "lineno": 25,
+      "count": 1,
+      "total_ms": 98.2,
+      "min_ms": 98.2,
+      "max_ms": 98.2
+    },
+    {
+      "function": "calculator.Logger.info",
+      "filename": "/app/logger.py",
+      "lineno": 10,
+      "count": 1,
+      "total_ms": 15.7,
+      "min_ms": 15.7,
+      "max_ms": 15.7
     }
   ],
   "total_duration_ms": 125.3,
-  "node_count": 5
+  "self_time_ms": 9.3,
+  "callee_count": 3,
+  "node_count": 4,
+  "thread_id": 140234567890,
+  "thread_name": "MainThread"
 }
 ```
 
@@ -164,68 +162,51 @@ peeka-cli trace "calculator.Calculator.calculate" -n 5
 |--------------------|--------------|---------------------------|
 | `watch_id`         | 观测 ID        | `"trace_abc123"`          |
 | `timestamp`        | 时间戳          | `1705586200.123`          |
-| `func_name`        | 目标函数名        | `"calculator.calculate"`  |
+| `func_name`        | 目标函数名        | `"calculator.Calculator.calculate"`  |
 | `location`         | 观测位置         | `"AtExit"`                |
-| `call_tree`        | 调用树（嵌套结构）    | `[...]`                   |
+| `call_tree`        | 直接调用者列表（扁平聚合）    | `[...]`                   |
 | `total_duration_ms`| 总执行耗时（毫秒）    | `125.3`                   |
-| `node_count`       | 调用节点总数       | `5`                       |
+| `self_time_ms`     | 目标函数自身耗时（毫秒） | `9.3`                     |
+| `callee_count`     | 直接调用者种类数      | `3`                       |
+| `node_count`       | 节点总数（目标函数 + 直接调用者） | `4`              |
+| `thread_id`        | 线程 ID         | `140234567890`            |
+| `thread_name`      | 线程名          | `"MainThread"`            |
+| `exception`        | 异常信息（抛出时）    | `"ValueError: ..."`       |
+| `runtime_meta`     | 运行时元数据（后端、gevent 等） | `{...}`        |
 
-**调用树节点字段**：
+**`call_tree` 节点字段**：
 
 | 字段            | 说明         | 示例值                    |
 |---------------|------------|------------------------|
-| `depth`       | 调用深度（从 0 开始）| `0`, `1`, `2`          |
 | `function`    | 函数完整名称     | `"module.Class.method"`|
 | `filename`    | 文件路径       | `"/app/module.py"`     |
 | `lineno`      | 行号         | `42`                   |
-| `duration_ms` | 执行耗时（毫秒）   | `10.5`                 |
-| `children`    | 子调用列表      | `[...]`                |
+| `count`       | 该观测周期内调用次数 | `5`                    |
+| `total_ms`    | 总执行耗时（毫秒）   | `125.3`                |
+| `min_ms`      | 最小耗时（毫秒）    | `10.5`                 |
+| `max_ms`      | 最大耗时（毫秒）    | `95.1`                 |
 
 ### 2. 可视化调用树（TUI）
 
-在 TUI 模式下，调用树以可视化的树形结构展示：
+在 TUI 模式下，Trace 视图采用上下布局：
 
 ![Peeka Trace 调用树]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **说明**：
-- 左侧 Active Traces 显示当前追踪任务和每次观测的耗时
-- 右侧 Call Tree 显示可展开/折叠的调用树
+- 顶部 Active Traces 显示当前追踪任务（Pattern / Status / Count）
+- 下部左侧 Call Tree 展示选中 pattern 的观测节点、聚合 callee 节点和每个 callee 的耗时占比
+- 下部右侧 Stats 面板展示当前选中观测或 callee 的详细统计
 - 不同颜色用于突出不同耗时区间
-- 底部 Stats 展示当前选中观测的总耗时、节点数量和函数名
+- 选中 callee 后按 `t` 可快速发起新的下钻追踪
 
-### 3. 调整追踪深度
+### 3. 按最小耗时过滤
 
 ```bash
-# 深度为 1：只追踪直接调用
-peeka-cli trace "service.process" -d 1
-
-# 深度为 5：追踪 5 层调用
-peeka-cli trace "service.process" -d 5
+# 只记录耗时 >= 10ms 的直接调用
+peeka-cli trace "service.process" --min-duration 10
 ```
 
-**深度对比示例**：
-
-```python
-# 原始调用链
-process() → validate() → check_type() → isinstance()
-  ├── query_db() → execute() → connect()
-  └── format_result() → json.dumps()
-
-# depth=1
-process() → validate()
-          → query_db()
-          → format_result()
-
-# depth=2
-process() → validate() → check_type()
-          → query_db() → execute()
-          → format_result() → json.dumps()
-
-# depth=3（默认）
-process() → validate() → check_type() → isinstance()
-          → query_db() → execute() → connect()
-          → format_result() → json.dumps()
-```
+这可以减少高频短耗时辅助函数带来的噪音，聚焦于真正可能消耗资源的子调用。
 
 ### 4. 条件过滤
 
@@ -262,7 +243,9 @@ Peeka 的 `trace` 命令根据 Python 版本自动选择最优实现方案：
 | 3.12+     | sys.monitoring  | < 5%  | 官方 PEP 669 API，最优性能         |
 | 3.8.1-3.11  | sys.settrace | < 20% | 兼容性好，自动启用         |
 
-**gevent 兼容性（v0.1.15+）**：当目标进程已启用 gevent monkey patch 或 active hub 时，`trace` 会退化为 `wrapper_only` 后端，避免 `sys.settrace` 破坏 frame stack 不变量。此模式仍报告目标函数观测结果，但不提供递归调用树。
+**直接调用者语义（v0.1.20+）**：所有后端只捕获目标函数的直接调用者，并对同一观测周期内相同 `(function, filename, lineno)` 的调用进行聚合，输出 `count / total_ms / min_ms / max_ms`。这样避免了递归/深层调用树带来的性能不确定性和数据膨胀。
+
+**gevent 兼容性（v0.1.15+）**：当目标进程已启用 gevent monkey patch 或 active hub 时，`trace` 会退化为 `wrapper_only` 后端，避免 `sys.settrace` 破坏 frame stack 不变量。此模式仍报告目标函数观测结果，但不提供直接调用者列表。
 
 **sys.monitoring 实现 (Python 3.12+)**:
 
@@ -291,20 +274,20 @@ Peeka 的 `trace` 命令根据 Python 版本自动选择最优实现方案：
 |---------------------|-------|---------------|
 | **简单函数**            | < 5%  | Python 3.12+  |
 | **简单函数**            | < 20% | Python 3.8.1-3.11 |
-| **复杂调用树（深度 5）**    | 10-30%| 根据 Python 版本  |
+| **高频子调用**           | 10-30%| 根据 Python 版本和 `--min-duration` 设置 |
 | **高频调用（>1000 QPS）** | 20-50%| 建议限制观测次数      |
 
 **说明**：
 - Python 3.12+ 使用 `sys.monitoring`，性能开销显著降低
-- 深度越深，性能开销越大
+- v0.1.20 起只追踪一层直接调用者，开销更稳定、更可预测
 - 建议生产环境使用条件过滤和次数限制
 
 ### 性能优化建议
 
-1. **限制追踪深度**
+1. **使用最小耗时过滤**
    ```bash
-   # 只追踪 3 层调用
-   peeka-cli trace "func" -d 3
+   # 只记录耗时 >= 10ms 的直接调用
+   peeka-cli trace "func" --min-duration 10
    ```
 
 2. **跳过内置函数**
@@ -325,12 +308,6 @@ Peeka 的 `trace` 命令根据 Python 版本自动选择最优实现方案：
    peeka-cli trace "func" -n 10
    ```
 
-5. **最小耗时过滤**
-   ```bash
-   # 只记录耗时 > 10ms 的子调用
-   peeka-cli trace "func" --min-duration 10
-   ```
-
 ## 使用示例
 
 ### 1. 定位性能瓶颈
@@ -342,32 +319,38 @@ peeka-cli trace "api.handler.process_request" --condition "cost > 100"
 
 **输出**：
 ```
-`---[1250ms] api.handler.process_request()
-    +---[10ms] api.validator.check_params()
-    +---[1200ms] database.query.execute()  ← 瓶颈在这里！
-    |   +---[50ms] database.connection.connect()
-    |   `---[1150ms] database.cursor.fetch_all()
-    `---[20ms] api.formatter.to_json()
+[1250ms] api.handler.process_request()
+├── [10ms] api.validator.check_params() (count=1)
+├── [1200ms] database.query.execute()  ← 瓶颈在这里！ (count=1)
+└── [20ms] api.formatter.to_json() (count=1)
 ```
 
 **结论**：数据库查询占用了 96% 的时间，需要优化 SQL 或添加索引。
 
-### 2. 分析递归调用
+### 2. 聚合高频调用
 
 ```bash
-# 追踪递归函数的执行深度和耗时
-peeka-cli trace "algorithm.factorial" -d 10
+# 追踪循环内的函数，观察同一子调用被多次触发的情况
+peeka-cli trace "algorithm.process_batch" -n 5
 ```
 
-**输出**：
+**输出示例**：
+```json
+{
+  "func_name": "algorithm.process_batch",
+  "call_tree": [
+    {
+      "function": "database.query.fetch",
+      "count": 100,
+      "total_ms": 850.5,
+      "min_ms": 5.1,
+      "max_ms": 25.3
+    }
+  ]
+}
 ```
-`---[5.2ms] algorithm.factorial(n=5)
-    `---[4.1ms] algorithm.factorial(n=4)
-        `---[3.0ms] algorithm.factorial(n=3)
-            `---[2.0ms] algorithm.factorial(n=2)
-                `---[1.0ms] algorithm.factorial(n=1)
-                    `---[0.1ms] algorithm.factorial(n=0)
-```
+
+**结论**：`process_batch` 在单次执行中触发了 100 次数据库查询，考虑批量查询优化。
 
 ### 3. 理解代码执行路径
 
@@ -428,23 +411,21 @@ fi
 ### 使用 jq 处理 JSON
 
 ```bash
-# 1. 提取调用树
+# 1. 提取直接调用者列表
 peeka-cli trace "func" | jq '.call_tree'
 
-# 2. 计算平均耗时
+# 2. 计算平均总耗时
 peeka-cli trace "func" -n 100 | jq '.total_duration_ms' | \
   awk '{sum+=$1; count++} END {print "avg:", sum/count, "ms"}'
 
 # 3. 找出最慢的子调用
-peeka-cli trace "func" | jq '.call_tree | .. | objects | select(.duration_ms != null) | {function, duration_ms}' | \
-  jq -s 'sort_by(.duration_ms) | reverse | .[0]'
+peeka-cli trace "func" | jq '.call_tree | sort_by(.total_ms) | reverse | .[0]'
 
-# 4. 统计调用频次
-peeka-cli trace "func" -n 100 | jq '.call_tree | .. | objects | select(.function != null) | .function' | \
-  sort | uniq -c | sort -rn
+# 4. 统计调用频次（按 count 字段汇总）
+peeka-cli trace "func" -n 100 | jq -s '[.[] | .call_tree[] | {function, count}] | group_by(.function) | map({function: .[0].function, total_count: map(.count) | add}) | sort_by(.total_count) | reverse'
 
-# 5. 生成火焰图数据
-peeka-cli trace "func" -n 1000 | jq -r '.call_tree | .. | objects | select(.function != null) | "\(.function) \(.duration_ms)"' > flamegraph.txt
+# 5. 生成火焰图数据（使用 total_ms）
+peeka-cli trace "func" -n 1000 | jq -r '.call_tree[] | "\(.function) \(.total_ms)"' > flamegraph.txt
 ```
 
 ### Python 数据分析
@@ -454,32 +435,27 @@ import json
 import sys
 from collections import defaultdict
 
-# 统计子调用的总耗时和次数
+# 统计直接调用者的总耗时和次数
 stats = defaultdict(lambda: {"count": 0, "total_ms": 0})
 
 for line in sys.stdin:
     data = json.loads(line)
     if data["type"] == "observation":
-        def traverse(node):
-            if "function" in node:
-                stats[node["function"]]["count"] += 1
-                stats[node["function"]]["total_ms"] += node.get("duration_ms", 0)
-
-            for child in node.get("children", []):
-                traverse(child)
-
-        for root in data["call_tree"]:
-            traverse(root)
+        for callee in data.get("call_tree", []):
+            func = callee.get("function")
+            if func:
+                stats[func]["count"] += callee.get("count", 1)
+                stats[func]["total_ms"] += callee.get("total_ms", 0)
 
 # 按总耗时排序
 sorted_stats = sorted(stats.items(), key=lambda x: x[1]["total_ms"], reverse=True)
 
-print("Top 10 Time-Consuming Functions:")
+print("Top 10 Time-Consuming Direct Callees:")
 print(f"{'Function':<60} {'Count':>10} {'Total (ms)':>15} {'Avg (ms)':>12}")
 print("-" * 100)
 
 for func, stat in sorted_stats[:10]:
-    avg_ms = stat["total_ms"] / stat["count"]
+    avg_ms = stat["total_ms"] / stat["count"] if stat["count"] else 0
     print(f"{func:<60} {stat['count']:>10} {stat['total_ms']:>15.2f} {avg_ms:>12.2f}")
 ```
 
@@ -501,17 +477,17 @@ json.dumps                                                      500        1000.
 
 ## 常见问题
 
-### 1. 追踪深度不够
+### 1. 为什么看不到更深层的调用？
 
-**问题**：调用树只显示 3 层，但实际有更多层级
+**问题**：调用树只显示目标函数的直接调用者，不显示子调用的子调用
+
+**原因**：v0.1.20 起 `trace` 只捕获并聚合直接调用者（direct-callee 语义）。这是为了提供更稳定的性能和更可预测的输出。
 
 **解决方案**：
 
 ```bash
-# 增加深度限制
-peeka-cli trace "module.func" -d 10
-
-# 注意：深度过大会增加性能开销
+# 如果需要观察某个子调用内部的调用，可以对该子调用单独发起 trace
+peeka-cli trace "module.sub_module.slow_func" -n 10
 ```
 
 ### 2. 输出数据过多
@@ -538,8 +514,8 @@ peeka-cli trace "module.func" --condition "cost > 50"
 **解决方案**：
 
 ```bash
-# 1. 减少追踪深度
-peeka-cli trace "module.func" -d 2
+# 1. 提高最小耗时阈值，减少记录节点
+peeka-cli trace "module.func" --min-duration 10
 
 # 2. 限制观测次数
 peeka-cli trace "module.func" -n 10
@@ -579,8 +555,8 @@ ps aux | grep <pid>
 # 收集追踪数据
 peeka-cli trace "module.func" -n 1000 > trace.jsonl
 
-# 转换为火焰图格式
-jq -r '.call_tree | .. | objects | select(.function != null) | "\(.function);\(.duration_ms)"' trace.jsonl \
+# 转换为火焰图格式（直接调用者按 total_ms 折叠）
+jq -r '.call_tree[] | "\(.function);\(.total_ms)"' trace.jsonl \
   > folded.txt
 
 # 生成火焰图（需要安装 flamegraph.pl）
@@ -669,15 +645,12 @@ proc = subprocess.Popen(
 for line in proc.stdout:
     data = json.loads(line)
     if data["type"] == "observation":
-        # 递归处理调用树
-        def record_metrics(node):
-            if "function" in node and "duration_ms" in node:
-                trace_duration.labels(function=node["function"]).observe(node["duration_ms"])
-            for child in node.get("children", []):
-                record_metrics(child)
-
-        for root in data["call_tree"]:
-            record_metrics(root)
+        # 处理直接调用者列表
+        for callee in data.get("call_tree", []):
+            func = callee.get("function")
+            total_ms = callee.get("total_ms", 0)
+            if func:
+                trace_duration.labels(function=func).observe(total_ms)
 ```
 
 ## 参考资料
@@ -696,6 +669,7 @@ for line in proc.stdout:
 
 | 版本 | 发布日期 | 更新内容 |
 |------|---------|---------|
+| 0.1.20 | 2026-07-05 | 移除 `-d/--depth` 选项；trace 后端改为只捕获并聚合目标函数的直接调用者（direct callees），输出 `call_tree` 为扁平列表，新增 `self_time_ms`、`callee_count` 字段；TUI Trace 视图改为顶部 Active Traces 列表 + 下部调用树/统计分栏，新增 callee 下钻快捷键 `t` 和聚合 callee 节点 |
 | 0.1.18 | 2026-06-24 | CLI `--times` 改为按活动 stream_id 计数，避免并发流的观测被误计入当前 trace 的限制；`run` 命令中的 trace 流现在会在达到限制后正确停止 |
 | 0.1.17 | 2026-06-13 | trace 响应在被退化为 `wrapper_only` 后端时附带 `runtime_meta`（包含 `startup_backend`、`effective_backend`、`downgrade_reason`），TUI Trace 视图据此在统计面板显示 Backend / Gevent 状态 |
 | 0.1.16 | 2026-06-07 | 支持 `--client` |

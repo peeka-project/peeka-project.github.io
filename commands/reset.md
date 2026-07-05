@@ -722,6 +722,7 @@ jq '.enhanced[] | {pattern, count}' enhancements_backup.json
 
 | 版本    | 日期         | 更新内容                    |
 |-------|------------|-------------------------|
+| 0.1.20 | 2026-07-05 | reset 使用 reload-safe 的资源所有者判定，避免模块重载后类对象变化导致清理遗漏；清理时跳过 `cleanup_scope == detach_only` 的 handler（如 `logger`、`memory`），这些资源只在 `detach` 时释放 |
 | 0.1.18 | 2026-06-24 | reset 会先停止资源所有者命令（如 `monitor`），再清理 probe 上下文和注入器；响应新增 `cleanup_summary`；`--list` 会去重并包含 probe-only 资源（如 `monitor`） |
 | 0.1.0 | 2025-01-31 | 初始版本，支持 reset 和 list 功能 |
 

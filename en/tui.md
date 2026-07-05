@@ -157,6 +157,10 @@ These rows update on every Dashboard refresh, making it easy to tell - without s
 - Colored output (success=green, exception=red)
 - Display call count, cumulative time
 
+**Layout (v0.1.20)**:
+- Below the top controls is a **full-width active observation list** (Active Watches)
+- The bottom area uses a **2:1** left/right split: the observation table on the left (`2fr`) and the details panel on the right (`1fr`)
+
 **Interactive Operations**:
 - Enter function pattern (e.g., `module.Class.method`)
 - Set observation count (-n parameter)
@@ -182,29 +186,33 @@ The banner stays hidden when there is no signal to display (default CPython, no 
 
 ### 3. Trace View (`3` key)
 
-**Function**: Trace function call chains, showing hierarchical relationships and timing of method calls
+**Function**: Trace a function's direct callees and aggregate timing
 
 ![Peeka Trace view]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **Features**:
-- **Tree structure display**: Visualize call hierarchy
+- **Top Active Traces list**: Shows the current trace Pattern / Status / Count
+- **Call tree display**: After selecting a pattern, the lower-left area shows observation nodes, aggregated callee nodes, and each callee's timing share
+- **Stats panel**: The lower-right area shows details for the selected observation or callee
 - **Color-coded timing**:
   - Green: < 10ms
   - Yellow: 10-100ms
   - Red: ≥ 100ms
 - **Real-time streaming updates**: Each call displayed immediately
 - **Supports expand/collapse**: Interactive tree nodes
-- **Depth limit**: Control tracing depth (-d parameter)
+- **Minimum duration filter**: Filter short calls via the `Min Duration (ms)` input
 
 **Interactive Operations**:
 - Enter function pattern
-- Set trace depth (default 3 levels)
+- Set minimum duration filter (`Min Duration (ms)`, default `0`)
 - Set skip builtin functions (--skip-builtin)
 - Press Enter to start tracing
-- Press Delete to stop tracing
-- Click nodes to expand/collapse (mouse support)
+- Select a row in the Active Traces list to view that pattern's call tree
+- Select a callee node in the call tree and press `t` to start a drill-down trace
+- Press `c` to clear trace records and stop running traces
+- Press Delete to stop all traces
 
-**Output Example**: The Trace view displays call chains and each node's timing as an expandable tree.
+**Output Example**: The Trace view displays each observation's direct callees as an expandable tree and summarizes identical functions in aggregated nodes with call count and total time.
 
 #### Backend and gevent state (v0.1.17)
 
@@ -213,7 +221,7 @@ Each trace observation's stats panel now appends a `Backend: ... Gevent: ...` li
 - When trace runs on the full `profiler` backend it shows `Backend: profiler (full)`.
 - When the target is gevent-patched and trace has degraded to `wrapper_only` it shows `Backend: wrapper_only  Gevent: patched`, matching the gevent compatibility note in the [trace command]({% link commands/trace.md %}) docs.
 
-This information is sourced from the new `runtime_meta` field on trace responses, helping explain why trace no longer reports a full recursive call tree in some runtimes.
+This information is sourced from the `runtime_meta` field on trace responses, helping explain why trace may only show target-function observations in some runtimes.
 
 ---
 

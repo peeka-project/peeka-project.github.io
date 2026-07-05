@@ -18,37 +18,40 @@ permalink: /commands/trace
 
 ## Overview
 
-The `trace` command is used to track the complete call chain and execution time of Python functions, displaying method call hierarchies in a tree structure. This is a powerful performance analysis and diagnostic tool that helps developers quickly identify performance bottlenecks and understand code execution paths.
+The `trace` command tracks a Python function's **direct callees** and execution time, displaying a flat list of aggregated next-level calls below the target function. This is a powerful performance analysis tool that helps developers quickly identify bottlenecks and understand execution hotspots.
 
-Peeka's `trace` command provides powerful performance analysis and diagnostic capabilities for Python applications.
+**Important change in v0.1.20**: `trace` no longer supports a depth option and no longer outputs a recursively nested call tree. The backend captures and aggregates only the target function's direct callees, making output more stable and overhead more predictable.
 
 ## TUI Usage
 
 In TUI mode, press **`3`** key to switch to **Trace View**, providing the following interactive features:
 
 - **Pattern Input**: Supports function name auto-completion (fetched in real-time from the target process)
-- **Parameter Configuration**: Visual configuration of depth, times, condition expressions, skip-builtin
-- **Call Tree Visualization**: Display call chains as interactive tree structure, expandable/collapsible
+- **Parameter Configuration**: Visual configuration of min duration, times, condition expressions, skip-builtin
+- **Active Traces List**: The top area shows current trace task status and counts
+- **Call Tree Visualization**: Display each observation's direct callees as an interactive tree, including aggregated callee nodes
+- **Detail Stats Panel**: Shows timing, counts, percentage, and exception details for the selected observation or callee
 - **Color-coded Timing**:
   - 🟢 Green: < 10ms (fast)
   - 🟡 Yellow: 10-100ms (medium)
   - 🔴 Red: >= 100ms (slow)
 - **Quick Operations**:
   - Press Enter after entering pattern to start tracing
-  - Press Enter to expand/collapse nodes
-  - Press `c` to clear trace records
-  - Press Delete to remove selected record
+  - Select a row in the Active Traces list to view that pattern's call tree
+  - Select a callee node in the call tree and press `t` to start a drill-down trace for that function
+  - Press `c` to clear trace records and stop running traces
+  - Press Delete to stop all traces
 
 ![Peeka Trace view]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **CLI Equivalent Commands**: All examples below use CLI commands for demonstration. TUI provides the same functionality with a graphical interface.
 ## Use Cases
 
-- **Performance bottleneck identification**: Quickly find slow calls through timing data
-- **Call chain analysis**: Understand function internal call relationships and execution flows
-- **Code execution path tracking**: Observe code execution paths under different conditions
-- **Sub-function timing analysis**: Analyze timing distribution across sub-functions
-- **Recursive call diagnosis**: Track recursive call depth and timing distribution
+- **Performance bottleneck identification**: Quickly find the slowest child calls below a target function
+- **Hotspot function identification**: Aggregate direct callees by total time, call count, min time, and max time
+- **Code execution path tracking**: Observe which child calls are triggered under different conditions
+- **Sub-function timing analysis**: Analyze the timing share of each direct callee
+- **Exception call diagnosis**: Trace calls that raise exceptions and inspect exception type
 
 ## Command Format
 
@@ -62,17 +65,16 @@ peeka-cli trace <pattern> [options]
 | Parameter | Description | Default | Example |
 |-----------|-------------|---------|---------|
 | `pattern` | Function matching pattern | - | `module.Class.method` |
-| `-d, --depth` | Trace depth (max call levels) | `3` | `-d 5` |
 | `-n, --times` | Observation count (-1 for unlimited) | `-1` | `-n 10` |
 | `--condition` | Condition expression (supports `cost` variable) | None | `--condition "cost > 50"` |
 | `--client` | Existing client session ID; auto-creates an ephemeral client when omitted | Auto | `--client client_123` |
 | `--skip-builtin` | Skip built-in and stdlib functions | `true` | `--skip-builtin=false` |
-| `--min-duration` | Minimum duration filter (milliseconds) | `0` | `--min-duration 10` |
+| `--min-duration` | Minimum duration filter (milliseconds); records only direct calls greater than or equal to this value | `0` | `--min-duration 10` |
 
 **Notes**:
-- Trace depth should not exceed 5 levels; excessive depth significantly increases performance overhead
 - `--skip-builtin` is enabled by default to reduce output noise
 - The `cost` variable in condition expressions represents total call duration (milliseconds)
+- The former depth option is no longer supported since v0.1.20
 
 ### Function Matching Pattern (pattern)
 
@@ -96,7 +98,7 @@ Supports the following formats:
 
 ## Basic Usage
 
-### 1. Trace Function Call Chain
+### 1. Trace Function Direct Callees
 
 ```bash
 # First attach to target process
@@ -117,45 +119,39 @@ peeka-cli trace "calculator.Calculator.calculate" -n 5
   "location": "AtExit",
   "call_tree": [
     {
-      "depth": 0,
-      "function": "calculator.Calculator.calculate",
+      "function": "calculator.Calculator._validate",
       "filename": "/app/calculator.py",
-      "lineno": 42,
-      "duration_ms": 125.3,
-      "children": [
-        {
-          "depth": 1,
-          "function": "calculator.Calculator._validate",
-          "filename": "/app/calculator.py",
-          "lineno": 18,
-          "duration_ms": 2.1
-        },
-        {
-          "depth": 1,
-          "function": "calculator.Calculator._compute",
-          "filename": "/app/calculator.py",
-          "lineno": 25,
-          "duration_ms": 98.2,
-          "children": [
-            {
-              "depth": 2,
-              "function": "math.sqrt",
-              "duration_ms": 95.1
-            }
-          ]
-        },
-        {
-          "depth": 1,
-          "function": "calculator.Logger.info",
-          "filename": "/app/logger.py",
-          "lineno": 10,
-          "duration_ms": 15.7
-        }
-      ]
+      "lineno": 18,
+      "count": 1,
+      "total_ms": 2.1,
+      "min_ms": 2.1,
+      "max_ms": 2.1
+    },
+    {
+      "function": "calculator.Calculator._compute",
+      "filename": "/app/calculator.py",
+      "lineno": 25,
+      "count": 1,
+      "total_ms": 98.2,
+      "min_ms": 98.2,
+      "max_ms": 98.2
+    },
+    {
+      "function": "calculator.Logger.info",
+      "filename": "/app/logger.py",
+      "lineno": 10,
+      "count": 1,
+      "total_ms": 15.7,
+      "min_ms": 15.7,
+      "max_ms": 15.7
     }
   ],
   "total_duration_ms": 125.3,
-  "node_count": 5
+  "self_time_ms": 9.3,
+  "callee_count": 3,
+  "node_count": 4,
+  "thread_id": 140234567890,
+  "thread_name": "MainThread"
 }
 ```
 
@@ -165,68 +161,51 @@ peeka-cli trace "calculator.Calculator.calculate" -n 5
 |-------|-------------|---------|
 | `watch_id` | Observation ID | `"trace_abc123"` |
 | `timestamp` | Timestamp | `1705586200.123` |
-| `func_name` | Target function name | `"calculator.calculate"` |
+| `func_name` | Target function name | `"calculator.Calculator.calculate"` |
 | `location` | Observation location | `"AtExit"` |
-| `call_tree` | Call tree (nested structure) | `[...]` |
+| `call_tree` | Direct callee list (flat aggregation) | `[...]` |
 | `total_duration_ms` | Total execution time (milliseconds) | `125.3` |
-| `node_count` | Total call node count | `5` |
+| `self_time_ms` | Target function self time (milliseconds) | `9.3` |
+| `callee_count` | Number of direct callee types | `3` |
+| `node_count` | Total node count (target function + direct callees) | `4` |
+| `thread_id` | Thread ID | `140234567890` |
+| `thread_name` | Thread name | `"MainThread"` |
+| `exception` | Exception information when raised | `"ValueError: ..."` |
+| `runtime_meta` | Runtime metadata (backend, gevent, etc.) | `{...}` |
 
 **Call Tree Node Fields**:
 
 | Field | Description | Example |
 |-------|-------------|---------|
-| `depth` | Call depth (starting from 0) | `0`, `1`, `2` |
 | `function` | Full function name | `"module.Class.method"` |
 | `filename` | File path | `"/app/module.py"` |
 | `lineno` | Line number | `42` |
-| `duration_ms` | Execution time (milliseconds) | `10.5` |
-| `children` | Sub-call list | `[...]` |
+| `count` | Call count during this observation window | `5` |
+| `total_ms` | Total execution time (milliseconds) | `125.3` |
+| `min_ms` | Minimum duration (milliseconds) | `10.5` |
+| `max_ms` | Maximum duration (milliseconds) | `95.1` |
 
 ### 2. Visual Call Tree (TUI)
 
-In TUI mode, the call tree is displayed as a visual tree structure:
+In TUI mode, the Trace view uses a top/bottom layout:
 
 ![Peeka Trace call tree]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **Explanation**:
-- Active Traces on the left shows current trace tasks and per-observation timing
-- Call Tree on the right shows the expandable/collapsible call tree
+- The top Active Traces area shows current trace tasks (Pattern / Status / Count)
+- The lower-left Call Tree area shows observation nodes, aggregated callee nodes, and each callee's timing share for the selected pattern
+- The lower-right Stats panel shows details for the selected observation or callee
 - Different colors highlight different timing ranges
-- Stats at the bottom shows total duration, node count, and function name for the selected observation
+- Select a callee and press `t` to quickly start a new drill-down trace
 
-### 3. Adjust Trace Depth
+### 3. Filter by Min Duration
 
 ```bash
-# Depth of 1: trace only direct calls
-peeka-cli trace "service.process" -d 1
-
-# Depth of 5: trace 5 levels of calls
-peeka-cli trace "service.process" -d 5
+# Record only direct calls with duration >= 10ms
+peeka-cli trace "service.process" --min-duration 10
 ```
 
-**Depth Comparison Example**:
-
-```python
-# Original call chain
-process() → validate() → check_type() → isinstance()
-  ├── query_db() → execute() → connect()
-  └── format_result() → json.dumps()
-
-# depth=1
-process() → validate()
-          → query_db()
-          → format_result()
-
-# depth=2
-process() → validate() → check_type()
-          → query_db() → execute()
-          → format_result() → json.dumps()
-
-# depth=3 (default)
-process() → validate() → check_type() → isinstance()
-          → query_db() → execute() → connect()
-          → format_result() → json.dumps()
-```
+This reduces noise from high-frequency short helper calls and focuses on child calls that are more likely to consume resources.
 
 ### 4. Conditional Filtering
 
@@ -254,8 +233,6 @@ peeka-cli trace "mymodule.func" --skip-builtin=false
 
 ## Implementation Technology
 
-Peeka's `trace` command automatically selects the optimal implementation based on Python version:
-
 ### Implementation Principles
 
 Peeka's `trace` command automatically selects the optimal implementation based on Python version:
@@ -265,7 +242,9 @@ Peeka's `trace` command automatically selects the optimal implementation based o
 | 3.12+ | sys.monitoring | < 5% | Official PEP 669 API, optimal performance |
 | 3.8.1-3.11 | sys.settrace | < 20% | Good compatibility, auto-enabled |
 
-**gevent compatibility (v0.1.15+)**: when the target has gevent monkey patching or an active hub, `trace` degrades to the `wrapper_only` backend to avoid violating frame stack invariants with `sys.settrace`. This mode still reports target function observations, but it does not provide a recursive call tree.
+**Direct-callee semantics (v0.1.20+)**: all backends capture only the target function's direct callees and aggregate identical `(function, filename, lineno)` calls within the same observation window, outputting `count / total_ms / min_ms / max_ms`. This avoids the performance uncertainty and data growth caused by recursive/deep call trees.
+
+**gevent compatibility (v0.1.15+)**: when the target has gevent monkey patching or an active hub, `trace` degrades to the `wrapper_only` backend to avoid violating frame stack invariants with `sys.settrace`. This mode still reports target function observations, but it does not provide a direct callee list.
 
 **sys.monitoring Implementation (Python 3.12+)**:
 
@@ -294,20 +273,20 @@ Peeka's `trace` command automatically selects the optimal implementation based o
 |----------|----------|-------|
 | **Simple functions** | < 5% | Python 3.12+ |
 | **Simple functions** | < 20% | Python 3.8.1-3.11 |
-| **Complex call tree (depth 5)** | 10-30% | Depends on Python version |
+| **High-frequency child calls** | 10-30% | Depends on Python version and `--min-duration` setting |
 | **High-frequency calls (>1000 QPS)** | 20-50% | Recommend limiting observation count |
 
 **Explanation**:
 - Python 3.12+ uses `sys.monitoring`, significantly reducing overhead
-- Deeper traces incur greater overhead
+- Since v0.1.20, only one layer of direct callees is traced, making overhead more stable and predictable
 - Recommended to use conditional filtering and count limits in production
 
 ### Performance Optimization Recommendations
 
-1. **Limit trace depth**
+1. **Use minimum duration filtering**
    ```bash
-   # Trace only 3 levels of calls
-   peeka-cli trace "func" -d 3
+   # Record only direct calls with duration >= 10ms
+   peeka-cli trace "func" --min-duration 10
    ```
 
 2. **Skip built-in functions**
@@ -328,12 +307,6 @@ Peeka's `trace` command automatically selects the optimal implementation based o
    peeka-cli trace "func" -n 10
    ```
 
-5. **Minimum duration filtering**
-   ```bash
-   # Record only sub-calls > 10ms
-   peeka-cli trace "func" --min-duration 10
-   ```
-
 ## Usage Examples
 
 ### 1. Identify Performance Bottlenecks
@@ -345,32 +318,38 @@ peeka-cli trace "api.handler.process_request" --condition "cost > 100"
 
 **Output**:
 ```
-`---[1250ms] api.handler.process_request()
-    +---[10ms] api.validator.check_params()
-    +---[1200ms] database.query.execute()  ← Bottleneck here!
-    |   +---[50ms] database.connection.connect()
-    |   `---[1150ms] database.cursor.fetch_all()
-    `---[20ms] api.formatter.to_json()
+[1250ms] api.handler.process_request()
+├── [10ms] api.validator.check_params() (count=1)
+├── [1200ms] database.query.execute()  ← Bottleneck here! (count=1)
+└── [20ms] api.formatter.to_json() (count=1)
 ```
 
 **Conclusion**: Database query consumes 96% of time, needs SQL optimization or index addition.
 
-### 2. Analyze Recursive Calls
+### 2. Aggregate High-Frequency Calls
 
 ```bash
-# Trace recursive function execution depth and timing
-peeka-cli trace "algorithm.factorial" -d 10
+# Trace a function inside a loop and observe repeated child calls
+peeka-cli trace "algorithm.process_batch" -n 5
 ```
 
-**Output**:
+**Output Example**:
+```json
+{
+  "func_name": "algorithm.process_batch",
+  "call_tree": [
+    {
+      "function": "database.query.fetch",
+      "count": 100,
+      "total_ms": 850.5,
+      "min_ms": 5.1,
+      "max_ms": 25.3
+    }
+  ]
+}
 ```
-`---[5.2ms] algorithm.factorial(n=5)
-    `---[4.1ms] algorithm.factorial(n=4)
-        `---[3.0ms] algorithm.factorial(n=3)
-            `---[2.0ms] algorithm.factorial(n=2)
-                `---[1.0ms] algorithm.factorial(n=1)
-                    `---[0.1ms] algorithm.factorial(n=0)
-```
+
+**Conclusion**: `process_batch` triggered 100 database queries in one execution; consider batch query optimization.
 
 ### 3. Understand Code Execution Path
 
@@ -431,23 +410,21 @@ fi
 ### Process JSON with jq
 
 ```bash
-# 1. Extract call tree
+# 1. Extract direct callee list
 peeka-cli trace "func" | jq '.call_tree'
 
 # 2. Calculate average duration
 peeka-cli trace "func" -n 100 | jq '.total_duration_ms' | \
   awk '{sum+=$1; count++} END {print "avg:", sum/count, "ms"}'
 
-# 3. Find slowest sub-call
-peeka-cli trace "func" | jq '.call_tree | .. | objects | select(.duration_ms != null) | {function, duration_ms}' | \
-  jq -s 'sort_by(.duration_ms) | reverse | .[0]'
+# 3. Find slowest child call
+peeka-cli trace "func" | jq '.call_tree | sort_by(.total_ms) | reverse | .[0]'
 
-# 4. Count call frequency
-peeka-cli trace "func" -n 100 | jq '.call_tree | .. | objects | select(.function != null) | .function' | \
-  sort | uniq -c | sort -rn
+# 4. Count call frequency (sum by count field)
+peeka-cli trace "func" -n 100 | jq -s '[.[] | .call_tree[] | {function, count}] | group_by(.function) | map({function: .[0].function, total_count: map(.count) | add}) | sort_by(.total_count) | reverse'
 
-# 5. Generate flame graph data
-peeka-cli trace "func" -n 1000 | jq -r '.call_tree | .. | objects | select(.function != null) | "\(.function) \(.duration_ms)"' > flamegraph.txt
+# 5. Generate flame graph data (using total_ms)
+peeka-cli trace "func" -n 1000 | jq -r '.call_tree[] | "\(.function) \(.total_ms)"' > flamegraph.txt
 ```
 
 ### Python Data Analysis
@@ -457,32 +434,27 @@ import json
 import sys
 from collections import defaultdict
 
-# Count total duration and occurrences of sub-calls
+# Count total duration and occurrences of direct callees
 stats = defaultdict(lambda: {"count": 0, "total_ms": 0})
 
 for line in sys.stdin:
     data = json.loads(line)
     if data["type"] == "observation":
-        def traverse(node):
-            if "function" in node:
-                stats[node["function"]]["count"] += 1
-                stats[node["function"]]["total_ms"] += node.get("duration_ms", 0)
-
-            for child in node.get("children", []):
-                traverse(child)
-
-        for root in data["call_tree"]:
-            traverse(root)
+        for callee in data.get("call_tree", []):
+            func = callee.get("function")
+            if func:
+                stats[func]["count"] += callee.get("count", 1)
+                stats[func]["total_ms"] += callee.get("total_ms", 0)
 
 # Sort by total duration
 sorted_stats = sorted(stats.items(), key=lambda x: x[1]["total_ms"], reverse=True)
 
-print("Top 10 Time-Consuming Functions:")
+print("Top 10 Time-Consuming Direct Callees:")
 print(f"{'Function':<60} {'Count':>10} {'Total (ms)':>15} {'Avg (ms)':>12}")
 print("-" * 100)
 
 for func, stat in sorted_stats[:10]:
-    avg_ms = stat["total_ms"] / stat["count"]
+    avg_ms = stat["total_ms"] / stat["count"] if stat["count"] else 0
     print(f"{func:<60} {stat['count']:>10} {stat['total_ms']:>15.2f} {avg_ms:>12.2f}")
 ```
 
@@ -493,7 +465,7 @@ peeka-cli trace "module.func" -n 100 | python analyze_trace.py
 
 **Output**:
 ```
-Top 10 Time-Consuming Functions:
+Top 10 Time-Consuming Direct Callees:
 Function                                                      Count     Total (ms)      Avg (ms)
 ----------------------------------------------------------------------------------------------------
 database.query.execute                                          100       12500.00       125.00
@@ -504,17 +476,17 @@ json.dumps                                                      500        1000.
 
 ## Common Issues
 
-### 1. Insufficient Trace Depth
+### 1. Why can't I see deeper calls?
 
-**Problem**: Call tree only shows 3 levels, but there are more levels in reality
+**Problem**: The call tree only shows the target function's direct callees, not callees of callees.
+
+**Cause**: Since v0.1.20, `trace` captures and aggregates only direct callees. This provides more stable performance and more predictable output.
 
 **Solution**:
 
 ```bash
-# Increase depth limit
-peeka-cli trace "module.func" -d 10
-
-# Note: Excessive depth increases performance overhead
+# If you need to inspect a child call's internals, start a separate trace on that child call
+peeka-cli trace "module.sub_module.slow_func" -n 10
 ```
 
 ### 2. Too Much Output Data
@@ -541,8 +513,8 @@ peeka-cli trace "module.func" --condition "cost > 50"
 **Solution**:
 
 ```bash
-# 1. Reduce trace depth
-peeka-cli trace "module.func" -d 2
+# 1. Raise the minimum duration threshold to reduce recorded nodes
+peeka-cli trace "module.func" --min-duration 10
 
 # 2. Limit observation count
 peeka-cli trace "module.func" -n 10
@@ -582,8 +554,8 @@ ps aux | grep <pid>
 # Collect trace data
 peeka-cli trace "module.func" -n 1000 > trace.jsonl
 
-# Convert to flame graph format
-jq -r '.call_tree | .. | objects | select(.function != null) | "\(.function);\(.duration_ms)"' trace.jsonl \
+# Convert to flame graph format (direct callees folded by total_ms)
+jq -r '.call_tree[] | "\(.function);\(.total_ms)"' trace.jsonl \
   > folded.txt
 
 # Generate flame graph (requires flamegraph.pl installation)
@@ -672,20 +644,16 @@ proc = subprocess.Popen(
 for line in proc.stdout:
     data = json.loads(line)
     if data["type"] == "observation":
-        # Process call tree recursively
-        def record_metrics(node):
-            if "function" in node and "duration_ms" in node:
-                trace_duration.labels(function=node["function"]).observe(node["duration_ms"])
-            for child in node.get("children", []):
-                record_metrics(child)
-
-        for root in data["call_tree"]:
-            record_metrics(root)
+        # Process direct callee list
+        for callee in data.get("call_tree", []):
+            func = callee.get("function")
+            total_ms = callee.get("total_ms", 0)
+            if func:
+                trace_duration.labels(function=func).observe(total_ms)
 ```
 
 ## References
 
-- [PEP 669: Low Impact Monitoring for CPython](https://peps.python.org/pep-0669/)
 - [PEP 669: Low Impact Monitoring for CPython](https://peps.python.org/pep-0669/)
 - [Peeka Architecture Design](../ARCHITECTURE.md)
 
@@ -700,6 +668,7 @@ for line in proc.stdout:
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
+| 0.1.20 | 2026-07-05 | Removed the depth option; trace now captures and aggregates only the target function's direct callees, outputs `call_tree` as a flat list, and adds `self_time_ms` / `callee_count`; TUI Trace view now uses a top Active Traces list plus lower call-tree/stats split, with callee drill-down shortcut `t` and aggregated callee nodes |
 | 0.1.18 | 2026-06-24 | CLI `--times` now counts only observations matching the active stream_id, so concurrent streams no longer count toward the current trace limit; the `run` wrapper stops the trace stream when the limit is reached |
 | 0.1.17 | 2026-06-13 | Trace responses now carry `runtime_meta` (`startup_backend`, `effective_backend`, `downgrade_reason`) when degraded to the `wrapper_only` backend; the TUI Trace view surfaces Backend / Gevent state in the stats panel |
 | 0.1.16 | 2026-06-07 | Added `--client` |

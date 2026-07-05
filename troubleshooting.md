@@ -183,6 +183,101 @@ top
 uptime
 ```
 
+### 错误：Debugger not found in PATH（v0.1.20+）
+
+**症状**:
+```
+Error: Debugger not found in PATH: gdb
+```
+
+**原因**: 当前 Python 版本低于 3.14，需要 GDB（Linux）或 LLDB（macOS）作为降级方案，但系统未安装或不在 `PATH` 中。
+
+**解决方案**:
+
+```bash
+# Debian/Ubuntu
+sudo apt-get install gdb
+
+# RHEL/CentOS
+sudo yum install gdb
+
+# macOS
+xcode-select --install
+
+# 验证
+gdb --version
+lldb --version
+```
+
+### 错误：Attach debugger script not found（v0.1.20+）
+
+**症状**:
+```
+Error: Attach debugger script not found: _attach.gdb
+```
+
+**原因**: Peeka 的打包资源解析失败，可能是安装不完整或 PyInstaller 等打包工具未包含数据文件。
+
+**解决方案**:
+
+```bash
+# 1. 重新安装 Peeka
+pip install --force-reinstall peeka
+
+# 2. 检查包内是否存在脚本
+python -c "import peeka.core.attach_workflow, pathlib; print(pathlib.Path(peeka.core.attach_workflow.__file__).parent / '_attach.gdb')"
+
+# 3. 如果是自定义打包，确保包含 peeka/core/attach_workflow/_attach.gdb 和 _attach.lldb
+```
+
+### 错误：C extension injector not found（v0.1.20+）
+
+**症状**:
+```
+Error: C extension injector not found
+```
+
+**原因**: `peeka_injector` 等 C 扩展未编译或未被正确加载，常见于源码安装时编译失败或打包遗漏。
+
+**解决方案**:
+
+```bash
+# 1. 重新安装（优先使用预编译 wheel）
+pip install --force-reinstall peeka
+
+# 2. 源码安装时确保有编译工具链
+pip install --no-binary :all: peeka
+
+# 3. 验证扩展是否存在
+python -c "import peeka_injector; print(peeka_injector.__file__)"
+```
+
+### 错误：GDB/LLDB injection failed: debugger script error detected（v0.1.20+）
+
+**症状**:
+```
+Error: GDB injection failed: debugger script error detected
+```
+
+**原因**: GDB/LLDB 加载 Peeka 的 `_attach.gdb` / `_attach.lldb` 脚本时出错，可能是调试符号不匹配、Python 版本不兼容或目标进程状态异常。
+
+**解决方案**:
+
+```bash
+# 1. 确认 Python 调试符号已安装（Linux，Python < 3.14）
+sudo apt-get install python3-dbg  # Debian/Ubuntu
+
+# 2. 检查目标进程是否可被调试
+ps -p <pid> -o stat=
+
+# 3. 手动运行 GDB 查看详细错误
+gdb -p <pid> -x /path/to/_attach.gdb
+
+# 4. 对 macOS 使用 LLDB 并检查 Xcode Command Line Tools
+lldb --version
+xcode-select --install
+```
+
 ---
 
 ## v0.1.13 版本相关问题

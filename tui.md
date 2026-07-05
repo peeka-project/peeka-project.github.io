@@ -157,6 +157,10 @@ Dashboard 在运行时信息面板末尾新增三行字段，数据来源为 [`p
 - 彩色输出（成功=绿色，异常=红色）
 - 显示调用计数、累计耗时
 
+**布局（v0.1.20）**：
+- 顶部控件区下方是**全宽活动观测列表**（Active Watches）
+- 下部按 **2:1** 比例分为左右两栏：左侧为观测表格（`2fr`），右侧为详情面板（`1fr`）
+
 **交互操作**：
 - 输入函数模式（如 `module.Class.method`）
 - 设置观测次数（-n 参数）
@@ -182,29 +186,33 @@ Gevent: patched  Backend: wrapper_only (downgraded: gevent_patched_runtime)
 
 ### 3. Trace 视图（`3` 键）
 
-**功能**：追踪函数调用链，展示方法调用的层次关系和耗时
+**功能**：追踪函数的直接调用者并聚合耗时
 
 ![Peeka Trace 视图]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **特点**：
-- **树形结构展示**：可视化调用层次
+- **顶部活动追踪列表**：显示当前追踪的 Pattern / Status / Count
+- **调用树展示**：选中 pattern 后，下部左侧显示该 pattern 的观测节点、聚合 callee 节点和每个 callee 的耗时占比
+- **统计面板**：下部右侧展示当前选中观测或 callee 的详细统计
 - **颜色编码耗时**：
   - 绿色：< 10ms
   - 黄色：10-100ms
   - 红色：≥ 100ms
 - **实时流式更新**：每次调用立即显示
 - **支持展开/折叠**：交互式树节点
-- **深度限制**：控制追踪层数（-d 参数）
+- **最小耗时过滤**：通过 `Min Duration (ms)` 输入框过滤短耗时调用
 
 **交互操作**：
 - 输入函数模式
-- 设置追踪深度（默认 3 层）
+- 设置最小耗时过滤（`Min Duration (ms)`，默认 `0`）
 - 设置跳过内置函数（--skip-builtin）
 - 按 Enter 启动追踪
-- 按 Delete 停止追踪
-- 点击节点展开/折叠（鼠标支持）
+- 在活动追踪列表选中某行，查看对应 pattern 的调用树
+- 在调用树选中 callee 节点，按 `t` 发起下钻追踪（Drill Trace）
+- 按 `c` 清空追踪记录并停止运行中的 trace
+- 按 Delete 停止所有 trace
 
-**输出示例**：Trace 视图会以可展开的树形结构展示调用链和每个节点的耗时。
+**输出示例**：Trace 视图以可展开的树形结构展示每次观测的直接调用者，并在聚合节点中汇总相同函数的调用次数和总耗时。
 
 #### 后端与 gevent 状态（v0.1.17）
 
@@ -213,7 +221,7 @@ Gevent: patched  Backend: wrapper_only (downgraded: gevent_patched_runtime)
 - 当 trace 以完整 `profiler` 后端运行时显示 `Backend: profiler (full)`。
 - 当目标进程被 gevent monkey patch、trace 自动降级为 `wrapper_only` 时显示 `Backend: wrapper_only  Gevent: patched`，对应 [trace 命令]({% link commands/trace.md %}) 文档中的 gevent 兼容性说明。
 
-该信息来自 trace 响应新增的 `runtime_meta` 字段，可用于解释为何 trace 在某些环境下不再展示完整递归调用树。
+该信息来自 trace 响应新增的 `runtime_meta` 字段，可用于解释为何 trace 在某些环境下只展示直接调用者。
 
 ---
 

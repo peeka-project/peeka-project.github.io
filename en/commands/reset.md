@@ -594,4 +594,5 @@ The `reset` command is a powerful tool for production environment enhancement ma
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 0.1.20 | 2026-07-05 | `reset` now uses a reload-safe resource-owner predicate to avoid cleanup misses when module reloads change class objects; cleanup skips handlers with `cleanup_scope == detach_only` (such as `logger` and `memory`), which are released only on `detach` |
 | 0.1.18 | 2026-06-24 | Reset now stops resource-owner commands (e.g. `monitor`) before injector teardown; response includes `cleanup_summary`; `--list` deduplicates and includes probe-only resources such as `monitor` |

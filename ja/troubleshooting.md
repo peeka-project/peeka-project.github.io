@@ -184,6 +184,101 @@ top
 uptime
 ```
 
+### エラー: Debugger not found in PATH（v0.1.20+）
+
+**症状**:
+```
+Error: Debugger not found in PATH: gdb
+```
+
+**原因**: 現在の Python バージョンが 3.14 未満で、フォールバック方式として GDB（Linux）または LLDB（macOS）が必要ですが、システムにインストールされていないか `PATH` にありません。
+
+**解決策**:
+
+```bash
+# Debian/Ubuntu
+sudo apt-get install gdb
+
+# RHEL/CentOS
+sudo yum install gdb
+
+# macOS
+xcode-select --install
+
+# 確認
+gdb --version
+lldb --version
+```
+
+### エラー: Attach debugger script not found（v0.1.20+）
+
+**症状**:
+```
+Error: Attach debugger script not found: _attach.gdb
+```
+
+**原因**: Peeka のパッケージリソース解決に失敗しています。インストールが不完全、または PyInstaller などのパッケージングツールがデータファイルを含めていない可能性があります。
+
+**解決策**:
+
+```bash
+# 1. Peeka を再インストール
+pip install --force-reinstall peeka
+
+# 2. パッケージ内にスクリプトが存在するか確認
+python -c "import peeka.core.attach_workflow, pathlib; print(pathlib.Path(peeka.core.attach_workflow.__file__).parent / '_attach.gdb')"
+
+# 3. 独自パッケージングの場合は peeka/core/attach_workflow/_attach.gdb と _attach.lldb を含める
+```
+
+### エラー: C extension injector not found（v0.1.20+）
+
+**症状**:
+```
+Error: C extension injector not found
+```
+
+**原因**: `peeka_injector` などの C 拡張がコンパイルされていない、または正しく読み込まれていません。ソースインストール時のビルド失敗やパッケージング漏れでよく発生します。
+
+**解決策**:
+
+```bash
+# 1. 再インストール（可能なら事前ビルド済み wheel を使用）
+pip install --force-reinstall peeka
+
+# 2. ソースインストール時はビルドツールチェーンを用意
+pip install --no-binary :all: peeka
+
+# 3. 拡張が存在するか確認
+python -c "import peeka_injector; print(peeka_injector.__file__)"
+```
+
+### エラー: GDB/LLDB injection failed: debugger script error detected（v0.1.20+）
+
+**症状**:
+```
+Error: GDB injection failed: debugger script error detected
+```
+
+**原因**: GDB/LLDB が Peeka の `_attach.gdb` / `_attach.lldb` スクリプトを読み込む際にエラーが発生しました。デバッグシンボルの不一致、Python バージョン非互換、ターゲットプロセス状態の異常などが考えられます。
+
+**解決策**:
+
+```bash
+# 1. Python デバッグシンボルがインストール済みか確認（Linux、Python < 3.14）
+sudo apt-get install python3-dbg  # Debian/Ubuntu
+
+# 2. ターゲットプロセスがデバッグ可能か確認
+ps -p <pid> -o stat=
+
+# 3. GDB を手動実行して詳細エラーを確認
+gdb -p <pid> -x /path/to/_attach.gdb
+
+# 4. macOS では LLDB と Xcode Command Line Tools を確認
+lldb --version
+xcode-select --install
+```
+
 ---
 
 ## v0.1.13 バージョン関連の問題

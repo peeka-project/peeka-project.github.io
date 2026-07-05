@@ -334,13 +334,25 @@ Peeka v0.1.9–v0.1.14 introduced several reliability enhancements for attachmen
 - Socket handling and connection validation strengthened (v0.1.11–v0.1.12: `9ef3222`)
 - Broadcast frames correctly skipped for improved streaming client stability (v0.1.12: `9c90675`)
 
+### v0.1.20 Attachment Reliability Improvements
+
+v0.1.20 further improves stability for repeated attach operations and packaged deployments:
+
+- **Module cache cleanup**: The injected agent bootstrap script clears cached `peeka` / `peeka.*` modules from `sys.modules` before loading Peeka modules, reducing failures caused by stale modules after repeated attach operations or source updates.
+- **Centralized debugger resource resolution**: Debugger scripts such as `_attach.gdb` and `_attach.lldb` are resolved through the core package resource API instead of relative paths or filesystem layout assumptions, improving reliability after packaging (for example with PyInstaller).
+- **Fast failure on missing resources**: Before attaching, Peeka pre-checks that the GDB/LLDB executable, debugger script, and C extension injector are available. Missing resources now produce clear errors immediately instead of surfacing later inside the debugger.
+- **Narrowed script-error detection**: Only real `_attach.gdb` / `_attach.lldb` load failures are treated as fatal, filtering benign debugger output noise.
+- **Signal handler restore**: Even when `stop()` runs outside the main thread, exit cleanup restores SIGTERM/SIGINT/SIGHUP handlers through the `Py_AddPendingCall` mechanism.
+
 ---
 
 ## Version History
 
 | Version | Release Date | Changes |
 |---------|--------------|---------|
+| 0.1.20 | 2026-07-05 | Agent bootstrap clears cached Peeka modules; debugger scripts are resolved through core package resources; attach preflights debugger/script/injector resources and fails fast when missing; signal restore and script-error detection were improved |
 | 0.1.19 | 2026-06-25 | Python process discovery falls back to `ps` on non-`/proc` platforms (e.g. macOS), so the TUI process selector can list attachable processes on macOS |
+| 0.1.14 | 2026-05-24 | TUI attach progress/log/inline error display; fixed notify server native socket accept |
 | 0.1.12 | 2026-05-08 | Socket handling enhancements (`9ef3222`), broadcast frame skip (`9c90675`) |
 | 0.1.11 | 2026-05-07 | Attach reliability fix, error surfacing improvements (`88da13e`) |
 | 0.1.9 | 2026-05-04 | Streaming client identification improvements (`a90d080`) |

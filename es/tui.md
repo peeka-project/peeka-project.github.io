@@ -156,6 +156,10 @@ Estas filas se actualizan en cada refresco del Dashboard, permitiendo identifica
 - Salida en color (éxito=verde, excepción=rojo)
 - Muestra conteo de llamadas y tiempo acumulado
 
+**Diseño (v0.1.20)**:
+- Debajo del área de controles aparece una **lista de observaciones activas** de ancho completo (Active Watches)
+- La parte inferior se divide en dos columnas con proporción **2:1**: tabla de observaciones a la izquierda (`2fr`) y panel de detalles a la derecha (`1fr`)
+
 **Operaciones interactivas**:
 - Ingresa el patrón de función (como `module.Class.method`)
 - Establece el número de observaciones (parámetro -n)
@@ -181,29 +185,34 @@ El banner permanece oculto cuando no hay señal que mostrar (CPython por defecto
 
 ### 3. Vista Trace (tecla `3`)
 
-**Función**: Rastrear la cadena de llamadas de funciones, mostrando la relación jerárquica y el tiempo consumido de las llamadas a métodos
+**Función**: Rastrear los llamados directos de una función y agregar su tiempo consumido
 
 ![Vista Trace de Peeka]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **Características**:
-- **Visualización en estructura de árbol**: Jerarquía de llamada visual
+- **Lista superior de rastreos activos**: Muestra Pattern / Status / Count de los traces actuales
+- **Árbol de llamadas**: Al seleccionar un pattern, la parte inferior izquierda muestra nodos de observación, nodos callee agregados y el porcentaje de tiempo de cada callee
+- **Panel de estadísticas**: La parte inferior derecha muestra estadísticas detalladas de la observación o callee seleccionado
 - **Codificación de colores por tiempo consumido**:
   - Verde: < 10ms
   - Amarillo: 10-100ms
   - Rojo: ≥ 100ms
 - **Actualización en streaming en tiempo real**: Cada llamada se muestra inmediatamente
 - **Soporta expandir/colapsar**: Nodos de árbol interactivos
-- **Límite de profundidad**: Controla el número de capas de rastreo (parámetro -d)
+- **Filtro de duración mínima**: El campo `Min Duration (ms)` filtra llamadas de corta duración
 
 **Operaciones interactivas**:
 - Ingresa el patrón de función
-- Establece la profundidad de rastreo (3 capas por defecto)
+- Establece el filtro de duración mínima (`Min Duration (ms)`, por defecto `0`)
 - Establece saltar funciones incorporadas (--skip-builtin)
 - Presiona Enter para iniciar el rastreo
-- Presiona Delete para detener el rastreo
-- Clic en el nodo para expandir/colapsar (soporte de ratón)
+- Selecciona una fila en Active Traces para ver el árbol de llamadas del pattern correspondiente
+- Selecciona un nodo callee en el árbol de llamadas y presiona `t` para iniciar un trace de profundización (Drill Trace)
+- Presiona `c` para limpiar registros de trace y detener traces en ejecución
+- Presiona Delete para detener todos los traces
+- Haz clic en un nodo para expandir/colapsar (soporte de ratón)
 
-**Ejemplo de salida**: La vista Trace muestra cadenas de llamadas y el tiempo de cada nodo como un árbol expandible.
+**Ejemplo de salida**: La vista Trace muestra en una estructura expandible los llamados directos de cada observación y agrega en nodos callee las funciones iguales con su conteo y tiempo total.
 
 #### Estado de backend y gevent (v0.1.17)
 

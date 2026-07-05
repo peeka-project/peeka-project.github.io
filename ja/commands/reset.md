@@ -721,5 +721,6 @@ jq '.enhanced[] | {pattern, count}' enhancements_backup.json
 
 | バージョン    | 日付         | 更新内容                    |
 |-------|------------|-------------------------|
+| 0.1.20 | 2026-07-05 | reset は reload-safe なリソース所有者判定を使用し、モジュール再読み込み後にクラスオブジェクトが変化してもクリーンアップ漏れを防止；クリーンアップ時に `cleanup_scope == detach_only` の handler（例: `logger`、`memory`）をスキップし、これらのリソースは `detach` 時にのみ解放 |
 | 0.1.18 | 2026-06-24 | reset がリソース所有者コマンド（例: `monitor`）を先に停止し、その後 probe コンテキストとインジェクタをクリーンアップ；レスポンスに `cleanup_summary` を追加；`--list` が重複を除去し probe-only リソース（例: `monitor`）を含める |
 | 0.1.0 | 2025-01-31 | 初期バージョン、reset と list 機能をサポート |

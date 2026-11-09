@@ -245,7 +245,7 @@ Peeka 的 `trace` 命令根据 Python 版本自动选择最优实现方案：
 
 **直接调用者语义（v0.1.20+）**：所有后端只捕获目标函数的直接调用者，并对同一观测周期内相同 `(function, filename, lineno)` 的调用进行聚合，输出 `count / total_ms / min_ms / max_ms`。这样避免了递归/深层调用树带来的性能不确定性和数据膨胀。
 
-**gevent 兼容性（v0.1.15+）**：当目标进程已启用 gevent monkey patch 或 active hub 时，`trace` 会退化为 `wrapper_only` 后端，避免 `sys.settrace` 破坏 frame stack 不变量。此模式仍报告目标函数观测结果，但不提供直接调用者列表。
+**gevent 兼容性（v0.1.15+）**：当目标进程已启用 gevent monkey patch 或 active hub 时，Python 3.8–3.11 上的 `trace` 会退化为 `wrapper_only` 后端，避免 `sys.settrace` 破坏 frame stack 不变量。此模式仍报告目标函数观测结果，但不提供直接调用者列表。v0.1.21 起，Python 3.12+ 在 gevent 下继续使用 `sys.monitoring` 后端（按 tool 注册，不安装全局 tracer），保留完整的直接调用者统计。
 
 **sys.monitoring 实现 (Python 3.12+)**:
 
@@ -669,6 +669,7 @@ for line in proc.stdout:
 
 | 版本 | 发布日期 | 更新内容 |
 |------|---------|---------|
+| 0.1.21 | 2026-11-09 | Python 3.12+ 在 gevent patched/active hub 下使用 `sys.monitoring` 后端，不再退化为 `wrapper_only`；TUI Active Traces 表格新增运行时与性能列 |
 | 0.1.20 | 2026-07-05 | 移除 `-d/--depth` 选项；trace 后端改为只捕获并聚合目标函数的直接调用者（direct callees），输出 `call_tree` 为扁平列表，新增 `self_time_ms`、`callee_count` 字段；TUI Trace 视图改为顶部 Active Traces 列表 + 下部调用树/统计分栏，新增 callee 下钻快捷键 `t` 和聚合 callee 节点 |
 | 0.1.18 | 2026-06-24 | CLI `--times` 改为按活动 stream_id 计数，避免并发流的观测被误计入当前 trace 的限制；`run` 命令中的 trace 流现在会在达到限制后正确停止 |
 | 0.1.17 | 2026-06-13 | trace 响应在被退化为 `wrapper_only` 后端时附带 `runtime_meta`（包含 `startup_backend`、`effective_backend`、`downgrade_reason`），TUI Trace 视图据此在统计面板显示 Backend / Gevent 状态 |

@@ -9,7 +9,7 @@ permalink: /commands
 # コマンドリファレンス
 {: .no_toc }
 
-Peeka は一連の強力な診断コマンドを提供し、それぞれが特定の診断シナリオに特化しています。このドキュメントでは 21 個のコマンドリファレンストピックを扱います。
+Peeka は一連の強力な診断コマンドを提供し、それぞれが特定の診断シナリオに特化しています。このドキュメントでは 22 個のコマンドリファレンストピックを扱います。
 {: .fs-6 .fw-300 }
 
 ## 目次
@@ -36,6 +36,7 @@ Peeka は一連の強力な診断コマンドを提供し、それぞれが特�
 | reset | 拡張をリセット | オブザーブされた関数を復元 |
 | thread | スレッド分析 | スレッドを列挙してスタックを表示 |
 | top | 関数プロファイリング | 関数レベルのパフォーマンスホットスポット分析 |
+| profile | profiling セッション | オンデマンドのサンプリング、speedscope / Perfetto へエクスポート |
 | patch-status | ランタイムパッチ診断 | gevent/eventlet、stdlib プリミティブ、RPL 整合性を確認 |
 | detach | 切断 | 診断セッションを安全に終了 |
 | run | 起動してアタッチ | Python プログラムを起動し、自動的に診断セッションに入る |
@@ -220,6 +221,7 @@ peeka
 - [reset - 拡張をリセット]({% link commands/reset.md %})
 - [thread - スレッド分析]({% link commands/thread.md %})
 - [top - 関数プロファイリング]({% link commands/top.md %})
+- [profile - profiling セッション]({% link commands/profile.md %})
 - [patch-status - ランタイムパッチ診断]({% link commands/patch-status.md %})
 - [detach - 切断]({% link commands/detach.md %})
 - [run - 起動してアタッチ]({% link commands/run.md %})

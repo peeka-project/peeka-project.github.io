@@ -39,6 +39,7 @@ peeka-cli dx <subcommand> [options]
 | `summary --dx-case <id>` | summary を生成 |
 | `export --dx-case <id>` | DX case をエクスポート |
 | `close --dx-case <id>` | DX case を閉じる |
+| `add-profile --dx-case <id> --profile-id <id>` | profile セッションを DX case に追加 |
 
 共通オプション：
 
@@ -75,6 +76,7 @@ peeka-cli dx close --dx-case dx_123
 
 | バージョン | リリース日 | 変更 |
 |------------|------------|------|
+| 0.1.21 | 2026-11-09 | [`profile`]({% link commands/profile.md %}) セッションを DX case に追加する `add-profile` サブコマンドを追加 |
 | 0.1.16 | 2026-06-07 | `dx` コマンドグループを追加 |
 
 ## 関連コマンド

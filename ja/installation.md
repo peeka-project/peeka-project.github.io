@@ -52,6 +52,9 @@ pip install peeka
 pip install peeka[tui]
 ```
 
+{: .note }
+v0.1.21 以降、PyPI では Linux x86_64 / aarch64（manylinux2014、glibc 2.17+、および musllinux 1.2）と macOS x86_64 / arm64 向けのビルド済み `cp38-abi3` wheel を提供しています。Python 3.8+ で同じ wheel を共有するため、C 拡張をローカルでコンパイルする必要はありません。
+
 ### uv でインストール
 
 ```bash

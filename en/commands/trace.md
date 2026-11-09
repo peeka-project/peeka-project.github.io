@@ -244,7 +244,7 @@ Peeka's `trace` command automatically selects the optimal implementation based o
 
 **Direct-callee semantics (v0.1.20+)**: all backends capture only the target function's direct callees and aggregate identical `(function, filename, lineno)` calls within the same observation window, outputting `count / total_ms / min_ms / max_ms`. This avoids the performance uncertainty and data growth caused by recursive/deep call trees.
 
-**gevent compatibility (v0.1.15+)**: when the target has gevent monkey patching or an active hub, `trace` degrades to the `wrapper_only` backend to avoid violating frame stack invariants with `sys.settrace`. This mode still reports target function observations, but it does not provide a direct callee list.
+**gevent compatibility (v0.1.15+)**: when the target has gevent monkey patching or an active hub, `trace` on Python 3.8–3.11 degrades to the `wrapper_only` backend to avoid violating frame stack invariants with `sys.settrace`. This mode still reports target function observations, but it does not provide a direct callee list. Since v0.1.21, Python 3.12+ keeps using the `sys.monitoring` backend under gevent (it registers per tool and installs no global tracer), so full direct-callee statistics remain available.
 
 **sys.monitoring Implementation (Python 3.12+)**:
 
@@ -668,6 +668,7 @@ for line in proc.stdout:
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
+| 0.1.21 | 2026-11-09 | Python 3.12+ uses the `sys.monitoring` backend under gevent patched/active hub instead of degrading to `wrapper_only`; the TUI Active Traces table gains runtime and performance columns |
 | 0.1.20 | 2026-07-05 | Removed the depth option; trace now captures and aggregates only the target function's direct callees, outputs `call_tree` as a flat list, and adds `self_time_ms` / `callee_count`; TUI Trace view now uses a top Active Traces list plus lower call-tree/stats split, with callee drill-down shortcut `t` and aggregated callee nodes |
 | 0.1.18 | 2026-06-24 | CLI `--times` now counts only observations matching the active stream_id, so concurrent streams no longer count toward the current trace limit; the `run` wrapper stops the trace stream when the limit is reached |
 | 0.1.17 | 2026-06-13 | Trace responses now carry `runtime_meta` (`startup_backend`, `effective_backend`, `downgrade_reason`) when degraded to the `wrapper_only` backend; the TUI Trace view surfaces Backend / Gevent state in the stats panel |

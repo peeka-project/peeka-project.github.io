@@ -47,6 +47,7 @@ peeka-cli top [options]
 | `-c, --cycles`    | 显示周期数（-1 表示无限）                        | `-1`   | `-c 10`（显示 10 次后自动停止）      |
 | `--sort`          | 排序列（own / total / own-time / total-time） | `own`  | `--sort total`            |
 | `--no-filter-peeka` | 禁用 Peeka 线程过滤（默认启用）                   | `false` | `--no-filter-peeka`（显示所有线程） |
+| `--keep-profile` | 结束后保留临时 ProfileSession，便于用 `profile` 命令导出（默认清理） | `false` | `--keep-profile` |
 
 ### 性能指标说明
 
@@ -357,5 +358,6 @@ total_time = total_count * sample_interval
 
 | 版本 | 发布日期 | 变更说明 |
 |------|----------|----------|
+| 0.1.21 | 2026-11-09 | `top` 改为采样到临时 ProfileSession，新增 `--keep-profile` 保留该会话并可用 [`profile`]({% link commands/profile.md %}) 导出；TUI 中 Top 并入 Performance 标签页 |
 | 0.1.18 | 2026-06-24 | `top` 迁移为 `ResourceOwningCommand`（`DETACH_ONLY` 清理范围），`detach` 会清理 top 采样器；`run` 命令中的 top 流现在会尊重 `-c/--cycles` 限制 |
 | 0.1.15 | 2026-05-27 | `top_snapshot` 增加运行时兼容性 `meta`；gevent patched/active hub 下支持 greenlet-aware 采样与退化说明 |

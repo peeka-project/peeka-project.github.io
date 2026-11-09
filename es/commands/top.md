@@ -46,6 +46,7 @@ peeka-cli top [options]
 | `-c, --cycles`          | Cantidad de ciclos de muestra (-1 = infinito)         | `-1`              | `-c 10` (se detiene automáticamente después de 10 ciclos) |
 | `--sort`                | Columna de ordenación (own / total / own-time / total-time) | `own`        | `--sort total`                            |
 | `--no-filter-peeka`     | Deshabilitar filtrado de hilos de Peeka (habilitado por defecto) | `false` | `--no-filter-peeka` (mostrar todos los hilos) |
+| `--keep-profile` | Conserva la ProfileSession temporal al terminar `top` para exportarla con `profile` (por defecto se limpia) | `false` | `--keep-profile` |
 
 ### Descripción de Métricas de Rendimiento
 
@@ -356,5 +357,6 @@ total_time = total_count * sample_interval
 
 | Versión | Fecha de lanzamiento | Cambios |
 |---------|----------------------|---------|
+| 0.1.21 | 2026-11-09 | `top` muestrea en una ProfileSession temporal; nueva opción `--keep-profile` para conservarla y exportarla con [`profile`]({% link commands/profile.md %}); en la TUI, Top pasa a la pestaña Performance |
 | 0.1.18 | 2026-06-24 | `top` migrado a `ResourceOwningCommand` con alcance de limpieza `DETACH_ONLY`; `detach` limpia el sampler de top; el wrapper `run` respeta `-c/--cycles` |
 | 0.1.15 | 2026-05-27 | Añadido `meta` de compatibilidad runtime a `top_snapshot`; runtimes gevent patched/active hub soportan muestreo greenlet-aware y motivos de degradación |

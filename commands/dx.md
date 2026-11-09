@@ -39,6 +39,7 @@ peeka-cli dx <subcommand> [options]
 | `summary --dx-case <id>` | 生成摘要 |
 | `export --dx-case <id>` | 导出 DX case |
 | `close --dx-case <id>` | 关闭 DX case |
+| `add-profile --dx-case <id> --profile-id <id>` | 把 profile 会话附加到 DX case |
 
 常用参数：
 
@@ -75,6 +76,7 @@ peeka-cli dx close --dx-case dx_123
 
 | 版本 | 发布日期 | 变更说明 |
 |------|----------|----------|
+| 0.1.21 | 2026-11-09 | 新增 `add-profile` 子命令，可把 [`profile`]({% link commands/profile.md %}) 会话附加到 DX case |
 | 0.1.16 | 2026-06-07 | 新增 `dx` 命令组 |
 
 ## 相关命令

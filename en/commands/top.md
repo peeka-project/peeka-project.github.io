@@ -48,6 +48,7 @@ peeka-cli top [options]
 | `-c, --cycles`    | Number of display cycles (-1 for infinite)        | `-1`    | `-c 10` (auto-stop after 10 displays)    |
 | `--sort`          | Sort column (own / total / own-time / total-time) | `own`   | `--sort total`                            |
 | `--no-filter-peeka` | Disable Peeka thread filtering (enabled by default) | `false` | `--no-filter-peeka` (show all threads)    |
+| `--keep-profile` | Keep the transient ProfileSession after `top` finishes so it can be exported with `profile` (cleaned up by default) | `false` | `--keep-profile` |
 
 ### Performance Metrics
 
@@ -358,5 +359,6 @@ total_time = total_count * sample_interval
 
 | Version | Release Date | Changes |
 |---------|--------------|---------|
+| 0.1.21 | 2026-11-09 | `top` now samples into a transient ProfileSession; added `--keep-profile` to keep it for export with [`profile`]({% link commands/profile.md %}); in the TUI, Top moved into the Performance tab |
 | 0.1.18 | 2026-06-24 | `top` migrated to `ResourceOwningCommand` with `DETACH_ONLY` cleanup scope; `detach` cleans up the top sampler; the `run` wrapper respects `-c/--cycles` |
 | 0.1.15 | 2026-05-27 | Added runtime compatibility `meta` to `top_snapshot`; gevent patched/active hub runtimes support greenlet-aware sampling and degradation reasons |

@@ -67,6 +67,12 @@ v0.1.16 起，启动 TUI 后的进程选择器同时展示已经被 Peeka 管理
 - `r` 刷新列表，`Enter` 选择当前行，`y` 复制 attach log，`escape` / `q` 退出
 - stale、failed、detached 和 unknown 行只用于状态确认，不作为可附加目标
 
+v0.1.21 起进程选择器进一步改进：
+- 行按 attached → attachable → stale/unknown 分组，副标题显示 `N attached · M attachable`；没有可见进程时给出提示（例如 PID namespace 或 `hidepid` 限制）
+- 过滤框中按 Enter：若过滤后只剩一个可选 target 则直接 attach，否则把焦点移到表格
+- 过滤框非空时按 Esc 先清空过滤，而不是退出
+- attach 失败时优先给出具体原因（非 root 时的 `ptrace_scope`、进程属于其他用户、进程已退出）
+
 ## TUI 界面布局
 
 启动 TUI 后，界面分为以下几个区域：
@@ -94,9 +100,17 @@ v0.1.16 起，启动 TUI 后的进程选择器同时展示已经被 Peeka 管理
 | `7`     | Logger 视图        | 切换到日志管理                 |
 | `8`     | Inspect 视图       | 切换到对象检查                 |
 | `9`     | Threads 视图       | 切换到线程管理                 |
-| `0`     | Top 视图           | 切换到函数性能分析                |
+| `0`     | Performance 视图    | 切换到性能分析（Live Top / Profiles 子标签） |
 | `?`     | Help 帮助          | 显示帮助信息（在部分视图中可用）        |
-| `escape` / `q` | 返回上一级 / 退出 | Dashboard 中退出，其他视图中返回 Dashboard |
+| `Ctrl+P` | 命令面板           | 搜索并跳转到任意视图（包括 Performance › Live Top / Profiles） |
+| `escape` / `q` | 返回上一级 / 退出 | 先关闭补全下拉框、再退出输入框；没有输入焦点时才执行返回（Dashboard 中退出，其他视图中返回 Dashboard） |
+
+**焦点与按键（v0.1.21）**：
+- 切换标签页后焦点落在当前视图上，视图自己的快捷键（如 Delete = Stop All、`r` = Refresh）立即可用，并显示在 Footer 中
+- 标签栏不参与 Tab 焦点链：切换后按一次 Tab 即进入视图的第一个输入框
+- 在 Watch / Trace / Stack / Monitor 的输入框中按 Enter 直接启动对应动作，无需再 Tab 到按钮
+- 输入时按 Esc 不会再意外 detach；只有在没有输入焦点时 Esc 才返回
+- 实验性的 Timeline 视图只在 `peeka --experimental`（或 `PEEKA_TUI_EXPERIMENTAL=1`）时显示，且没有全局快捷键，可通过 `Ctrl+P` 跳转
 
 ## 十大视图详解
 
@@ -160,6 +174,7 @@ Dashboard 在运行时信息面板末尾新增三行字段，数据来源为 [`p
 **布局（v0.1.20）**：
 - 顶部控件区下方是**全宽活动观测列表**（Active Watches）
 - 下部按 **2:1** 比例分为左右两栏：左侧为观测表格（`2fr`），右侧为详情面板（`1fr`）
+- v0.1.21 起 Active Watches 表格包含 ID、Pattern、Status、Obs、Running Time、Errors、Last ms、Async、Runtime 列
 
 **交互操作**：
 - 输入函数模式（如 `module.Class.method`）
@@ -191,7 +206,7 @@ Gevent: patched  Backend: wrapper_only (downgraded: gevent_patched_runtime)
 ![Peeka Trace 视图]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **特点**：
-- **顶部活动追踪列表**：显示当前追踪的 Pattern / Status / Count
+- **顶部活动追踪列表**：显示当前追踪的 Pattern、Status、Obs、Running Time、Errors、Last (Total/Self)、Callees、Patch（v0.1.21）
 - **调用树展示**：选中 pattern 后，下部左侧显示该 pattern 的观测节点、聚合 callee 节点和每个 callee 的耗时占比
 - **统计面板**：下部右侧展示当前选中观测或 callee 的详细统计
 - **颜色编码耗时**：
@@ -388,7 +403,9 @@ Logger: myapp.api
 
 ---
 
-### 10. Top 视图（`0` 键）
+### 10. Performance 视图（`0` 键）
+
+v0.1.21 起，`0` 打开 **Performance** 标签页，内含两个子标签：**Live Top**（默认，即下面介绍的 Top 视图）和 **Profiles**。两者共享同一份采样数据（`top` 会采样到临时的 ProfileSession）。**Profiles** 子标签列出 [`profile`]({% link commands/profile.md %}) 会话（`profile_id`、`backend`、`status`、`started_at`、`sample_count`），选中一行后可点击 **Export** 导出，按 `r` 刷新。
 
 **功能**：函数级采样性能分析器（类似 `py-spy top`）
 
@@ -517,7 +534,7 @@ Watch / Trace / Stack 视图支持自动滚动：
 按 2 → Watch 视图
 按 3 → Trace 视图
 按 5 → Monitor 视图
-按 0 → Top 视图
+按 0 → Performance 视图
 ```
 
 ### 2. 组合使用多视图
@@ -526,7 +543,7 @@ Watch / Trace / Stack 视图支持自动滚动：
 
 1. 在 Watch 视图启动观测（按 `2`，输入命令，按 Enter）
 2. 切换到 Monitor 视图启动监控（按 `5`，输入命令，按 Enter）
-3. 切换到 Top 视图启动性能分析（按 `0`，输入命令，按 Enter）
+3. 切换到 Performance 视图启动性能分析（按 `0`，输入命令，按 Enter）
 4. 在各视图间切换查看实时数据
 
 ### 3. 使用命令历史

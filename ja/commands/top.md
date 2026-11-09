@@ -47,6 +47,7 @@ peeka-cli top [options]
 | `-c, --cycles`    | 表示周期数（-1 は無限）                        | `-1`   | `-c 10`（10 回表示後に自動停止）      |
 | `--sort`          | ソート列（own / total / own-time / total-time） | `own`  | `--sort total`            |
 | `--no-filter-peeka` | Peeka スレッドのフィルタリングを無効化（デフォルトは有効）                   | `false` | `--no-filter-peeka`（すべてのスレッドを表示） |
+| `--keep-profile` | `top` 終了後も一時的な ProfileSession を保持し、`profile` でエクスポートできるようにする（デフォルトは削除） | `false` | `--keep-profile` |
 
 ### 性能指標説明
 
@@ -357,5 +358,6 @@ total_time = total_count * sample_interval
 
 | バージョン | リリース日 | 変更 |
 |------------|------------|------|
+| 0.1.21 | 2026-11-09 | `top` は一時的な ProfileSession にサンプリングするよう変更。`--keep-profile` で保持し [`profile`]({% link commands/profile.md %}) でエクスポート可能に。TUI では Top が Performance タブに統合 |
 | 0.1.18 | 2026-06-24 | `top` を `ResourceOwningCommand`（`DETACH_ONLY` クリーンアップスコープ）に移行。`detach` が top サンプラーをクリーンアップ。`run` ラッパーは `-c/--cycles` を尊重 |
 | 0.1.15 | 2026-05-27 | `top_snapshot` にランタイム互換性 `meta` を追加。gevent patched/active hub では greenlet-aware sampling と退化理由をサポート |

@@ -39,6 +39,7 @@ peeka-cli dx <subcommand> [options]
 | `summary --dx-case <id>` | Genera un resumen |
 | `export --dx-case <id>` | Exporta un caso DX |
 | `close --dx-case <id>` | Cierra un caso DX |
+| `add-profile --dx-case <id> --profile-id <id>` | Añade una sesión de profile a un caso DX |
 
 Opciones comunes:
 
@@ -75,6 +76,7 @@ peeka-cli dx close --dx-case dx_123
 
 | Versión | Fecha de lanzamiento | Cambios |
 |---------|----------------------|---------|
+| 0.1.21 | 2026-11-09 | Nuevo subcomando `add-profile` para añadir una sesión de [`profile`]({% link commands/profile.md %}) a un caso DX |
 | 0.1.16 | 2026-06-07 | Añadido el grupo de comandos `dx` |
 
 ## Comandos Relacionados

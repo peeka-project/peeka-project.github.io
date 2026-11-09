@@ -51,6 +51,9 @@ pip install peeka
 pip install peeka[tui]
 ```
 
+{: .note }
+Desde v0.1.21, PyPI publica wheels precompiladas `cp38-abi3` para Linux x86_64 / aarch64 (manylinux2014, glibc 2.17+, además de musllinux 1.2) y macOS x86_64 / arm64. Python 3.8+ comparte una misma wheel, así que no es necesario compilar la extensión C localmente.
+
 ### Instalación con uv
 
 ```bash

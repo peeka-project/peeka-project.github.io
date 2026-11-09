@@ -66,6 +66,12 @@ Desde v0.1.16, el selector inicial muestra tanto agentes target gestionados por 
 - `r` refresca la lista, `Enter` selecciona la fila actual, `y` copia el attach log y `escape` / `q` sale
 - Las filas stale, failed, detached y unknown se muestran para confirmar estado, pero no son targets seleccionables para adjuntar
 
+v0.1.21 mejora aún más el selector de procesos:
+- Las filas se agrupan attached → attachable → stale/unknown, con un subtítulo `N attached · M attachable`; si no hay nada visible, una pista explica las causas probables (por ejemplo un PID namespace o `hidepid`)
+- Enter en el filtro adjunta directamente cuando solo queda un target seleccionable; si no, mueve el foco a la tabla
+- Esc limpia un filtro no vacío en lugar de salir
+- Los fallos de attach indican primero causas concretas (`ptrace_scope` para usuarios no root, proceso de otro usuario, proceso terminado)
+
 ## Diseño de la Interfaz TUI
 
 Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
@@ -93,9 +99,17 @@ Después de iniciar TUI, la interfaz se divide en las siguientes áreas:
 | `7`     | Vista Logger        | Cambiar a gestión de registros                 |
 | `8`     | Vista Inspect       | Cambiar a inspección de objetos                 |
 | `9`     | Vista Threads       | Cambiar a gestión de hilos                 |
-| `0`     | Vista Top           | Cambiar a Perfilador de Funciones (Perfilador de funciones)                |
+| `0`     | Vista Performance   | Cambiar al análisis de rendimiento (subpestañas Live Top / Profiles) |
 | `?`     | Ayuda Help          | Muestra información de ayuda (disponible en algunas vistas)        |
-| `escape` / `q` | Volver / Salir | Sale en Dashboard, vuelve a Dashboard en otras vistas |
+| `Ctrl+P` | Paleta de comandos | Buscar y saltar a cualquier vista (incluidas Performance › Live Top / Profiles) |
+| `escape` / `q` | Volver / Salir | Primero cierra el desplegable de autocompletado y luego sale del input; solo vuelve cuando ningún input tiene el foco (sale en Dashboard, vuelve a Dashboard en otras vistas) |
+
+**Foco y teclas (v0.1.21)**:
+- Tras cambiar de pestaña, el foco queda en la vista activa, así que sus propios atajos (por ejemplo Delete = Stop All, `r` = Refresh) funcionan de inmediato y aparecen en el Footer
+- La barra de pestañas no forma parte de la cadena de foco con Tab: un solo Tab tras el cambio enfoca el primer input de la vista
+- Pulsar Enter en los inputs de Watch / Trace / Stack / Monitor inicia directamente la acción de la vista, sin pasar al botón
+- Pulsar Esc mientras escribes ya no hace detach por accidente; Esc solo vuelve cuando ningún input tiene el foco
+- La vista experimental Timeline solo aparece con `peeka --experimental` (o `PEEKA_TUI_EXPERIMENTAL=1`) y no tiene tecla global; usa `Ctrl+P` para ir a ella
 
 ## Diez Vistas Detalladas
 
@@ -159,6 +173,7 @@ Estas filas se actualizan en cada refresco del Dashboard, permitiendo identifica
 **Diseño (v0.1.20)**:
 - Debajo del área de controles aparece una **lista de observaciones activas** de ancho completo (Active Watches)
 - La parte inferior se divide en dos columnas con proporción **2:1**: tabla de observaciones a la izquierda (`2fr`) y panel de detalles a la derecha (`1fr`)
+- Desde v0.1.21 la tabla Active Watches muestra las columnas ID, Pattern, Status, Obs, Running Time, Errors, Last ms, Async y Runtime
 
 **Operaciones interactivas**:
 - Ingresa el patrón de función (como `module.Class.method`)
@@ -190,7 +205,7 @@ El banner permanece oculto cuando no hay señal que mostrar (CPython por defecto
 ![Vista Trace de Peeka]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **Características**:
-- **Lista superior de rastreos activos**: Muestra Pattern / Status / Count de los traces actuales
+- **Lista superior de rastreos activos**: Muestra Pattern, Status, Obs, Running Time, Errors, Last (Total/Self), Callees y Patch de los traces actuales (v0.1.21)
 - **Árbol de llamadas**: Al seleccionar un pattern, la parte inferior izquierda muestra nodos de observación, nodos callee agregados y el porcentaje de tiempo de cada callee
 - **Panel de estadísticas**: La parte inferior derecha muestra estadísticas detalladas de la observación o callee seleccionado
 - **Codificación de colores por tiempo consumido**:
@@ -388,7 +403,9 @@ Logger: myapp.api
 
 ---
 
-### 10. Perfilador de Funciones (Perfilador de funciones) (tecla `0`)
+### 10. Vista Performance (tecla `0`)
+
+Desde v0.1.21, `0` abre la pestaña **Performance**, con dos subpestañas: **Live Top** (por defecto; la vista Top descrita abajo) y **Profiles**. Ambas comparten los mismos datos de muestreo (`top` muestrea en una ProfileSession temporal). La subpestaña **Profiles** lista las sesiones de [`profile`]({% link commands/profile.md %}) (`profile_id`, `backend`, `status`, `started_at`, `sample_count`); selecciona una fila y haz clic en **Export** para exportarla, o pulsa `r` para refrescar.
 
 **Función**: Analizador de rendimiento por muestreo a nivel de función (similar a `py-spy top`)
 
@@ -517,7 +534,7 @@ Usa teclas numéricas para cambiar rápidamente entre vistas, no necesitas volve
 Presiona 2 → Vista Watch
 Presiona 3 → Vista Trace
 Presiona 5 → Vista Monitor
-Presiona 0 → Vista Top
+Presiona 0 → Vista Performance
 ```
 
 ### 2. Usar múltiples vistas en combinación

@@ -67,6 +67,12 @@ Since v0.1.16, the startup process selector shows both Peeka-managed target agen
 - `r` refreshes the list, `Enter` selects the current row, `y` copies the attach log, and `escape` / `q` exits
 - stale, failed, detached, and unknown rows are shown for status awareness but are not selectable attach targets
 
+v0.1.21 further improves the process selector:
+- Rows are grouped attached → attachable → stale/unknown, with an `N attached · M attachable` subtitle; when nothing is visible, a hint explains likely causes (for example a PID namespace or `hidepid`)
+- Enter in the filter box attaches directly when exactly one selectable target is left; otherwise it moves focus to the table
+- Esc clears a non-empty filter instead of quitting
+- Attach failures report concrete causes first (`ptrace_scope` for non-root users, a process owned by another user, an exited process)
+
 ## TUI Interface Layout
 
 After starting TUI, the interface is divided into the following areas:
@@ -94,9 +100,17 @@ After starting TUI, the interface is divided into the following areas:
 | `7`          | Logger View        | Switch to logger management                          |
 | `8`          | Inspect View       | Switch to object inspection                          |
 | `9`          | Threads View       | Switch to thread management                          |
-| `0`          | Top View           | Switch to Function Profiler (Function profiler)                       |
+| `0`          | Performance View   | Switch to performance analysis (Live Top / Profiles sub-tabs) |
 | `?`          | Help               | Show help information (available in some views)      |
-| `escape` / `q` | Back / Exit      | Exit in Dashboard, return to Dashboard in other views |
+| `Ctrl+P`     | Command Palette    | Search for and jump to any view (including Performance › Live Top / Profiles) |
+| `escape` / `q` | Back / Exit      | Closes the completion dropdown first, then leaves the input; goes back only when no input has focus (exits in Dashboard, returns to Dashboard in other views) |
+
+**Focus and keys (v0.1.21)**:
+- After a tab switch, focus lands on the active view, so its own bindings (for example Delete = Stop All, `r` = Refresh) work immediately and appear in the Footer
+- The tab strip is not in the Tab focus chain: one Tab after a switch focuses the view's first input
+- Pressing Enter in the Watch / Trace / Stack / Monitor inputs starts the view's action directly, without tabbing to the button
+- Pressing Esc while typing no longer detaches by accident; Esc goes back only when no input has focus
+- The experimental Timeline view is shown only with `peeka --experimental` (or `PEEKA_TUI_EXPERIMENTAL=1`) and has no global key; jump to it with `Ctrl+P`
 
 ## Ten Major Views Explained
 
@@ -160,6 +174,7 @@ These rows update on every Dashboard refresh, making it easy to tell - without s
 **Layout (v0.1.20)**:
 - Below the top controls is a **full-width active observation list** (Active Watches)
 - The bottom area uses a **2:1** left/right split: the observation table on the left (`2fr`) and the details panel on the right (`1fr`)
+- Since v0.1.21 the Active Watches table shows ID, Pattern, Status, Obs, Running Time, Errors, Last ms, Async, and Runtime columns
 
 **Interactive Operations**:
 - Enter function pattern (e.g., `module.Class.method`)
@@ -191,7 +206,7 @@ The banner stays hidden when there is no signal to display (default CPython, no 
 ![Peeka Trace view]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **Features**:
-- **Top Active Traces list**: Shows the current trace Pattern / Status / Count
+- **Top Active Traces list**: Shows Pattern, Status, Obs, Running Time, Errors, Last (Total/Self), Callees, and Patch for current traces (v0.1.21)
 - **Call tree display**: After selecting a pattern, the lower-left area shows observation nodes, aggregated callee nodes, and each callee's timing share
 - **Stats panel**: The lower-right area shows details for the selected observation or callee
 - **Color-coded timing**:
@@ -388,7 +403,9 @@ Logger: myapp.api
 
 ---
 
-### 10. Function Profiler (Function profiler) (`0` key)
+### 10. Performance View (`0` key)
+
+Since v0.1.21, `0` opens the **Performance** tab, which has two sub-tabs: **Live Top** (the default; the Top view described below) and **Profiles**. Both share the same sampling data (`top` samples into a transient ProfileSession). The **Profiles** sub-tab lists [`profile`]({% link commands/profile.md %}) sessions (`profile_id`, `backend`, `status`, `started_at`, `sample_count`); select a row and click **Export** to export it, or press `r` to refresh.
 
 **Function**: Function-level sampling performance profiler (similar to `py-spy top`)
 
@@ -517,7 +534,7 @@ Use number keys to quickly switch between views without returning to Dashboard:
 Press 2 → Watch view
 Press 3 → Trace view
 Press 5 → Monitor view
-Press 0 → Top view
+Press 0 → Performance view
 ```
 
 ### 2. Combined Use of Multiple Views
@@ -526,7 +543,7 @@ Different views can work concurrently (each view uses an independent client):
 
 1. Start observation in Watch view (press `2`, enter command, press Enter)
 2. Switch to Monitor view to start monitoring (press `5`, enter command, press Enter)
-3. Switch to Top view to start performance profiling (press `0`, enter command, press Enter)
+3. Switch to the Performance view to start performance profiling (press `0`, enter command, press Enter)
 4. Switch between views to view real-time data
 
 ### 3. Use Command History

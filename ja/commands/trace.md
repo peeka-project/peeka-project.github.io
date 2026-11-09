@@ -244,7 +244,7 @@ Peeka の `trace` コマンドは、Python バージョンに応じて自動的�
 | 3.12+     | sys.monitoring  | < 5%  | 公式 PEP 669 API、最適な性能         |
 | 3.8.1-3.11  | sys.settrace | < 20% | 互換性が良く、自動的に有効化         |
 
-**gevent 互換性（v0.1.15+）**：target プロセスで gevent monkey patch または active hub が検出された場合、`trace` は `sys.settrace` が frame stack 不変条件を壊すことを避けるため `wrapper_only` バックエンドに退化します。このモードでも target 関数の観測結果は報告されますが、再帰的な呼び出しツリーは提供されません。
+**gevent 互換性（v0.1.15+）**：target プロセスで gevent monkey patch または active hub が検出された場合、Python 3.8–3.11 の `trace` は `sys.settrace` が frame stack 不変条件を壊すことを避けるため `wrapper_only` バックエンドに退化します。このモードでも target 関数の観測結果は報告されますが、直接の呼び出し先リストは提供されません。v0.1.21 以降、Python 3.12+ では gevent 下でも `sys.monitoring` バックエンドを使い続けます（ツール単位で登録され、グローバルな tracer をインストールしない）ため、直接の呼び出し先の統計がすべて得られます。
 
 **直接の呼び出し先セマンティクス（v0.1.20+）**：すべてのバックエンドはターゲット関数の直接の呼び出し先のみを捕捉し、同じ観測期間内の同一 `(function, filename, lineno)` 呼び出しを集計して、`count / total_ms / min_ms / max_ms` を出力します。これにより、再帰的・深層の呼び出しツリーによる性能の不確実性とデータ膨張を避けられます。
 
@@ -667,6 +667,7 @@ for line in proc.stdout:
 
 | バージョン | リリース日 | 変更内容 |
 |----------|----------|---------|
+| 0.1.21 | 2026-11-09 | Python 3.12+ では gevent patched/active hub 下でも `wrapper_only` に退化せず `sys.monitoring` バックエンドを使用。TUI の Active Traces テーブルにランタイムと性能の列を追加 |
 | 0.1.20 | 2026-07-05 | 深さ指定オプションを削除。trace バックエンドはターゲット関数の直接の呼び出し先（direct callees）のみを捕捉・集計し、`call_tree` をフラットリストとして出力。`self_time_ms`、`callee_count` フィールドを追加。TUI Trace ビューは上部 Active Traces リスト + 下部の呼び出しツリー/統計分割に変更し、callee 下位追跡ショートカット `t` と集計 callee ノードを追加 |
 | 0.1.18 | 2026-06-24 | CLI `--times` がアクティブな stream_id に一致する観測のみをカウントし、並行するストリームの観測が現在の trace の制限に誤って含まれるのを防止。`run` ラッパーは制限に達すると trace ストリームを停止 |
 | 0.1.17 | 2026-06-13 | trace レスポンスが `wrapper_only` バックエンドに降格された際、`runtime_meta`（`startup_backend`、`effective_backend`、`downgrade_reason`）を含むように。TUI の Trace ビューは統計パネルに Backend / Gevent 状態を表示 |

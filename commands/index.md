@@ -9,7 +9,7 @@ permalink: /commands
 # 命令参考
 {: .no_toc }
 
-Peeka 提供了一系列强大的诊断命令，每个命令都专注于特定的诊断场景。本文档涵盖了 21 个命令参考主题。
+Peeka 提供了一系列强大的诊断命令，每个命令都专注于特定的诊断场景。本文档涵盖了 22 个命令参考主题。
 {: .fs-6 .fw-300 }
 ## 目录
 {: .no_toc .text-delta }
@@ -35,6 +35,7 @@ Peeka 提供了一系列强大的诊断命令，每个命令都专注于特定�
 | [search]({% link commands/search.md %}) | 搜索类和方法 (sc/sm) | 代码探索和发现 |
 | [thread]({% link commands/thread.md %}) | 线程分析 | 枚举线程和查看线程栈 |
 | [top]({% link commands/top.md %}) | 函数性能采样 | 函数级性能热点分析 |
+| [profile]({% link commands/profile.md %}) | Profiling 会话 | 按需采样并导出 speedscope / Perfetto |
 | [patch-status]({% link commands/patch-status.md %}) | 运行时补丁诊断 | 检查 gevent/eventlet、stdlib 原语和 RPL 完整性 |
 | [detach]({% link commands/detach.md %}) | 断开连接 | 安全退出诊断会话 |
 | [reset]({% link commands/reset.md %}) | 重置增强 | 恢复被观测的函数 |
@@ -220,6 +221,7 @@ peeka
 - [reset - 重置增强]({% link commands/reset.md %})
 - [thread - 线程分析]({% link commands/thread.md %})
 - [top - 函数性能采样]({% link commands/top.md %})
+- [profile - Profiling 会话]({% link commands/profile.md %})
 - [patch-status - 运行时补丁诊断]({% link commands/patch-status.md %})
 - [detach - 断开连接]({% link commands/detach.md %})
 - [run - 启动并附加]({% link commands/run.md %})

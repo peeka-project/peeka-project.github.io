@@ -245,7 +245,7 @@ El comando `trace` de Peeka selecciona automáticamente la implementación ópti
 
 **Semántica de llamados directos (v0.1.20+)**: todos los backends capturan solo los llamados directos de la función objetivo y agregan, dentro del mismo ciclo de observación, llamadas con el mismo `(function, filename, lineno)`, emitiendo `count / total_ms / min_ms / max_ms`. Esto evita la incertidumbre de rendimiento y el crecimiento de datos de los árboles profundos.
 
-**Compatibilidad con gevent (v0.1.15+)**: cuando el proceso objetivo tiene monkey patching de gevent o un hub activo, `trace` se degrada al backend `wrapper_only` para evitar que `sys.settrace` rompa invariantes de la pila de frames. Este modo sigue reportando observaciones de la función objetivo, pero no proporciona una lista de llamados directos.
+**Compatibilidad con gevent (v0.1.15+)**: cuando el proceso objetivo tiene monkey patching de gevent o un hub activo, `trace` en Python 3.8–3.11 se degrada al backend `wrapper_only` para evitar que `sys.settrace` rompa invariantes de la pila de frames. Este modo sigue reportando observaciones de la función objetivo, pero no proporciona una lista de llamados directos. Desde v0.1.21, Python 3.12+ sigue usando el backend `sys.monitoring` bajo gevent (se registra por herramienta y no instala un tracer global), por lo que se conservan las estadísticas completas de llamados directos.
 
 **Implementación sys.monitoring (Python 3.12+)**:
 
@@ -669,6 +669,7 @@ for line in proc.stdout:
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 0.1.21 | 2026-11-09 | Python 3.12+ usa el backend `sys.monitoring` con gevent patched/active hub en lugar de degradarse a `wrapper_only`; la tabla Active Traces de la TUI añade columnas de runtime y rendimiento |
 | 0.1.20 | 2026-07-05 | Trace captura y agrega solo los llamados directos (direct callees) de la función objetivo; `call_tree` pasa a ser una lista plana y añade `self_time_ms` y `callee_count`; la vista Trace de TUI usa lista superior Active Traces + panel inferior de árbol/estadísticas, con tecla `t` para profundizar en un callee y nodos callee agregados |
 | 0.1.18 | 2026-06-24 | CLI `--times` ahora cuenta solo observaciones cuyo `stream_id` coincida con el flujo activo, evitando que flujos concurrentes se sumen al límite del trace actual; el wrapper `run` detiene el flujo de trace al alcanzar el límite |
 | 0.1.17 | 2026-06-13 | Las respuestas de trace incluyen `runtime_meta` (`startup_backend`, `effective_backend`, `downgrade_reason`) cuando se degradan al backend `wrapper_only`; la vista Trace de la TUI muestra Backend / Gevent en el panel de estadísticas |

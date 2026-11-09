@@ -253,6 +253,26 @@ pip install --no-binary :all: peeka
 python -c "import peeka_injector; print(peeka_injector.__file__)"
 ```
 
+### Error: C extension not loadable in target process (v0.1.21+)
+
+**Symptom**:
+```
+Error: C extension not loadable in target process <pid> (<reason>). The peeka C injector was built against a newer libc/ABI than the target environment provides ...
+```
+
+**Cause**: The GDB path dlopen()s Peeka's C injector extension **inside the target process**. Since v0.1.21, before launching GDB, Peeka checks whether the extension can load using the target's own interpreter (entering the target's mount namespace with `nsenter` when needed). If the host running Peeka has a newer glibc than the target environment (common when attaching to a process in an older-distro container, such as a Debian `python:3.8` image with GLIBC 2.31), the check fails and reports this error immediately instead of timing out after GDB runs.
+
+**Solution**:
+
+```bash
+# 1. Upgrade to v0.1.21+: PyPI wheels are now cp38-abi3 wheels built on manylinux2014 (glibc 2.17), which load on older distros
+pip install -U peeka
+
+# 2. Or install and run peeka inside the target environment (for example, inside the container)
+docker exec -it <container> pip install peeka
+docker exec -it <container> peeka-cli attach <pid>
+```
+
 ### Error: GDB/LLDB injection failed: debugger script error detected (v0.1.20+)
 
 **Symptom**:

@@ -68,6 +68,12 @@ v0.1.16 以降、起動時のプロセスセレクターは Peeka が管理す�
 - `r` で一覧を更新、`Enter` で現在行を選択、`y` で attach log をコピー、`escape` / `q` で終了します
 - stale、failed、detached、unknown の行は状態確認用に表示されますが、アタッチ対象としては選択できません
 
+v0.1.21 ではプロセスセレクタがさらに改善されました：
+- 行は attached → attachable → stale/unknown の順にグループ化され、サブタイトルに `N attached · M attachable` を表示。表示できるプロセスがない場合は、考えられる原因（PID namespace や `hidepid` など）を案内します
+- フィルタ欄で Enter を押すと、選択可能な target が 1 つだけ残っていれば直接アタッチし、それ以外はテーブルにフォーカスを移します
+- フィルタが空でないときの Esc は、終了せずにフィルタをクリアします
+- アタッチ失敗時は具体的な原因（root 以外での `ptrace_scope`、他ユーザーのプロセス、終了済みプロセス）を優先して表示します
+
 ## TUI 画面レイアウト
 
 TUI を起動すると、画面は以下の領域に分かれています：
@@ -95,9 +101,17 @@ TUI を起動すると、画面は以下の領域に分かれています：
 | `7` | Logger ビュー | ログ管理に切り替え |
 | `8` | Inspect ビュー | オブジェクト検査に切り替え |
 | `9` | Threads ビュー | スレッド管理に切り替え |
-| `0` | Top ビュー | 関数プロファイラに切り替え |
+| `0` | Performance ビュー | 性能分析に切り替え（Live Top / Profiles サブタブ） |
 | `?` | Help ヘルプ | ヘルプ情報を表示（一部のビューで使用可能） |
-| `escape` / `q` | 前の画面に戻る / 終了 | Dashboard では終了、その他のビューでは Dashboard に戻る |
+| `Ctrl+P` | コマンドパレット | 任意のビューを検索して移動（Performance › Live Top / Profiles を含む） |
+| `escape` / `q` | 前の画面に戻る / 終了 | まず補完ドロップダウンを閉じ、次に入力欄を抜け、入力フォーカスがないときだけ戻る（Dashboard では終了、その他のビューでは Dashboard に戻る） |
+
+**フォーカスとキー（v0.1.21）**:
+- タブ切り替え後はアクティブなビューにフォーカスが移るため、ビュー独自のキー（Delete = Stop All、`r` = Refresh など）がすぐに使え、Footer にも表示されます
+- タブバーは Tab のフォーカス順に含まれません。切り替え後に Tab を 1 回押すとビューの最初の入力欄にフォーカスします
+- Watch / Trace / Stack / Monitor の入力欄で Enter を押すと、ボタンへ移動しなくてもそのビューのアクションを開始します
+- 入力中に Esc を押しても誤って detach されなくなりました。Esc で戻るのは入力フォーカスがないときだけです
+- 実験的な Timeline ビューは `peeka --experimental`（または `PEEKA_TUI_EXPERIMENTAL=1`）のときだけ表示され、グローバルキーはありません。`Ctrl+P` から移動できます
 
 ## 10 のビュー詳説
 
@@ -161,6 +175,7 @@ Dashboard のランタイム情報パネルに、[`patch-status`]({% link comman
 **レイアウト（v0.1.20）**:
 - コントロール領域の下に**全幅のアクティブ観測リスト**（Active Watches）を表示
 - 下部は **2:1** の比率で左右 2 カラムに分割：左側が観測テーブル（`2fr`）、右側が詳細パネル（`1fr`）
+- v0.1.21 以降、Active Watches テーブルには ID、Pattern、Status、Obs、Running Time、Errors、Last ms、Async、Runtime の列があります
 
 **インタラクティブ操作**:
 - 関数パターンを入力（例: `module.Class.method`）
@@ -192,7 +207,7 @@ Gevent: patched  Backend: wrapper_only (downgraded: gevent_patched_runtime)
 ![Peeka Trace ビュー]({{ site.url }}/assets/images/screenshots/peeka-trace.png)
 
 **特徴**:
-- **上部アクティブ追跡リスト**: 現在の追跡の Pattern / Status / Count を表示
+- **上部アクティブ追跡リスト**: 現在の追跡の Pattern、Status、Obs、Running Time、Errors、Last (Total/Self)、Callees、Patch を表示（v0.1.21）
 - **呼び出しツリー表示**: pattern を選択すると、下部左側にその pattern の観測ノード、集計 callee ノード、各 callee の実行時間割合を表示
 - **統計パネル**: 下部右側に現在選択中の観測または callee の詳細統計を表示
 - **実行時間の色分け**:
@@ -389,7 +404,9 @@ Logger: myapp.api
 
 ---
 
-### 10. Top ビュー（`0` キー）
+### 10. Performance ビュー（`0` キー）
+
+v0.1.21 以降、`0` で **Performance** タブを開きます。サブタブは **Live Top**（デフォルト。以下で説明する Top ビュー）と **Profiles** の 2 つで、同じサンプリングデータを共有します（`top` は一時的な ProfileSession にサンプリングします）。**Profiles** サブタブには [`profile`]({% link commands/profile.md %}) セッション（`profile_id`、`backend`、`status`、`started_at`、`sample_count`）が一覧表示され、行を選択して **Export** をクリックするとエクスポート、`r` で更新できます。
 
 **機能**: 関数レベルサンプリングパフォーマンスアナライザ（`py-spy top` と同様）
 
@@ -518,7 +535,7 @@ Watch / Trace / Stack ビューは自動スクロールをサポート：
 2 を押す → Watch ビュー
 3 を押す → Trace ビュー
 5 を押す → Monitor ビュー
-0 を押す → Top ビュー
+0 を押す → Performance ビュー
 ```
 
 ### 2. 複数ビューを組み合わせて使用
@@ -527,7 +544,7 @@ Watch / Trace / Stack ビューは自動スクロールをサポート：
 
 1. Watch ビューでオブザベーションを開始（`2` を押してコマンドを入力し Enter）
 2. Monitor ビューに切り替えてモニタリングを開始（`5` を押してコマンドを入力し Enter）
-3. Top ビューに切り替えてパフォーマンス分析を開始（`0` を押してコマンドを入力し Enter）
+3. Performance ビューに切り替えてパフォーマンス分析を開始（`0` を押してコマンドを入力し Enter）
 4. 各ビューを切り替えてリアルタイムデータを確認
 
 ### 3. コマンド履歴を使用

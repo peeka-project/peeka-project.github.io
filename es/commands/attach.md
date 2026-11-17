@@ -20,6 +20,9 @@ nav_order: 1
 
 El comando `attach` es el primer paso para usar Peeka, inyecta el código del Agente Peeka en el proceso objetivo y inicia el servidor Unix Domain Socket, estableciendo un canal de comunicación para los comandos de diagnóstico posteriores.
 
+
+**Sesiones de varios procesos (v0.1.22)**: Es posible adjuntarse a varios PID en el mismo equipo. Al adjuntarse de nuevo al mismo PID se reutiliza su sesión activa; las sesiones de otros PID no bloquean una nueva conexión. Un error de permisos al comprobar otro proceso no se interpreta como que haya terminado.
+
 ### Principio de Funcionamiento
 
 **Python 3.14+**:
@@ -349,6 +352,7 @@ v0.1.20 mejora aún más la estabilidad en escenarios de adjunte repetido y desp
 
 | Versión | Fecha de Lanzamiento | Cambios |
 |---------|----------------------|---------|
+| 0.1.22 | 2026-11-17 | Reutilizar sesiones por PID y permitir varios objetivos en el mismo equipo; no confundir errores de permisos con procesos terminados |
 | 0.1.20 | 2026-07-05 | El bootstrap del agente limpia módulos peeka cacheados; los scripts del depurador se resuelven como recursos del paquete core; se prevalidan depurador/script/inyector antes de adjuntar con fallo rápido; mejora la restauración de señales y la detección de errores de script |
 | 0.1.14 | 2026-05-24 | Progreso/registro/error inline en adjunte TUI; corrección de accept con socket nativo en notify server |
 | 0.1.12 | 2026-05-08 | Mejoras en manejo de Socket (`9ef3222`), omisión de tramas de broadcast (`9c90675`) |

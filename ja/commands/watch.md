@@ -25,6 +25,8 @@ permalink: /commands/watch
 **注意** ⚠️ **`--times` 動作変更**（v0.1.13+、v0.1.18 で細分化）：このパラメータは現在**クライアント側でアクティブな stream_id ごと**に観測回数をカウント（受信後にカウント）し、エージェント側（送信前にカウント）ではありません。v0.1.18 以降、現在の watch ストリームに属する観測のみが `--times` にカウントされ、並行ストリームの観測が制限に誤って含まれることはありません。エージェントが `--times` 制限を超えて観測を送信した場合、クライアントは受信を停止し、残りのデータを破棄します。スクリプトが正確な観測回数制御に依存している場合は、[トラブルシューティング](../troubleshooting.md#times-semantics)を参照してください。
 
 
+**v0.1.22**：プローブの設定・解除時に staticmethod と classmethod のバインドを保持し、同時呼び出しの条件評価を分離します。TUI の複数 watch は一つの reader を共有して watch ID ごとに観測を振り分け、他の watch のイベントを読み捨てる問題を防ぎます。
+
 ## TUI での使用法
 
 TUI モードでは **`2`** キーを押して **Watch ビュー**に切り替えると、以下のインタラクティブ機能が利用できます：
@@ -153,34 +155,9 @@ peeka-cli watch "calculator.Calculator.add" -n 5
 | `thread_id`   | スレッド ID              | `140234567890`                                 |
 | `thread_name` | スレッド名                | `"MainThread"`                                 |
 
-#### 非同期実行 Profile（v0.1.14）
+#### 非同期観測の出力（v0.1.22）
 
-コルーチン関数または非同期ジェネレータをオブザーブすると、v0.1.14 では追加の `execution_profile` JSON 行が出力されます。wall time、CPU time、コンテキストスイッチ数、終了状態、非同期ジェネレータの yield 数を分けて確認できます。Windows では `cpu_cost` と `context_switches` が `null` になる場合があります。
-
-```json
-{
-  "type": "execution_profile",
-  "func_name": "service.fetch_user",
-  "mode": "coroutine",
-  "scheduler": "asyncio",
-  "yields": null,
-  "wall_cost": 0.023,
-  "cpu_cost": 0.002,
-  "context_switches": 4,
-  "marker": "executor",
-  "termination": "returned"
-}
-```
-
-| フィールド | 説明 |
-|------------|------|
-| `mode` | `coroutine` または `async_generator` |
-| `wall_cost` | wall-clock 時間（秒） |
-| `cpu_cost` | プロセス CPU 時間（秒）。利用できない場合は `null` |
-| `context_switches` | オブザーブ中のコンテキストスイッチ数。利用できない場合は `null` |
-| `marker` | `executor` などのコルーチン待機マーカー。非同期ジェネレータでは省略 |
-| `termination` | `returned`、`cancelled`、`errored`、`exhausted`、`closed` |
-| `yields` | 非同期ジェネレータの yield 数。コルーチンでは `null` |
+コルーチンと非同期ジェネレータは引き続き通常の watch 観測イベントを使用します。v0.1.22 以降は、アプリケーションの出力を汚さないよう、対象プロセスの stdout に追加の `execution_profile` JSON 行をデフォルトでは出力しません。旧版の追加 profile 行は現在の標準 CLI 出力契約には含まれません。
 
 ### 2. 出力深度の調整
 
@@ -855,6 +832,7 @@ for line in sys.stdin:
 
 | バージョン    | 日付         | 更新内容               |
 |-----------|------------|--------------------|
+| 0.1.22 | 2026-11-17 | 静的・クラスメソッドのバインドと並行条件評価を修正。TUI の複数 watch を単一 reader で分配し、stdout への execution_profile 既定出力を停止 |
 | 0.1.18    | 2026-06-24 | CLI `--times` がアクティブな stream_id に一致する観測のみをカウントし、並行するストリームの観測が現在の watch の制限に誤って含まれるのを防止。`run` ラッパーは制限に達すると watch ストリームを停止 |
 | 0.1.17    | 2026-06-13 | `watch_started` イベントが `runtime_meta`（gevent 状態、バックエンド、降格フラグ）を含むように。CLI 出力と TUI Watch ビューのバナーで実行時情報を表示可能に。`--times` のヘルプテキストを "Print N observations then stop" に更新 |
 | 0.1.16    | 2026-06-07 | `--client` で既存クライアントセッションを再利用可能に。省略時は一時クライアントを自動作成 |

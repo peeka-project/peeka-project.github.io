@@ -958,6 +958,7 @@ El comando `monitor` es una herramienta potente para monitoreo de rendimiento en
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 0.1.22 | 2026-11-17 | Mejorar la limpieza de tareas y la sincronización al detener monitor, evitando esperas con el bloqueo adquirido |
 | 0.1.18 | 2026-06-24 | `monitor` migrado a `ResourceOwningCommand`; `reset` detiene recursos de monitor y `detach` también los limpia; el wrapper `run` respeta `-c/--cycles`; la salida de `--list` incluye entradas de monitor |
 | 0.1.12 | 2026-05-08 | Sistema de paneles TUI unificado, diseños responsivos refinados (commit 50c4af4) |
 | 0.1.11 | 2026-05-07 | Etiquetado de clientes con fuentes estables (commit 965ff22), diagnósticos de actividad enriquecidos (commit b1b0412) |

@@ -17,14 +17,15 @@ nav_order: 14
 
 ## 简介
 
-`run` 命令用于**启动 Python 脚本时即注入 Peeka**，无需目标进程已在运行。适用于需要观测**导入期代码**、**初始化逻辑**或**短生命周期脚本**的场景。
+`run` 命令启动 Python 脚本，在执行入口逻辑前附加 Peeka 并设置观测命令，适用于短生命周期脚本和批处理任务。
 
-与先 `attach` 再观测的方式不同，`run` 命令从脚本第一行开始就具备完整的诊断能力。
+**执行顺序（v0.1.22）**：脚本按原始顺序只执行一次，预加载与后续执行共享同一个模块命名空间，已安装的探针不会被第二次执行覆盖。存在顶层 `if __name__ == "__main__":` 时，在该入口前暂停以设置探针；没有入口保护时，先执行到最后一个顶层函数或类定义，再设置探针并继续。
 
+暂停点之前的导入、赋值和其他顶层副作用会在观测开始前执行。要观察初始化函数，请先定义函数，再在主入口保护内调用；不要把需要观测的初始化调用放在预加载部分。
 
 ## 使用场景
 
-- **观测导入期逻辑**：捕获模块加载、类初始化等只在启动时执行一次的代码
+- **观测入口初始化**：将初始化函数的调用放在主入口保护内，在探针设置完成后执行
 - **短生命周期脚本**：进程运行时间太短，来不及手动 attach
 - **批处理任务**：Cron 任务、数据管道、一次性脚本的诊断
 - **CI/CD 调试**：在自动化流水线中捕获函数行为而无需修改代码
@@ -69,7 +70,7 @@ peeka-cli run <script> [script_args] -- <command> [command_options]
 peeka-cli run myscript.py -- watch "mymodule.MyClass.init_db"
 ```
 
-从脚本启动即观测 `init_db` 方法，捕获所有调用。
+观测探针设置完成后发生的 `init_db` 调用。
 
 ### 示例 2：传递脚本参数
 
@@ -82,10 +83,10 @@ peeka-cli run myscript.py --env production --config /etc/app.yml -- watch "mymod
 ### 示例 3：使用 trace 追踪调用树
 
 ```bash
-peeka-cli run myscript.py -- trace "mymodule.func" -d 3
+peeka-cli run myscript.py -- trace "mymodule.func"
 ```
 
-追踪 `mymodule.func` 的调用树，最大深度 3 层。
+追踪 `mymodule.func` 的直接子调用及其聚合耗时；不支持 `-d/--depth`。
 
 ### 示例 4：带条件过滤
 
@@ -146,12 +147,12 @@ peeka-cli run myscript.py -- top -i 0.02 -c 10 --sort total
   "watch_id": "watch_001",
   "timestamp": 1705586200.123,
   "func_name": "mymodule.MyClass.func",
-  "args": ["hello", 42],
+  "params": ["hello", 42],
   "kwargs": {},
-  "result": true,
+  "returnObj": true,
   "success": true,
-  "duration_ms": 1.23,
-  "count": 1
+  "cost": 1.23,
+  "seq": 1
 }
 {"type": "event", "event": "watch_stopped", "data": {"watch_id": "watch_001"}}
 ```
@@ -163,11 +164,11 @@ peeka-cli run myscript.py -- top -i 0.02 -c 10 --sort total
 peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observation")'
 
 # 找慢调用
-peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observation" and .data.duration_ms > 100)'
+peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observation" and .cost > 100)'
 
 # 保存并分析
 peeka-cli run --output-file out.jsonl myscript.py -- watch "mymodule.func"
-jq '.args' out.jsonl
+jq '.params' out.jsonl
 ```
 
 ## run 与 attach 的区别
@@ -175,10 +176,10 @@ jq '.args' out.jsonl
 | 特性               | `run`                          | `attach`                        |
 |--------------------|--------------------------------|---------------------------------|
 | 目标进程状态       | 由 Peeka 启动                  | 进程已在运行                    |
-| 观测范围           | 从第一行代码开始                | 从 attach 时刻开始              |
-| 适用场景           | 短生命周期、导入期逻辑          | 长期运行的服务                  |
+| 观测范围           | 探针设置完成后的入口逻辑                | 从 attach 时刻开始              |
+| 适用场景           | 短生命周期、入口逻辑          | 长期运行的服务                  |
 | 启动方式           | `peeka-cli run script.py -- …` | `peeka-cli attach <pid>`        |
-| 需要 ptrace/PEP768 | 否（直接注入）                  | 是                              |
+| 需要 ptrace/PEP768 | 是（附加到子进程）                  | 是                              |
 
 **选择建议**：
 - 生产服务、守护进程 → 使用 `attach`
@@ -218,10 +219,10 @@ peeka-cli run --output-file peeka.jsonl myscript.py -- watch "mymodule.func"
 peeka-cli run --output-file etl_obs.jsonl batch_job.py --date 2024-01-15 -- watch "etl.transform"
 
 # 2. 分析结果
-jq 'select(.type == "observation")' etl_obs.jsonl | jq -s 'sort_by(.data.duration_ms) | reverse | .[0:5]'
+jq 'select(.type == "observation")' etl_obs.jsonl | jq -s 'sort_by(.cost) | reverse | .[0:5]'
 
 # 3. 找出慢调用
-jq 'select(.type == "observation" and .data.duration_ms > 500)' etl_obs.jsonl
+jq 'select(.type == "observation" and .cost > 500)' etl_obs.jsonl
 ```
 
 ### 工作流程：观测初始化逻辑
@@ -231,7 +232,7 @@ jq 'select(.type == "observation" and .data.duration_ms > 500)' etl_obs.jsonl
 peeka-cli run app.py -- watch "db.DatabasePool.connect" -n 5
 
 # 追踪配置加载调用树
-peeka-cli run app.py -- trace "config.load_settings" -d 4
+peeka-cli run app.py -- trace "config.load_settings"
 ```
 
 ## 相关命令
@@ -245,6 +246,7 @@ peeka-cli run app.py -- trace "config.load_settings" -d 4
 
 | 版本    | 日期         | 更新内容        |
 |-------|------------|---------------|
+| 0.1.22 | 2026-11-17 | 脚本只执行一次并保持原始语句顺序，共享命名空间以保留探针；说明预加载与观测边界 |
 | 0.1.18 | 2026-06-24 | `run` 对所有流式观测命令（watch/trace/stack/monitor/top）按活动 stream_id 执行本地限制计数，达到限制后主动停止对应流 |
 | 0.1.16 | 2026-06-07 | `run` 支持 `monitor` 和 `top`；修正 `--output-file` 为脚本路径前的 run 级选项 |
 | 0.1.8 | 2025-04-28 | 新增 run 命令文档 |

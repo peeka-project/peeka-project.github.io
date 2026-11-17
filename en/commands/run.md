@@ -18,14 +18,15 @@ permalink: /commands/run
 
 ## Overview
 
-The `run` command **launches a Python script with Peeka injected from startup** — no need for the process to already be running. It is designed for observing **import-time code**, **initialization logic**, or **short-lived scripts** where attaching after-the-fact is impossible.
+The `run` command launches a Python script, attaches Peeka, and installs an observation command before executing the entry-point logic. It is useful for short-lived scripts and batch jobs.
 
-Unlike the `attach` workflow, `run` gives you full diagnostic capability from the very first line of the script.
+**Execution order (v0.1.22)**: The script executes once in its original order. Preloading and subsequent execution share one module namespace, preserving installed probes. With a top-level `if __name__ == "__main__":` guard, execution pauses before the guard to install probes. Without a guard, it executes through the last top-level function or class definition before installing probes and continuing.
 
+Imports, assignments, and other top-level side effects before this boundary run before observation starts. To observe initialization, define the function first and call it inside the main guard; avoid placing the call in the preloaded portion.
 
 ## Use Cases
 
-- **Import-time observation**: Capture module loading, class initialization, and other one-time startup code
+- **Entry-point initialization**: Put initialization calls inside the main guard so they run after probes are installed
 - **Short-lived scripts**: Processes that finish too quickly to attach manually
 - **Batch jobs**: Diagnose cron tasks, data pipelines, and one-shot scripts
 - **CI/CD debugging**: Capture function behavior in automated pipelines without modifying code
@@ -70,7 +71,7 @@ The Peeka command after `--` supports all the same options as when used standalo
 peeka-cli run myscript.py -- watch "mymodule.MyClass.init_db"
 ```
 
-Observes `init_db` from the moment the script starts.
+Observes calls to `init_db` that occur after probes are installed.
 
 ### Example 2: Passing script arguments
 
@@ -83,10 +84,10 @@ peeka-cli run myscript.py --env production --config /etc/app.yml -- watch "mymod
 ### Example 3: Trace call tree
 
 ```bash
-peeka-cli run myscript.py -- trace "mymodule.func" -d 3
+peeka-cli run myscript.py -- trace "mymodule.func"
 ```
 
-Traces the call tree of `mymodule.func` up to 3 levels deep.
+Traces direct callees of `mymodule.func` and their aggregated timings; `-d/--depth` is not supported.
 
 ### Example 4: Conditional filtering
 
@@ -147,12 +148,12 @@ Output format is identical to `watch`/`trace`/`stack` — one JSON object per li
   "watch_id": "watch_001",
   "timestamp": 1705586200.123,
   "func_name": "mymodule.MyClass.func",
-  "args": ["hello", 42],
+  "params": ["hello", 42],
   "kwargs": {},
-  "result": true,
+  "returnObj": true,
   "success": true,
-  "duration_ms": 1.23,
-  "count": 1
+  "cost": 1.23,
+  "seq": 1
 }
 {"type": "event", "event": "watch_stopped", "data": {"watch_id": "watch_001"}}
 ```
@@ -164,11 +165,11 @@ Output format is identical to `watch`/`trace`/`stack` — one JSON object per li
 peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observation")'
 
 # Find slow calls
-peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observation" and .data.duration_ms > 100)'
+peeka-cli run myscript.py -- watch "mymodule.func" | jq 'select(.type == "observation" and .cost > 100)'
 
 # Save and analyze
 peeka-cli run --output-file out.jsonl myscript.py -- watch "mymodule.func"
-jq '.args' out.jsonl
+jq '.params' out.jsonl
 ```
 
 ## run vs attach
@@ -176,10 +177,10 @@ jq '.args' out.jsonl
 | Feature              | `run`                           | `attach`                        |
 |----------------------|---------------------------------|---------------------------------|
 | Process state        | Launched by Peeka               | Already running                 |
-| Observation window   | From the very first line        | From the moment of attach       |
+| Observation window   | Entry logic after probe setup        | From the moment of attach       |
 | Best for             | Short-lived scripts, init logic | Long-running services           |
 | How to start         | `peeka-cli run script.py -- …`  | `peeka-cli attach <pid>`        |
-| Requires ptrace/PEP768 | No (direct injection)         | Yes                             |
+| Requires ptrace/PEP768 | Yes (attaches to the child)         | Yes                             |
 
 **Recommendation**:
 - Production services, daemons → use `attach`
@@ -219,10 +220,10 @@ peeka-cli run --output-file peeka.jsonl myscript.py -- watch "mymodule.func"
 peeka-cli run --output-file etl_obs.jsonl batch_job.py --date 2024-01-15 -- watch "etl.transform"
 
 # 2. Analyze results
-jq 'select(.type == "observation")' etl_obs.jsonl | jq -s 'sort_by(.data.duration_ms) | reverse | .[0:5]'
+jq 'select(.type == "observation")' etl_obs.jsonl | jq -s 'sort_by(.cost) | reverse | .[0:5]'
 
 # 3. Find slow calls
-jq 'select(.type == "observation" and .data.duration_ms > 500)' etl_obs.jsonl
+jq 'select(.type == "observation" and .cost > 500)' etl_obs.jsonl
 ```
 
 ### Observing initialization logic
@@ -232,7 +233,7 @@ jq 'select(.type == "observation" and .data.duration_ms > 500)' etl_obs.jsonl
 peeka-cli run app.py -- watch "db.DatabasePool.connect" -n 5
 
 # Trace configuration loading call tree
-peeka-cli run app.py -- trace "config.load_settings" -d 4
+peeka-cli run app.py -- trace "config.load_settings"
 ```
 
 ## Related Commands
@@ -246,6 +247,7 @@ peeka-cli run app.py -- trace "config.load_settings" -d 4
 
 | Version | Date       | Changes              |
 |---------|------------|----------------------|
+| 0.1.22 | 2026-11-17 | Execute scripts once in original statement order, preserving probes in a shared namespace; clarify the preloading and observation boundary |
 | 0.1.18  | 2026-06-24 | `run` applies local stream-scoped limits for all streaming observation commands (watch/trace/stack/monitor/top) and stops the corresponding stream when the limit is reached |
 | 0.1.16  | 2026-06-07 | `run` supports `monitor` and `top`; corrected `--output-file` as a run-level option before the script path |
 | 0.1.8   | 2025-04-28 | Added run command documentation |

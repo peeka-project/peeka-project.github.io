@@ -21,6 +21,9 @@ permalink: /commands/attach
 
 The `attach` command is the first step in using Peeka. It injects Peeka Agent code into the target process and starts a Unix Domain Socket server, establishing a communication channel for subsequent diagnostic commands.
 
+
+**Multiple process sessions (v0.1.22)**: You can attach to multiple target PIDs on one host. Attaching again to the same PID reuses its active session; sessions for other PIDs do not block a new attachment. A permission error while checking another process is not treated as evidence that it has exited.
+
 ### How It Works
 
 **Python 3.14+**:
@@ -350,6 +353,7 @@ v0.1.20 further improves stability for repeated attach operations and packaged d
 
 | Version | Release Date | Changes |
 |---------|--------------|---------|
+| 0.1.22 | 2026-11-17 | Reuse sessions by target PID, allowing multiple processes on one host; do not mistake permission errors for exited processes |
 | 0.1.20 | 2026-07-05 | Agent bootstrap clears cached Peeka modules; debugger scripts are resolved through core package resources; attach preflights debugger/script/injector resources and fails fast when missing; signal restore and script-error detection were improved |
 | 0.1.19 | 2026-06-25 | Python process discovery falls back to `ps` on non-`/proc` platforms (e.g. macOS), so the TUI process selector can list attachable processes on macOS |
 | 0.1.14 | 2026-05-24 | TUI attach progress/log/inline error display; fixed notify server native socket accept |

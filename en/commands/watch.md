@@ -26,6 +26,8 @@ The `watch` command is used to observe the execution of specified Python functio
 
 
 
+**v0.1.22**: Static and class methods retain their binding semantics when probes are installed and removed, and concurrent calls use isolated condition evaluation. Multiple TUI watches share one reader that dispatches observations by watch ID, avoiding events being consumed and discarded by another watch.
+
 ## TUI Usage
 
 In TUI mode, press **`2`** key to switch to **Watch View**, providing the following interactive features:
@@ -153,34 +155,9 @@ peeka-cli watch "calculator.Calculator.add" -n 5
 | `thread_id` | Thread ID | `140234567890` |
 | `thread_name` | Thread name | `"MainThread"` |
 
-#### Async Execution Profile (v0.1.14)
+#### Async observation output (v0.1.22)
 
-When observing coroutine functions or async generators, v0.1.14 emits an extra `execution_profile` JSON line that separates wall time, CPU time, context switches, coroutine termination, and async generator yield count. On Windows, `cpu_cost` and `context_switches` may be `null`.
-
-```json
-{
-  "type": "execution_profile",
-  "func_name": "service.fetch_user",
-  "mode": "coroutine",
-  "scheduler": "asyncio",
-  "yields": null,
-  "wall_cost": 0.023,
-  "cpu_cost": 0.002,
-  "context_switches": 4,
-  "marker": "executor",
-  "termination": "returned"
-}
-```
-
-| Field | Description |
-|-------|-------------|
-| `mode` | `coroutine` or `async_generator` |
-| `wall_cost` | Wall-clock duration in seconds |
-| `cpu_cost` | Process CPU time in seconds, or `null` when unavailable |
-| `context_switches` | Context switch count during observation, or `null` when unavailable |
-| `marker` | Coroutine wait marker, such as `executor`; omitted for async generators |
-| `termination` | `returned`, `cancelled`, `errored`, `exhausted`, or `closed` |
-| `yields` | Async generator yield count; `null` for coroutines |
+Coroutines and async generators continue to use normal watch observation events. From v0.1.22, Peeka no longer prints additional `execution_profile` JSON lines to the target process stdout by default, avoiding interference with application output. The extra profile lines from older releases are not part of the current default CLI output contract.
 
 ### 2. Adjust Output Depth
 
@@ -859,6 +836,7 @@ for line in sys.stdin:
 
 | Version | Date       | Updates |
 |---------|------------|-------------------|
+| 0.1.22 | 2026-11-17 | Preserve static/class method binding and isolate concurrent conditions; dispatch multiple TUI watches through one reader; stop default execution_profile output to target stdout |
 | 0.1.18  | 2026-06-24 | CLI `--times` now counts only observations matching the active stream_id, so concurrent streams no longer count toward the current watch limit; the `run` wrapper stops the watch stream when the limit is reached |
 | 0.1.17  | 2026-06-13 | `watch_started` event now carries `runtime_meta` (gevent state, backend, downgrade flag), enabling CLI output and the TUI Watch banner to display runtime info; `--times` help text updated to "Print N observations then stop" |
 | 0.1.16  | 2026-06-07 | Support `--client` to reuse an existing client session; auto-create an ephemeral client when omitted |

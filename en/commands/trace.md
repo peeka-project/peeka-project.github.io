@@ -22,6 +22,8 @@ The `trace` command tracks a Python function's **direct callees** and execution 
 
 **Important change in v0.1.20**: `trace` no longer supports a depth option and no longer outputs a recursively nested call tree. The backend captures and aggregates only the target function's direct callees, making output more stable and overhead more predictable.
 
+**Coroutine support (v0.1.22)**: `trace` observes the actual execution of `async def` functions. Root duration includes time spent awaiting, with direct-callee timing and exception reporting. Resuming a suspended call does not increment its call count. The `wrapper_only` backend reports root timing without callee details.
+
 ## TUI Usage
 
 In TUI mode, press **`3`** key to switch to **Trace View**, providing the following interactive features:
@@ -668,6 +670,7 @@ for line in proc.stdout:
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
+| 0.1.22 | 2026-11-17 | Trace coroutine awaits, direct callees, and exceptions; isolate thread events, restore the prior tracer, and handle legacy Python suspension bytecode |
 | 0.1.21 | 2026-11-09 | Python 3.12+ uses the `sys.monitoring` backend under gevent patched/active hub instead of degrading to `wrapper_only`; the TUI Active Traces table gains runtime and performance columns |
 | 0.1.20 | 2026-07-05 | Removed the depth option; trace now captures and aggregates only the target function's direct callees, outputs `call_tree` as a flat list, and adds `self_time_ms` / `callee_count`; TUI Trace view now uses a top Active Traces list plus lower call-tree/stats split, with callee drill-down shortcut `t` and aggregated callee nodes |
 | 0.1.18 | 2026-06-24 | CLI `--times` now counts only observations matching the active stream_id, so concurrent streams no longer count toward the current trace limit; the `run` wrapper stops the trace stream when the limit is reached |

@@ -25,6 +25,8 @@ Peeka 最核心的诊断命令，适用于生产环境的实时故障排查和�
 **注意** ⚠️ **`--times` 行为变更**（v0.1.13+，v0.1.18 细化）：该参数现在在**客户端侧按当前活动 stream_id** 计数观测次数（接收后计数），而非代理侧（发送前计数）。v0.1.18 起，只有属于当前 watch 流的观测才会被计入 `--times`，并发流的观测不再误计入限制。如果代理发送的观测次数超过 `--times` 限制，客户端会停止接收后丢弃剩余数据。如果您的脚本依赖精确的观测次数控制，请参考[故障排除](../troubleshooting.md#times-semantics)。
 
 
+**v0.1.22**：静态方法和类方法在探针安装及移除后保持原有绑定语义；并发调用的条件求值相互隔离。TUI 中多个 watch 共享一个读取器，按 watch ID 分发观测，避免互相丢弃事件。
+
 ## TUI 使用
 
 在 TUI 模式下，按 **`2`** 键切换到 **Watch 视图**，提供以下交互式功能：
@@ -153,34 +155,9 @@ peeka-cli watch "calculator.Calculator.add" -n 5
 | `thread_id`   | 线程 ID              | `140234567890`                                 |
 | `thread_name` | 线程名                | `"MainThread"`                                 |
 
-#### 异步执行 Profile（v0.1.14）
+#### 异步观测输出（v0.1.22）
 
-观测协程函数或异步生成器时，v0.1.14 会额外输出 `execution_profile` JSON 行，用于区分 wall time、CPU time、上下文切换次数、协程终止方式以及异步生成器 yield 次数。Windows 上 `cpu_cost` 和 `context_switches` 可能为 `null`。
-
-```json
-{
-  "type": "execution_profile",
-  "func_name": "service.fetch_user",
-  "mode": "coroutine",
-  "scheduler": "asyncio",
-  "yields": null,
-  "wall_cost": 0.023,
-  "cpu_cost": 0.002,
-  "context_switches": 4,
-  "marker": "executor",
-  "termination": "returned"
-}
-```
-
-| 字段 | 说明 |
-|------|------|
-| `mode` | `coroutine` 或 `async_generator` |
-| `wall_cost` | 墙钟耗时（秒） |
-| `cpu_cost` | 进程 CPU 耗时（秒；不可用时为 `null`） |
-| `context_switches` | 观测期间上下文切换次数（不可用时为 `null`） |
-| `marker` | 协程等待特征，例如 `executor`；异步生成器没有该字段 |
-| `termination` | `returned`、`cancelled`、`errored`、`exhausted` 或 `closed` |
-| `yields` | 异步生成器产出的次数；协程为 `null` |
+协程和异步生成器仍使用正常的 watch 观测事件。从 v0.1.22 起，默认不再向目标进程的 stdout 额外打印 `execution_profile` JSON 行，避免污染应用输出。旧版额外 profile 行不应作为当前 CLI 的默认输出契约。
 
 ### 2. 调整输出深度
 
@@ -858,6 +835,7 @@ for line in sys.stdin:
 
 | 版本    | 日期         | 更新内容               |
 |-------|------------|--------------------|
+| 0.1.22 | 2026-11-17 | 保留静态/类方法绑定，隔离并发条件求值；TUI 多 watch 统一分发，默认不再向宿主 stdout 打印 execution_profile |
 | 0.1.18 | 2026-06-24 | CLI `--times` 改为按活动 stream_id 计数，避免并发流的观测被误计入当前 watch 的限制；`run` 命令中的 watch 流现在会在达到限制后正确停止 |
 | 0.1.17 | 2026-06-13 | `watch_started` 事件附带 `runtime_meta`（gevent 状态、后端、是否降级），便于 CLI 输出与 TUI Watch 横幅展示运行时信息；`--times` 帮助文本更新为 "Print N observations then stop" |
 | 0.1.16 | 2026-06-07 | 支持通过 `--client` 复用已有客户端会话；未指定时自动创建临时客户端 |

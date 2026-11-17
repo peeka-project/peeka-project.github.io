@@ -22,6 +22,8 @@ El comando `watch` se usa para observar la ejecución de funciones Python especi
 
 **Aviso** ⚠️ **Cambio de comportamiento de `--times`** (v0.1.13+, refinado en v0.1.18): Este parámetro ahora cuenta observaciones en el **lado del cliente por `stream_id` activo** (después de recibirlas) en lugar del lado del agente (antes de enviarlas). Desde v0.1.18, solo las observaciones que pertenecen al flujo de watch actual se cuentan hacia `--times`; las observaciones de flujos concurrentes ya no afectan el límite. Si el agente envía más observaciones que el límite de `--times`, el cliente dejará de recibir y descartará los datos restantes. Si sus scripts dependen del control preciso del recuento de observaciones, consulte [solución de problemas](../troubleshooting.md#times-semantics).
 
+**v0.1.22**: Los métodos estáticos y de clase conservan su enlace al instalar y retirar sondas; las llamadas concurrentes evalúan condiciones de forma aislada. Varios watch de la TUI comparten un lector que distribuye las observaciones por ID, evitando que un watch consuma y descarte eventos de otro.
+
 ## Uso en TUI
 
 En modo TUI, presiona la tecla **`2`** para cambiar a la **Vista Watch**, que proporciona las siguientes características interactivas:
@@ -150,34 +152,9 @@ peeka-cli watch "calculator.Calculator.add" -n 5
 | `thread_id` | ID de hilo | `140234567890` |
 | `thread_name` | Nombre de hilo | `"MainThread"` |
 
-#### Perfil de ejecución async (v0.1.14)
+#### Salida de observación asíncrona (v0.1.22)
 
-Al observar funciones de corutina o generadores asíncronos, v0.1.14 emite una línea JSON adicional `execution_profile` que separa tiempo wall, tiempo CPU, cambios de contexto, terminación de la corutina y cantidad de yields del generador asíncrono. En Windows, `cpu_cost` y `context_switches` pueden ser `null`.
-
-```json
-{
-  "type": "execution_profile",
-  "func_name": "service.fetch_user",
-  "mode": "coroutine",
-  "scheduler": "asyncio",
-  "yields": null,
-  "wall_cost": 0.023,
-  "cpu_cost": 0.002,
-  "context_switches": 4,
-  "marker": "executor",
-  "termination": "returned"
-}
-```
-
-| Campo | Descripción |
-|-------|-------------|
-| `mode` | `coroutine` o `async_generator` |
-| `wall_cost` | Duración de reloj de pared en segundos |
-| `cpu_cost` | Tiempo CPU del proceso en segundos, o `null` cuando no está disponible |
-| `context_switches` | Cantidad de cambios de contexto durante la observación, o `null` cuando no está disponible |
-| `marker` | Marcador de espera de corutina, por ejemplo `executor`; se omite para generadores asíncronos |
-| `termination` | `returned`, `cancelled`, `errored`, `exhausted` o `closed` |
-| `yields` | Cantidad de yields del generador asíncrono; `null` para corutinas |
+Las corutinas y los generadores asíncronos siguen usando los eventos normales de watch. Desde v0.1.22, Peeka no imprime por defecto líneas JSON adicionales `execution_profile` en stdout del proceso objetivo, para no alterar la salida de la aplicación. Las líneas de perfil de versiones anteriores no forman parte del contrato de salida predeterminado actual de la CLI.
 
 ### 2. Ajustar Profundidad de Salida
 
@@ -855,6 +832,7 @@ for line in sys.stdin:
 
 | Versión | Fecha       | Actualizaciones |
 |---------|------------|-------------------|
+| 0.1.22 | 2026-11-17 | Conservar el enlace de métodos estáticos/de clase y aislar condiciones concurrentes; un lector para varios watch de TUI; eliminar execution_profile de stdout por defecto |
 | 0.1.18  | 2026-06-24 | CLI `--times` ahora cuenta solo observaciones cuyo `stream_id` coincida con el flujo activo, evitando que flujos concurrentes se sumen al límite del watch actual; el wrapper `run` detiene el flujo de watch al alcanzar el límite |
 | 0.1.17  | 2026-06-13 | El evento `watch_started` ahora incluye `runtime_meta` (estado de gevent, backend, indicador de degradación), lo que permite mostrar información de runtime en la salida CLI y en el banner de la vista Watch de la TUI; el texto de ayuda de `--times` se actualizó a "Print N observations then stop" |
 | 0.1.16  | 2026-06-07 | Soporte para `--client` reutilizando una sesión cliente existente; si se omite, se crea un cliente efímero |

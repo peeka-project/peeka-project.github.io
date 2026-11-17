@@ -17,14 +17,15 @@ nav_order: 14
 
 ## Introducción
 
-El comando `run` **ejecuta un script Python con Peeka inyectado desde el inicio**, sin necesidad de que el proceso esté en ejecución previamente. Ideal para observar **código en tiempo de importación**, **lógica de inicialización** o **scripts de corta duración** donde no es posible hacer `attach` una vez iniciado.
+El comando `run` inicia un script Python, adjunta Peeka e instala un comando de observación antes de ejecutar la lógica del punto de entrada. Es útil para scripts de corta duración y trabajos por lotes.
 
-A diferencia del flujo `attach`, `run` proporciona capacidad de diagnóstico completa desde la primera línea del script.
+**Orden de ejecución (v0.1.22)**: El script se ejecuta una sola vez y en su orden original. La precarga y la ejecución posterior comparten un espacio de nombres, conservando las sondas instaladas. Si existe un bloque de nivel superior `if __name__ == "__main__":`, la ejecución se pausa antes de él para instalar las sondas. Sin ese bloque, se ejecuta hasta la última definición de función o clase de nivel superior antes de instalar las sondas y continuar.
 
+Las importaciones, asignaciones y otros efectos anteriores a ese límite ocurren antes de iniciar la observación. Para observar la inicialización, defina primero la función y llámela dentro del bloque principal, no en la parte precargada.
 
 ## Casos de uso
 
-- **Observación en tiempo de importación**: Capturar carga de módulos, inicialización de clases y otra lógica que solo se ejecuta una vez al inicio
+- **Inicialización del punto de entrada**: Colocar las llamadas de inicialización dentro del bloque principal para ejecutarlas después de instalar las sondas
 - **Scripts de corta duración**: Procesos que terminan demasiado rápido para hacer `attach` manualmente
 - **Trabajos por lotes**: Diagnóstico de tareas cron, pipelines de datos y scripts de una sola ejecución
 - **Depuración en CI/CD**: Capturar el comportamiento de funciones en pipelines automatizados sin modificar el código
@@ -67,7 +68,7 @@ peeka-cli run <script> [script_args] -- <command> [command_options]
 peeka-cli run myscript.py -- watch "mymodule.MyClass.init_db"
 ```
 
-Observa `init_db` desde el momento en que el script arranca.
+Observa las llamadas a `init_db` posteriores a la instalación de las sondas.
 
 ### Ejemplo 2: Pasar argumentos al script
 
@@ -80,10 +81,10 @@ peeka-cli run myscript.py --env production --config /etc/app.yml -- watch "mymod
 ### Ejemplo 3: Trazar árbol de llamadas
 
 ```bash
-peeka-cli run myscript.py -- trace "mymodule.func" -d 3
+peeka-cli run myscript.py -- trace "mymodule.func"
 ```
 
-Traza el árbol de llamadas de `mymodule.func` hasta 3 niveles de profundidad.
+Traza las funciones llamadas directamente por `mymodule.func` y sus tiempos agregados; `-d/--depth` no está soportado.
 
 ### Ejemplo 4: Filtrado por condición
 
@@ -138,10 +139,10 @@ Muestrea el script a nivel de función y emite 10 snapshots.
 | Característica        | `run`                           | `attach`                         |
 |-----------------------|---------------------------------|----------------------------------|
 | Estado del proceso    | Lanzado por Peeka               | Ya en ejecución                  |
-| Ventana de observación| Desde la primera línea          | Desde el momento del attach      |
+| Ventana de observación| Lógica posterior a instalar sondas          | Desde el momento del attach      |
 | Mejor para            | Scripts cortos, lógica de inicio| Servicios de larga duración      |
 | Cómo iniciar          | `peeka-cli run script.py -- …`  | `peeka-cli attach <pid>`         |
-| Requiere ptrace/PEP768| No (inyección directa)          | Sí                               |
+| Requiere ptrace/PEP768| Sí (se adjunta al proceso hijo)          | Sí                               |
 
 **Recomendación**:
 - Servicios en producción, daemons → usar `attach`
@@ -178,6 +179,7 @@ Cuando el script termina (normalmente o con error), la observación se detiene a
 
 | Versión | Fecha      | Cambios                           |
 |---------|------------|-----------------------------------|
+| 0.1.22 | 2026-11-17 | Ejecutar el script una sola vez en el orden original, conservando las sondas en un espacio de nombres compartido; aclarar el límite de precarga |
 | 0.1.18  | 2026-06-24 | `run` aplica límites locales por flujo para todos los comandos de observación en streaming (watch/trace/stack/monitor/top) y detiene el flujo correspondiente al alcanzar el límite |
 | 0.1.16  | 2026-06-07 | `run` soporta `monitor` y `top`; `--output-file` se documenta como opción de nivel `run` antes de la ruta del script |
 | 0.1.8   | 2025-04-28 | Documentación del comando run añadida |

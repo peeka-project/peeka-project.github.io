@@ -22,6 +22,8 @@ nav_order: 3
 **v0.1.20 重要变更**：`trace` 不再支持 `-d/--depth` 选项，也不再输出递归嵌套的调用树。后端只会捕获并聚合目标函数的直接调用者（direct callees），输出更稳定、开销更可预测。
 
 
+**协程支持（v0.1.22）**：`trace` 可观测 `async def` 的实际执行，根调用耗时包含 `await` 等待时间，并记录直接子调用和异常。暂停后恢复不会增加调用次数；`wrapper_only` 后端仅提供根调用耗时，不提供子调用明细。
+
 ## TUI 使用
 
 在 TUI 模式下，按 **`3`** 键切换到 **Trace 视图**，提供以下交互式功能：
@@ -669,6 +671,7 @@ for line in proc.stdout:
 
 | 版本 | 发布日期 | 更新内容 |
 |------|---------|---------|
+| 0.1.22 | 2026-11-17 | 支持协程 await 周期、直接子调用及异常追踪；隔离线程事件并恢复原 tracer，兼容旧版 Python 暂停指令 |
 | 0.1.21 | 2026-11-09 | Python 3.12+ 在 gevent patched/active hub 下使用 `sys.monitoring` 后端，不再退化为 `wrapper_only`；TUI Active Traces 表格新增运行时与性能列 |
 | 0.1.20 | 2026-07-05 | 移除 `-d/--depth` 选项；trace 后端改为只捕获并聚合目标函数的直接调用者（direct callees），输出 `call_tree` 为扁平列表，新增 `self_time_ms`、`callee_count` 字段；TUI Trace 视图改为顶部 Active Traces 列表 + 下部调用树/统计分栏，新增 callee 下钻快捷键 `t` 和聚合 callee 节点 |
 | 0.1.18 | 2026-06-24 | CLI `--times` 改为按活动 stream_id 计数，避免并发流的观测被误计入当前 trace 的限制；`run` 命令中的 trace 流现在会在达到限制后正确停止 |

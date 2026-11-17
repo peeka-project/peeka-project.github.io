@@ -20,6 +20,8 @@ El comando `trace` se usa para rastrear los **llamados directos** de funciones P
 
 **Cambio importante en v0.1.20**: `trace` ya no configura niveles de profundidad ni emite árboles de llamadas recursivos anidados. El backend solo captura y agrega los llamados directos (direct callees) de la función objetivo, con una salida más estable y un sobrecoste más predecible.
 
+**Corutinas (v0.1.22)**: `trace` observa la ejecución real de funciones `async def`. La duración raíz incluye la espera de `await`, con tiempos de llamadas directas e información de excepciones. Reanudar una llamada suspendida no aumenta su contador. El backend `wrapper_only` solo ofrece el tiempo raíz, sin detalles de llamadas internas.
+
 ## Uso en TUI
 
 En modo TUI, presiona la tecla **`3`** para cambiar a la **Vista Trace**, que proporciona las siguientes características interactivas:
@@ -669,6 +671,7 @@ for line in proc.stdout:
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 0.1.22 | 2026-11-17 | Trazar await, llamadas directas y excepciones de corutinas; aislar eventos de hilos, restaurar el tracer previo y admitir instrucciones antiguas de suspensión |
 | 0.1.21 | 2026-11-09 | Python 3.12+ usa el backend `sys.monitoring` con gevent patched/active hub en lugar de degradarse a `wrapper_only`; la tabla Active Traces de la TUI añade columnas de runtime y rendimiento |
 | 0.1.20 | 2026-07-05 | Trace captura y agrega solo los llamados directos (direct callees) de la función objetivo; `call_tree` pasa a ser una lista plana y añade `self_time_ms` y `callee_count`; la vista Trace de TUI usa lista superior Active Traces + panel inferior de árbol/estadísticas, con tecla `t` para profundizar en un callee y nodos callee agregados |
 | 0.1.18 | 2026-06-24 | CLI `--times` ahora cuenta solo observaciones cuyo `stream_id` coincida con el flujo activo, evitando que flujos concurrentes se sumen al límite del trace actual; el wrapper `run` detiene el flujo de trace al alcanzar el límite |

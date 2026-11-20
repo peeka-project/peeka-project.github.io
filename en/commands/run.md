@@ -24,6 +24,8 @@ The `run` command launches a Python script, attaches Peeka, and installs an obse
 
 Imports, assignments, and other top-level side effects before this boundary run before observation starts. To observe initialization, define the function first and call it inside the main guard; avoid placing the call in the preloaded portion.
 
+When the script exits, `run` drains ready observations and returns the script’s exit code. A terminating signal yields 128 plus the signal number.
+
 ## Use Cases
 
 - **Entry-point initialization**: Put initialization calls inside the main guard so they run after probes are installed
@@ -247,6 +249,7 @@ peeka-cli run app.py -- trace "config.load_settings"
 
 | Version | Date       | Changes              |
 |---------|------------|----------------------|
+| 0.1.23 | 2026-11-20 | Preserve script exit status and drain final observations. |
 | 0.1.22 | 2026-11-17 | Execute scripts once in original statement order, preserving probes in a shared namespace; clarify the preloading and observation boundary |
 | 0.1.18  | 2026-06-24 | `run` applies local stream-scoped limits for all streaming observation commands (watch/trace/stack/monitor/top) and stops the corresponding stream when the limit is reached |
 | 0.1.16  | 2026-06-07 | `run` supports `monitor` and `top`; corrected `--output-file` as a run-level option before the script path |

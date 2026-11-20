@@ -22,6 +22,8 @@ nav_order: 16
 
 通过 `list`、`current`、`status`、`inspect`、`cleanup`、`detach` 子命令可以在多 target 共存的场景中精确指定操作对象，并及时回收已退出但 socket marker 仍残留的 stale target。
 
+若多个存活目标均符合条件，CLI 返回 `TARGET_AMBIGUOUS`。运行 `peeka-cli target list` 查看目标，再通过支持的 `--target` 选项指定目标 ID。
+
 ## 命令格式
 
 ```bash
@@ -87,6 +89,7 @@ peeka-cli target detach --target target_abcd1234 --force
 
 | 版本 | 发布日期 | 变更说明 |
 |------|----------|----------|
+| 0.1.23 | 2026-11-20 | 多个存活目标时要求明确选择。 |
 | 0.1.16 | 2026-06-07 | 新增 `target` 命令组；`session` 作为弃用兼容别名保留 |
 
 ## 相关命令

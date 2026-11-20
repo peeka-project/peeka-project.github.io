@@ -68,7 +68,7 @@ peeka-cli profile <subcommand> [options]
 ## バックエンド
 
 - **sampling（デフォルト）**：バックグラウンドスレッドが `--interval` ごとに全スレッドのコールスタックをサンプリングします。オーバーヘッドが低く、本番プロセスでの長時間実行に向いています。
-- **exact（実験的）**：Python の呼び出しイベントからすべての関数呼び出しを記録します。Python 3.12+（`threading.setprofile_all_threads`）が必要で、オーバーヘッドが明らかに高く、`--experimental` の指定が必須です。イベント数には上限があり、到達するとセッションは自動的に終了します。
+- **exact（実験的）**：Python の呼び出しイベントからすべての関数呼び出しを記録します。Python 3.12+（`sys.monitoring`）が必要で、オーバーヘッドが明らかに高く、`--experimental` の指定が必須です。イベント数には上限があり、到達するとセッションは自動的に終了します。
 
 `exact` と `sampling` は排他です。一方の実行中はもう一方を開始できないため、exact フックのオーバーヘッドがサンプリング結果を歪めることはありません。ターゲットプロセスに独自の profiler（`sys.setprofile` / `threading.setprofile`）がすでに設定されている場合、`exact` は置き換えずに開始を拒否します。
 
@@ -109,6 +109,7 @@ TUI で `0` を押して **Performance** タブを開き、**Profiles** サブ�
 
 | バージョン | リリース日 | 変更内容 |
 |------------|------------|----------|
+| 0.1.23 | 2026-11-20 | 実験的な exact プロファイリングには Python 3.12 以降と `sys.monitoring` の空きツール ID が必要です。空きがない場合は `sampling` を利用できます。 |
 | 0.1.21 | 2026-11-09 | `profile` コマンドグループ（start / stop / snapshot / list / cleanup / export）を追加。sampling と実験的な exact バックエンド、JSON / text / speedscope / Perfetto 形式に対応 |
 
 ## 関連コマンド

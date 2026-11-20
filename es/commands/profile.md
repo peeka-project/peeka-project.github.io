@@ -68,7 +68,7 @@ peeka-cli profile <subcommand> [options]
 ## Backends
 
 - **sampling (por defecto)**: un hilo en segundo plano muestrea las pilas de llamadas de todos los hilos cada `--interval`. Bajo overhead, apto para ejecuciones largas en procesos de producción.
-- **exact (experimental)**: registra cada llamada a función a partir de los eventos de llamada de Python. Requiere Python 3.12+ (`threading.setprofile_all_threads`), tiene un overhead notablemente mayor y debe iniciarse con `--experimental`. El número de eventos está limitado; la sesión termina sola al alcanzar el límite.
+- **exact (experimental)**: registra cada llamada a función a partir de los eventos de llamada de Python. Requiere Python 3.12+ (`sys.monitoring`), tiene un overhead notablemente mayor y debe iniciarse con `--experimental`. El número de eventos está limitado; la sesión termina sola al alcanzar el límite.
 
 `exact` y `sampling` son mutuamente excluyentes: mientras uno se ejecuta, el otro no puede iniciarse, para que el overhead del hook exact no distorsione los resultados del muestreo. Si el proceso objetivo ya tiene su propio profiler instalado (`sys.setprofile` / `threading.setprofile`), `exact` se niega a iniciar en lugar de reemplazarlo.
 
@@ -109,6 +109,7 @@ En la TUI, pulsa `0` para abrir la pestaña **Performance** y cambia a la subpes
 
 | Versión | Fecha de lanzamiento | Cambios |
 |---------|----------------------|---------|
+| 0.1.23 | 2026-11-20 | El perfilado exact experimental requiere un identificador libre de `sys.monitoring` en Python 3.12+. Si todos están ocupados, utilice `sampling`. |
 | 0.1.21 | 2026-11-09 | Nuevo grupo de comandos `profile` (start / stop / snapshot / list / cleanup / export) con backends sampling y exact experimental y formatos JSON / text / speedscope / Perfetto |
 
 ## Comandos Relacionados

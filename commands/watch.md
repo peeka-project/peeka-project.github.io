@@ -835,6 +835,7 @@ for line in sys.stdin:
 
 | 版本    | 日期         | 更新内容               |
 |-------|------------|--------------------|
+| 0.1.23 | 2026-11-20 | 观测格式化失败时仍保留业务返回值或异常；同步调度器返回的 Task 仍可立即取消。 |
 | 0.1.22 | 2026-11-17 | 保留静态/类方法绑定，隔离并发条件求值；TUI 多 watch 统一分发，默认不再向宿主 stdout 打印 execution_profile |
 | 0.1.18 | 2026-06-24 | CLI `--times` 改为按活动 stream_id 计数，避免并发流的观测被误计入当前 watch 的限制；`run` 命令中的 watch 流现在会在达到限制后正确停止 |
 | 0.1.17 | 2026-06-13 | `watch_started` 事件附带 `runtime_meta`（gevent 状态、后端、是否降级），便于 CLI 输出与 TUI Watch 横幅展示运行时信息；`--times` 帮助文本更新为 "Print N observations then stop" |

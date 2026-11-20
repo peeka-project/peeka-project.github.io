@@ -22,6 +22,8 @@ nav_order: 16
 
 `list`、`current`、`status`、`inspect`、`cleanup`、`detach` サブコマンドを使うことで、同じホスト上に複数の target が共存する場面でも操作対象を正確に指定でき、プロセス終了後に socket マーカーだけが残った stale target を速やかに回収できます。
 
+複数の稼働中の対象が一致すると、CLI は `TARGET_AMBIGUOUS` を返します。`peeka-cli target list` で ID を確認し、対応するコマンドの `--target` で指定してください。
+
 ## 構文
 
 ```bash
@@ -87,6 +89,7 @@ peeka-cli target detach --target target_abcd1234 --force
 
 | バージョン | リリース日 | 変更 |
 |------------|------------|------|
+| 0.1.23 | 2026-11-20 | 稼働中の対象が複数ある場合は明示的な選択が必要です。 |
 | 0.1.16 | 2026-06-07 | `target` コマンドグループを追加。`session` は非推奨の互換エイリアスとして維持 |
 
 ## 関連コマンド

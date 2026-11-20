@@ -330,6 +330,10 @@ This is an expected behavior change. For detailed behavior changes and usage sce
 
 ## Observation Issues
 
+### A command response was lost
+
+If the client reports `outcome_uncertain: true`, the command may have taken effect. Reconnect and check the resource or probe state before repeating the command.
+
 ### No Observation Data
 
 **Symptom**: watch command starts but no observation data is output.

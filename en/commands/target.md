@@ -22,6 +22,8 @@ The `target` command **manages Peeka target agents**: discover Peeka targets on 
 
 Use `list`, `current`, `status`, `inspect`, `cleanup`, and `detach` to pinpoint the right target when several coexist on the same host, and to promptly reclaim stale targets whose socket markers were left behind after the process exited.
 
+If several live targets match, the CLI reports `TARGET_AMBIGUOUS`. Run `peeka-cli target list` and pass the target ID with `--target` on commands that support it.
+
 ## Syntax
 
 ```bash
@@ -87,6 +89,7 @@ peeka-cli target detach --target target_abcd1234 --force
 
 | Version | Release Date | Changes |
 |---------|--------------|---------|
+| 0.1.23 | 2026-11-20 | Require explicit selection when live targets are ambiguous. |
 | 0.1.16 | 2026-06-07 | Added the `target` command group; kept `session` as a deprecated compatibility alias |
 
 ## Related Commands

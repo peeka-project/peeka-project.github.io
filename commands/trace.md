@@ -671,6 +671,7 @@ for line in proc.stdout:
 
 | 版本 | 发布日期 | 更新内容 |
 |------|---------|---------|
+| 0.1.23 | 2026-11-20 | 重叠协程共享追踪后端，各自记录直接子调用。同一线程上的 greenlet 切换保持调用归属。 |
 | 0.1.22 | 2026-11-17 | 支持协程 await 周期、直接子调用及异常追踪；隔离线程事件并恢复原 tracer，兼容旧版 Python 暂停指令 |
 | 0.1.21 | 2026-11-09 | Python 3.12+ 在 gevent patched/active hub 下使用 `sys.monitoring` 后端，不再退化为 `wrapper_only`；TUI Active Traces 表格新增运行时与性能列 |
 | 0.1.20 | 2026-07-05 | 移除 `-d/--depth` 选项；trace 后端改为只捕获并聚合目标函数的直接调用者（direct callees），输出 `call_tree` 为扁平列表，新增 `self_time_ms`、`callee_count` 字段；TUI Trace 视图改为顶部 Active Traces 列表 + 下部调用树/统计分栏，新增 callee 下钻快捷键 `t` 和聚合 callee 节点 |

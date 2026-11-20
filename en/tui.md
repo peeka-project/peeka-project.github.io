@@ -16,6 +16,8 @@ permalink: /tui
 
 ## Overview
 
+When several probes run at once, Watch, Trace, Stack and Monitor route observations by active probe ID.
+
 Peeka provides a fully-featured **Text User Interface (TUI)** built on the [Textual](https://textual.textualize.io/) framework. TUI mode offers a more intuitive interactive experience than CLI, supporting real-time data streaming, interactive operations, colored output, and keyboard navigation.
 
 **Use Cases**:

@@ -23,6 +23,8 @@ El comando `run` inicia un script Python, adjunta Peeka e instala un comando de 
 
 Las importaciones, asignaciones y otros efectos anteriores a ese límite ocurren antes de iniciar la observación. Para observar la inicialización, defina primero la función y llámela dentro del bloque principal, no en la parte precargada.
 
+Al terminar el script, `run` lee las observaciones pendientes que ya están disponibles y devuelve el código de salida del script. Si termina por una señal, devuelve 128 más el número de señal.
+
 ## Casos de uso
 
 - **Inicialización del punto de entrada**: Colocar las llamadas de inicialización dentro del bloque principal para ejecutarlas después de instalar las sondas
@@ -179,6 +181,7 @@ Cuando el script termina (normalmente o con error), la observación se detiene a
 
 | Versión | Fecha      | Cambios                           |
 |---------|------------|-----------------------------------|
+| 0.1.23 | 2026-11-20 | Conserva el estado de salida y lee las últimas observaciones. |
 | 0.1.22 | 2026-11-17 | Ejecutar el script una sola vez en el orden original, conservando las sondas en un espacio de nombres compartido; aclarar el límite de precarga |
 | 0.1.18  | 2026-06-24 | `run` aplica límites locales por flujo para todos los comandos de observación en streaming (watch/trace/stack/monitor/top) y detiene el flujo correspondiente al alcanzar el límite |
 | 0.1.16  | 2026-06-07 | `run` soporta `monitor` y `top`; `--output-file` se documenta como opción de nivel `run` antes de la ruta del script |

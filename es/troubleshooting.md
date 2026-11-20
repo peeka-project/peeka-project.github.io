@@ -329,6 +329,10 @@ Este es un cambio de comportamiento esperado. Para conocer los cambios de compor
 
 ## Problemas de Observación
 
+### Se perdió la respuesta de un comando
+
+Si el cliente indica `outcome_uncertain: true`, el comando puede haberse ejecutado. Vuelva a conectarse y compruebe el estado del recurso o de la sonda antes de repetirlo.
+
 ### No se observan datos
 
 **Síntomas**: Después de iniciar el comando watch, no hay salida de datos de observación.

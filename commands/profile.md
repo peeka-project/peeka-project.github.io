@@ -68,7 +68,7 @@ peeka-cli profile <subcommand> [options]
 ## 后端
 
 - **sampling（默认）**：后台线程按 `--interval` 周期采样所有线程的调用栈，开销低，适合在生产进程上长时间运行。
-- **exact（实验性）**：基于 Python 调用事件记录每次函数调用，需要 Python 3.12+（`threading.setprofile_all_threads`），开销明显更高，必须同时指定 `--experimental`。事件数量有上限，达到上限后会自动结束。
+- **exact（实验性）**：基于 Python 调用事件记录每次函数调用，需要 Python 3.12+（`sys.monitoring`），开销明显更高，必须同时指定 `--experimental`。事件数量有上限，达到上限后会自动结束。
 
 `exact` 与 `sampling` 互斥：其中一个运行时，另一个无法启动，避免 exact 钩子的开销干扰采样结果。如果目标进程已经安装了自己的 profiler（`sys.setprofile` / `threading.setprofile`），`exact` 会拒绝启动，而不是覆盖它。
 
@@ -109,6 +109,7 @@ peeka-cli dx add-profile --dx-case dx_123 --profile-id <profile_id>
 
 | 版本 | 发布日期 | 变更说明 |
 |------|----------|----------|
+| 0.1.23 | 2026-11-20 | 实验性 exact 采样需要 Python 3.12+ 的空闲 `sys.monitoring` 工具槽。槽位已满时可使用 `sampling`。 |
 | 0.1.21 | 2026-11-09 | 新增 `profile` 命令组（start / stop / snapshot / list / cleanup / export），支持 sampling 与实验性 exact 后端，以及 JSON / text / speedscope / Perfetto 格式 |
 
 ## 相关命令

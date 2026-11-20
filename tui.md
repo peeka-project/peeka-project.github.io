@@ -16,6 +16,8 @@ nav_order: 6
 
 ## 简介
 
+同时运行多个探针时，Watch、Trace、Stack 和 Monitor 按活动探针 ID 分发观测。
+
 Peeka 提供了一个功能完整的**文本用户界面（TUI）**，基于 [Textual](https://textual.textualize.io/) 框架构建。TUI 模式提供了比 CLI 更直观的交互体验，支持实时数据流、交互式操作、彩色输出和快捷键导航。
 
 **适用场景**：

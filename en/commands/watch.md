@@ -836,6 +836,7 @@ for line in sys.stdin:
 
 | Version | Date       | Updates |
 |---------|------------|-------------------|
+| 0.1.23 | 2026-11-20 | Observation formatting failures preserve application results and exceptions. Tasks returned by synchronous schedulers can still be cancelled immediately. |
 | 0.1.22 | 2026-11-17 | Preserve static/class method binding and isolate concurrent conditions; dispatch multiple TUI watches through one reader; stop default execution_profile output to target stdout |
 | 0.1.18  | 2026-06-24 | CLI `--times` now counts only observations matching the active stream_id, so concurrent streams no longer count toward the current watch limit; the `run` wrapper stops the watch stream when the limit is reached |
 | 0.1.17  | 2026-06-13 | `watch_started` event now carries `runtime_meta` (gevent state, backend, downgrade flag), enabling CLI output and the TUI Watch banner to display runtime info; `--times` help text updated to "Print N observations then stop" |

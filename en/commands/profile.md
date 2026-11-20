@@ -68,7 +68,7 @@ peeka-cli profile <subcommand> [options]
 ## Backends
 
 - **sampling (default)**: a background thread samples the call stacks of all threads every `--interval`. Low overhead, suitable for long runs on production processes.
-- **exact (experimental)**: records every function call from Python call events. Requires Python 3.12+ (`threading.setprofile_all_threads`), has noticeably higher overhead, and must be started with `--experimental`. The event count is capped; the session ends automatically when the cap is reached.
+- **exact (experimental)**: records every function call from Python call events. Requires Python 3.12+ (`sys.monitoring`), has noticeably higher overhead, and must be started with `--experimental`. The event count is capped; the session ends automatically when the cap is reached.
 
 `exact` and `sampling` are mutually exclusive: while one runs, the other cannot start, so the exact hook's overhead cannot skew sampling results. If the target process already has its own profiler installed (`sys.setprofile` / `threading.setprofile`), `exact` refuses to start instead of replacing it.
 
@@ -109,6 +109,7 @@ In the TUI, press `0` to open the **Performance** tab and switch to the **Profil
 
 | Version | Release Date | Changes |
 |---------|--------------|---------|
+| 0.1.23 | 2026-11-20 | Experimental exact profiling needs a free `sys.monitoring` tool ID on Python 3.12+. Use `sampling` if all IDs are occupied. |
 | 0.1.21 | 2026-11-09 | Added the `profile` command group (start / stop / snapshot / list / cleanup / export) with sampling and experimental exact backends and JSON / text / speedscope / Perfetto formats |
 
 ## Related Commands

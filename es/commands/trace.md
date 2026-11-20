@@ -671,6 +671,7 @@ for line in proc.stdout:
 
 | Versión | Fecha | Cambios |
 |---------|-------|---------|
+| 0.1.23 | 2026-11-20 | Las corrutinas concurrentes comparten el mecanismo de trazado y registran sus propias llamadas directas. Al cambiar de greenlet en un hilo, cada llamada se atribuye al greenlet correspondiente. |
 | 0.1.22 | 2026-11-17 | Trazar await, llamadas directas y excepciones de corutinas; aislar eventos de hilos, restaurar el tracer previo y admitir instrucciones antiguas de suspensión |
 | 0.1.21 | 2026-11-09 | Python 3.12+ usa el backend `sys.monitoring` con gevent patched/active hub en lugar de degradarse a `wrapper_only`; la tabla Active Traces de la TUI añade columnas de runtime y rendimiento |
 | 0.1.20 | 2026-07-05 | Trace captura y agrega solo los llamados directos (direct callees) de la función objetivo; `call_tree` pasa a ser una lista plana y añade `self_time_ms` y `callee_count`; la vista Trace de TUI usa lista superior Active Traces + panel inferior de árbol/estadísticas, con tecla `t` para profundizar en un callee y nodos callee agregados |

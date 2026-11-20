@@ -670,6 +670,7 @@ for line in proc.stdout:
 
 | Version | Release Date | Changes |
 |---------|-------------|---------|
+| 0.1.23 | 2026-11-20 | Overlapping coroutines share a tracing backend and record their own direct calls. Calls stay attributed to the correct greenlet across switches on one thread. |
 | 0.1.22 | 2026-11-17 | Trace coroutine awaits, direct callees, and exceptions; isolate thread events, restore the prior tracer, and handle legacy Python suspension bytecode |
 | 0.1.21 | 2026-11-09 | Python 3.12+ uses the `sys.monitoring` backend under gevent patched/active hub instead of degrading to `wrapper_only`; the TUI Active Traces table gains runtime and performance columns |
 | 0.1.20 | 2026-07-05 | Removed the depth option; trace now captures and aggregates only the target function's direct callees, outputs `call_tree` as a flat list, and adds `self_time_ms` / `callee_count`; TUI Trace view now uses a top Active Traces list plus lower call-tree/stats split, with callee drill-down shortcut `t` and aggregated callee nodes |

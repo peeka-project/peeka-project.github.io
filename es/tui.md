@@ -15,6 +15,8 @@ nav_order: 6
 
 ## Introducción
 
+Si hay varias sondas en ejecución, Watch, Trace, Stack y Monitor distribuyen las observaciones según el ID de la sonda activa.
+
 Peeka proporciona una **Interfaz de Usuario de Texto (TUI)** completa, construida sobre el framework [Textual](https://textual.textualize.io/). El modo TUI proporciona una experiencia de interacción más intuitiva que CLI, y soporta flujo de datos en tiempo real, operaciones interactivas, salida en color y navegación con atajos de teclado.
 
 **Escenarios de aplicación**:

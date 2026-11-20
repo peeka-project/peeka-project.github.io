@@ -832,6 +832,7 @@ for line in sys.stdin:
 
 | Versión | Fecha       | Actualizaciones |
 |---------|------------|-------------------|
+| 0.1.23 | 2026-11-20 | Los errores de formato de una observación conservan el resultado o la excepción de la aplicación. Las tareas devueltas por planificadores síncronos se pueden cancelar de inmediato. |
 | 0.1.22 | 2026-11-17 | Conservar el enlace de métodos estáticos/de clase y aislar condiciones concurrentes; un lector para varios watch de TUI; eliminar execution_profile de stdout por defecto |
 | 0.1.18  | 2026-06-24 | CLI `--times` ahora cuenta solo observaciones cuyo `stream_id` coincida con el flujo activo, evitando que flujos concurrentes se sumen al límite del watch actual; el wrapper `run` detiene el flujo de watch al alcanzar el límite |
 | 0.1.17  | 2026-06-13 | El evento `watch_started` ahora incluye `runtime_meta` (estado de gevent, backend, indicador de degradación), lo que permite mostrar información de runtime en la salida CLI y en el banner de la vista Watch de la TUI; el texto de ayuda de `--times` se actualizó a "Print N observations then stop" |
